@@ -2,7 +2,7 @@
 ## Title: StatCompare
 ## Title-zhCN:StatCompare 
 ## Version: v1.8.0
-## Notes: Concisely show character and target stats. Great for screenshots for gear checks or for comparing to other players. (AKA "Character Stat Compare")
+## Notes: Extended character and target stats. Great for gear checks or comparing to other players. (AKA "Character Stat Compare")
 ## Notes-zhCN: 显示角色装备提供的属性奖励，并可以与其他玩家对比。
 ## Author: slashboy @ 九藜方舟 Dreamland  yyslash@gmail.com / lasthime @ 幻物梵天 艾森纳
 ## Author: provocateur @ Nordanaar / Turtle WoW (minor update to make gear checks easier on servers with transmogrification) 

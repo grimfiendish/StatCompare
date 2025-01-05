@@ -1,5 +1,7 @@
+-- Adding this to make the addon useful for gear checks. Putting as much of my changes into this file to keep the diff clean.
 StatCompare_EnchantsById = {
 -- https://wowpedia.fandom.com/wiki/EnchantId
+-- Note - The below object is fluffy so it can support attributes like the enchantment spell's name and spell id in the future should it be deemed useful.
 				[   1] = { ["enchantId"] =    "1", ["effect"] = "Rockbiter 3" },
 				[   2] = { ["enchantId"] =    "2", ["effect"] = "Frostbrand 1" },
 				[   3] = { ["enchantId"] =    "3", ["effect"] = "Flametongue 3" },
@@ -1574,7 +1576,7 @@ function StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(unit)
 		sunit="target";
 	end
 	
-	retstr="Equipped Items\n"
+ 	retstr=GREEN_FONT_COLOR_CODE..STATCOMPARE_EQUIPPED..":\n"..FONT_COLOR_CODE_CLOSE
 	
 	for i=1, 19 ,1 do
 		local link = GetInventoryItemLink(sunit, i)
