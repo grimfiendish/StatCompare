@@ -524,7 +524,7 @@ end
 function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
 	local text = getglobal(frame:GetName().."Text");
 	local title = getglobal(frame:GetName().."Title");
-	title:SetText((tiptitle and tiptitle .. " / " or "")..STATCOMPARE_ADDON_NAME.." "..STATCOMPARE_ADDON_VERSION);
+	title:SetText((tiptitle and tiptitle .. " / " or "")..GREEN_FONT_COLOR_CODE..STATCOMPARE_ADDON_NAME..FONT_COLOR_CODE_CLOSE.." "..STATCOMPARE_ADDON_VERSION.."            "); -- Padding so the weird book icon (that i don't know what it's for) won't cover the text.
 	text:SetText(tiptext);
 	height = text:GetHeight();
 	width = text:GetWidth();
@@ -758,15 +758,15 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 	end
 
 	local setstr=""
-	local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SET_PREFIX..FONT_COLOR_CODE_CLOSE.."\n"
+	local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SET_PREFIX..FONT_COLOR_CODE_CLOSE
 	for i,v in StatScanner_setcount do
-		setstr=setstr..'|cff'..v.color..i..v.count.."/"..v.total.."）"..FONT_COLOR_CODE_CLOSE.."\n";
+		setstr=setstr..'\n|cff'..v.color..i..v.count.."/"..v.total.."）"..FONT_COLOR_CODE_CLOSE;
 	end
 	if (setstr~="") then setstr=settitle..setstr; end
 	
-	local itemsandenchants=StatScanner_GetEquippedItemNamesAndEnchantsDisplayText("player") -- GGC TODO - find the target version of this.
+	local itemsandenchants=StatScanner_GetEquippedItemNamesAndEnchantsDisplayText("player")
 
-	return retstr..setstr.."\n"..itemsandenchants;
+	return retstr..setstr.."\n\n"..itemsandenchants;
 end
 
 function StatComparePaintText(short,val)
