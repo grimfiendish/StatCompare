@@ -6,12 +6,15 @@
 ]]
 function SC_Localization_zhCN()
 
+	STATCOMPARE_ADDON_NAME = "StatCompare";
+
 	STATCOMPARE_CAT_ATT = "属性";
 	STATCOMPARE_CAT_RES = "抗性";
 	STATCOMPARE_CAT_SKILL = "技能";
 	STATCOMPARE_CAT_BON = "近战&远程攻击";
 	STATCOMPARE_CAT_SBON = "法术";
 	STATCOMPARE_CAT_OBON = "生命&法力";
+	STATCOMPARE_EQUIPPED = "Equipped Items"; -- Sorry y'all I don't know.
 
 	STATCOMPARE_ATTACKNAME = "攻击";
 		

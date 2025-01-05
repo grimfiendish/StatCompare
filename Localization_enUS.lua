@@ -7,14 +7,18 @@
 
 function SC_Localization_enUS()
 	-- English localized variables (default)
+	STATCOMPARE_ADDON_NAME = "StatCompare";
+	STATCOMPARE_ADDON_VERSION = GetAddOnMetadata(STATCOMPARE_ADDON_NAME, "Version");
+
 	-- general
 
-	STATCOMPARE_CAT_ATT = "States";
+	STATCOMPARE_CAT_ATT = "Stats";
 	STATCOMPARE_CAT_RES = "Resistance";
 	STATCOMPARE_CAT_SKILL = "Skills";
 	STATCOMPARE_CAT_BON = "Melee & Ranged Attack";
 	STATCOMPARE_CAT_SBON = "Spells";
 	STATCOMPARE_CAT_OBON = "Health & Mana";
+	STATCOMPARE_EQUIPPED = "Equipped Items";
 
 	STATCOMPARE_ATTACKNAME = "Attack";
 		

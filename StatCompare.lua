@@ -524,7 +524,7 @@ end
 function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
 	local text = getglobal(frame:GetName().."Text");
 	local title = getglobal(frame:GetName().."Title");
-	title:SetText(tiptitle);
+	title:SetText((tiptitle and tiptitle .. " / " or "")..STATCOMPARE_ADDON_NAME.." "..STATCOMPARE_ADDON_VERSION);
 	text:SetText(tiptext);
 	height = text:GetHeight();
 	width = text:GetWidth();
@@ -533,6 +533,7 @@ function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
 	end
 	frame:SetHeight(height+30);
 	frame:SetWidth(width+30);
+	
 	if(IsAddOnLoaded("oSkin")) then
 		if(target == "InspectFrame" or target == "PaperDollFrame") then
 			frame:SetPoint("TOPLEFT", target:GetName(), "TOPRIGHT", anchorx + 30, anchory);
@@ -762,8 +763,10 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 		setstr=setstr..'|cff'..v.color..i..v.count.."/"..v.total.."）"..FONT_COLOR_CODE_CLOSE.."\n";
 	end
 	if (setstr~="") then setstr=settitle..setstr; end
+	
+	local itemsandenchants=StatScanner_GetEquippedItemNamesAndEnchantsDisplayText("player") -- GGC TODO - find the target version of this.
 
-	return retstr..setstr;
+	return retstr..setstr.."\n"..itemsandenchants;
 end
 
 function StatComparePaintText(short,val)
