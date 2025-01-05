@@ -1582,7 +1582,7 @@ function StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(unit)
 		local link = GetInventoryItemLink(sunit, i)
 		local a, itemId, enchantId, d, e = StatCompare_splitlink(link)
 		local enchantName = StatCompare_GetEnchantName(enchantId)
-		local enchantstr = enchantName and "\n>    " ..enchantName or ""
+		local enchantstr = enchantName and " > " ..enchantName or ""
 		if link then
 			retstr = retstr..link..enchantstr.."\n"
 		end
@@ -1590,7 +1590,9 @@ function StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(unit)
 	return retstr
 end
 
-local function StatScanner_ListPlayerBuffs()
+-- TODO - Next is to show active buffs so you know what stats are being messed with for gear checks.
+
+function StatScanner_ListPlayerBuffs()
     local i = 1
     local buffName, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, spellId
 
