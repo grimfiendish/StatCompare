@@ -1600,15 +1600,15 @@ function StatScanner_ListPlayerBuffs()
     while true do
         -- Get the buff information
         buffName, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, spellId = UnitBuff("player", i)
-        
+
         -- Break the loop if there are no more buffs
         if not buffName then
             break
         end
-        
+
         -- Print the buff name and other details
         print(string.format("Buff %d: %s (Count: %d, Duration: %d)", i, buffName, count or 0, duration or 0))
-        
+
         i = i + 1
     end
 end

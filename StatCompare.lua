@@ -763,7 +763,8 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 		setstr=setstr..'\n|cff'..v.color..i..v.count.."/"..v.total.."）"..FONT_COLOR_CODE_CLOSE;
 	end
 	if (setstr~="") then setstr=settitle..setstr; end
-	local itemsandenchants=StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(StatCompareTargetFrame:IsVisible() and "target" or "player")
+
+	local itemsandenchants=StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(bSelfStat==1 and "player" or "target")
 
 	return retstr..setstr.."\n\n"..itemsandenchants;
 end
