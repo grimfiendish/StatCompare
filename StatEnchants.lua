@@ -1544,7 +1544,6 @@ StatCompare_EnchantsById = {
 				[2721] = { ["enchantId"] = "2721", ["effect"] = "+15 Spell Power and +14 Critical Strike Rating" }
 }
 
-
 -- Blatantly stolen from pfUI <3 but... with the optional field second :P
 -- [ strsplit ]
 -- Splits a string using a delimiter.
@@ -1589,31 +1588,3 @@ function StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(unit)
 	end
 	return retstr
 end
-
--- TODO - Next is to show active buffs so you know what stats are being messed with for gear checks.
-
-function StatScanner_ListPlayerBuffs()
-    local i = 1
-    local buffName, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, spellId
-
-    print("Player Buffs:")
-    while true do
-        -- Get the buff information
-        buffName, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, spellId = UnitBuff("player", i)
-
-        -- Break the loop if there are no more buffs
-        if not buffName then
-            break
-        end
-
-        -- Print the buff name and other details
-        print(string.format("Buff %d: %s (Count: %d, Duration: %d)", i, buffName, count or 0, duration or 0))
-
-        i = i + 1
-    end
-end
-
-
--- /script local link = GetInventoryItemLink("player", 1); local a, itemId, enchantId, d, e = StatCompare_splitlink(link); Print(enchantId)
--- /script Print(StatCompare_GetEnchantName(tonumber("2588")))
--- /script Print(StatCompare_GetEnchantName(2588))

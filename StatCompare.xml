@@ -43,9 +43,9 @@
                 </FontString>
                 <FontString name="StatCompareSelfFrameText" inherits="GameTooltipText">
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT" relativeTo="StatCompareSelfFrame" relativePoint="BOTTOMLEFT">
+                        <Anchor point="TOPLEFT" relativeTo="StatCompareSelfFrame" relativePoint="TOPLEFT">
                             <Offset>
-                                <AbsDimension x="10" y="10"/>
+                                <AbsDimension x="10" y="-20"/>
                             </Offset>
                         </Anchor>
                     </Anchors>
@@ -82,6 +82,25 @@
 				<PushedTexture file="Interface\Icons\INV_Misc_Book_08"/>
 				<HighlightTexture file="Interface\AddOns\StatCompare\Status-Idle" alphaMode="ADD"/>
             </Button>
+			
+			<Frame name="StatCompareSelfFrameBuffList" frameStrata="LOW" toplevel="true" enableMouse="true" movable="true" hidden="false"  parent="StatCompareSelfFrame">
+				<Size>
+					<AbsDimension x="16" y="16"/>
+				</Size>
+
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" relativeTo="StatCompareSelfFrame" relativePoint="BOTTOMLEFT">
+                        <Offset>
+                            <AbsDimension x="30" y="10"/>
+                        </Offset>
+                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="StatCompareSelfFrame" relativePoint="BOTTOMRIGHT">
+                        <Offset>
+                            <AbsDimension x="5" y="5"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+			</Frame>
         </Frames>
 		<Scripts>
 			<OnHide>
@@ -115,9 +134,9 @@
                 </FontString>
                 <FontString name="StatCompareTargetFrameText" inherits="GameTooltipText">
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT" relativeTo="StatCompareTargetFrame" relativePoint="BOTTOMLEFT">
+                        <Anchor point="TOPLEFT" relativeTo="StatCompareTargetFrame" relativePoint="TOPLEFT">
                             <Offset>
-                                <AbsDimension x="10" y="10"/>
+                                <AbsDimension x="10" y="-20"/>
                             </Offset>
                         </Anchor>
                     </Anchors>
@@ -154,6 +173,25 @@
 				<PushedTexture file="Interface\Icons\INV_Misc_Book_08"/>
 				<HighlightTexture file="Interface\AddOns\StatCompare\Status-Idle" alphaMode="ADD"/>
             </Button>
+			
+			<Frame name="StatCompareTargetFrameBuffList" frameStrata="LOW" toplevel="true" enableMouse="true" movable="true" hidden="false"  parent="StatCompareTargetFrame">
+				<Size>
+					<AbsDimension x="16" y="16"/>
+				</Size>
+
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" relativeTo="StatCompareSelfFrame" relativePoint="BOTTOMLEFT">
+                        <Offset>
+                            <AbsDimension x="30" y="10"/>
+                        </Offset>
+                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="StatCompareSelfFrame" relativePoint="BOTTOMRIGHT">
+                        <Offset>
+                            <AbsDimension x="5" y="5"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+			</Frame>
         </Frames>
 		<Scripts>
 			<OnHide>

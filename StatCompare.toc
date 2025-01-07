@@ -13,6 +13,7 @@ Localization_zhTW.lua
 Localization_enUS.lua
 Localization.lua
 StatEnchants.lua
+StatBuffs.lua
 SCOptions.lua
 StatScanner.lua
 StatCompare.lua

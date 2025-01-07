@@ -531,9 +531,18 @@ function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
 	if(width < title:GetWidth()) then
 		width = title:GetWidth();
 	end
-	frame:SetHeight(height+30);
+	frame:SetHeight(height+90);
 	frame:SetWidth(width+30);
-	
+
+	-- get StatCompareTargetFrame or PaperDollFrame
+	local buffFrame = getglobal(frame:GetName().."BuffList")
+	if buffFrame ~= nil then
+		local frameWidth = frame:GetWidth()
+		buffFrame:SetWidth(frameWidth)
+		-- target:GetName() is PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
+		StatCompare_AddBuffIconsToTooltip(buffFrame, target:GetName() == "InspectFrame" and "target" or "player")
+	end
+
 	if(IsAddOnLoaded("oSkin")) then
 		if(target == "InspectFrame" or target == "PaperDollFrame") then
 			frame:SetPoint("TOPLEFT", target:GetName(), "TOPRIGHT", anchorx + 30, anchory);
@@ -1090,7 +1099,6 @@ function StatCompareSelfFrameSpellsButton_OnClick()
 		end
 		StatCompareSelfFrameSpellsButton:UnlockHighlight();
 	end
-
 	text = getglobal(StatCompareSelfFrame:GetName().."Text");
 	title = getglobal(StatCompareSelfFrame:GetName().."Title");
 	text:SetText(tiptext);
