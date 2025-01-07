@@ -180,12 +180,12 @@
 				</Size>
 
                 <Anchors>
-                    <Anchor point="BOTTOMLEFT" relativeTo="StatCompareSelfFrame" relativePoint="BOTTOMLEFT">
+                    <Anchor point="BOTTOMLEFT" relativeTo="StatCompareTargetFrame" relativePoint="BOTTOMLEFT">
                         <Offset>
                             <AbsDimension x="30" y="10"/>
                         </Offset>
                     </Anchor>
-                    <Anchor point="BOTTOMRIGHT" relativeTo="StatCompareSelfFrame" relativePoint="BOTTOMRIGHT">
+                    <Anchor point="BOTTOMRIGHT" relativeTo="StatCompareTargetFrame" relativePoint="BOTTOMRIGHT">
                         <Offset>
                             <AbsDimension x="5" y="5"/>
                         </Offset>
