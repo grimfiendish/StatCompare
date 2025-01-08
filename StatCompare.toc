@@ -1,7 +1,7 @@
 ﻿## Interface: 11200
 ## Title: StatCompare
 ## Title-zhCN:StatCompare 
-## Version: v1.8.0
+## Version: v1.8.0 beta 20250108
 ## Notes: Gear Check and Stats for Character and Target.
 ## Notes-zhCN: 显示角色装备提供的属性奖励，并可以与其他玩家对比。
 ## Author: slashboy @ 九藜方舟 Dreamland  yyslash@gmail.com / lasthime @ 幻物梵天 艾森纳

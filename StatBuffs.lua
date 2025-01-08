@@ -55,3 +55,4 @@ function StatCompare_AddBuffIconsToTooltip(tooltipFrame, unit)
         iconTexture:SetPoint("BOTTOMLEFT", tooltipFrame, "BOTTOMLEFT", (curIconInRow - 1) * (iconSize + spacing), (5 + (20 * (curRow - 1))))
     end
 end
+
