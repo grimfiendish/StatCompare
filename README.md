@@ -26,3 +26,7 @@ This version has been updated to make gear checks easier by showing the list of 
 /statc on | off       - Turns on/off the addon
 /statc debug on | off - Prints debug information. Primarily useful if you discover an enchant is displaying incorrectly, it will show the effect ID in the Stat panel. Send a bug ticket on the github page, [here](https://github.com/grimfiendish/StatCompare/).
 ```
+
+## Found a bug?
+
+If you find an issue with the enchants, turn on debugging with `/statc debug on` then send me the ID and the correct name of the enchant via a bug ticket on [the project's github page](https://github.com/grimfiendish/StatCompare). If you're on a custom server, note that.
