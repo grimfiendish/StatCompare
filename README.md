@@ -1,5 +1,7 @@
 # StatCompare v1.8 for Vanilla World of Warcraft v 1.12.1
-StatCompare adds a stats panel next to your Character or Inspection Panes. Screenshot your stats for gear checks or select a target and easily compare your gear.
+StatCompare adds a stats panel next to your Character and Inspection Panes, making it easy to screenshot your stats for gear checks or compare your gear to your target.
+
+This version has been updated to make gear checks easier by showing the list of equipped item names and their enchants, as well as all active buffs.
 
 ## Screenshot
 
@@ -21,11 +23,6 @@ StatCompare adds a stats panel next to your Character or Inspection Panes. Scree
 ## Configuration
 
 ```
-/statc on | off   - Turns on/off the addon
-/statc            - Shows an unhelpful help message. May show helpful stuff in Chinese.
-/statc help       - Shows an unhelpful help message. May show helpful stuff in Chinese.
-/statc item       - Opens a window that is presumably only showing instructions in Chinese. no idea what it does.
-/statc sets       - Undocumented. requires "StatCompareSets" addon, which appears to only exist in Chinese. I've found references to it in Chinese forums but not it itself.
-/statc DressOn    - Undocumented. I'm guessing I need a child addon for it. 
-/statc DressOff   - Undocumented. I'm guessing I need a child addon for it.
+/statc on | off       - Turns on/off the addon
+/statc debug on | off - Prints debug information. Primarily useful if you discover an enchant is displaying incorrectly, it will show the effect ID in the Stat panel. Send a bug ticket on the github page, [here](https://github.com/grimfiendish/StatCompare/).
 ```
