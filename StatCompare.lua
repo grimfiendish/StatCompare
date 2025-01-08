@@ -10,6 +10,7 @@ StatCompareTargetFrameShowSpells = false;
 StatCompare_ItemCollection = {};
 StatCompare_ItemCache = {};
 StatCompare_bonuses_single = {};
+StatCompare_IsDebugMode = false;
 
 --STATCOMPARE_SETNAME_PATTERN = "^(.*)%d/%d.*$";
 STATCOMPARE_SETNAME_PATTERN = "^(.*)%d/(%d).*$";
@@ -296,6 +297,12 @@ function STATCOMPARE_SlashCmdHandler(msg)
 		else
 			DEFAULT_CHAT_FRAME:AddMessage(NORMAL.."Need load StatCompareUI plugin first."..CLOSE);
 		end
+	elseif (msg == "debug on") then
+		StatCompare_IsDebugMode = true
+			DEFAULT_CHAT_FRAME:AddMessage(GREEN.." StatCompare  "..CLOSE.." Debugging enabled");
+	elseif (msg == "debug off") then
+		StatCompare_IsDebugMode = false
+			DEFAULT_CHAT_FRAME:AddMessage(GREEN.." StatCompare  "..CLOSE.." Debugging disabled");
 	elseif (msg == "on") then
 		StatCompare_Register(1);
 		StatCompare_SetupHook(1);
@@ -604,7 +611,6 @@ function SCInspectFrame_Show(unit)
 		tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,1);
 		SCShowFrame(StatCompareSelfFrame,StatCompareTargetFrame,UnitName("player"),tiptext,0,0);
 	end
-	--oldInspectFrame_Show();
 end
 
 function SCInspectFrame_OnHide()
@@ -772,10 +778,12 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 		setstr=setstr..'\n|cff'..v.color..i..v.count.."/"..v.total.."）"..FONT_COLOR_CODE_CLOSE;
 	end
 	if (setstr~="") then setstr=settitle..setstr; end
+	retstr=retstr..setstr
 
 	local itemsandenchants=StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(bSelfStat==1 and "player" or "target")
+	retstr=retstr.."\n\n"..itemsandenchants
 
-	return retstr..setstr.."\n\n"..itemsandenchants;
+	return retstr;
 end
 
 function StatComparePaintText(short,val)
@@ -866,7 +874,8 @@ local statcompare_editdata = {type="",id="",text="",value=""};
 function StatCompare_ItemCollection_Add_OnClick()
 	statcompare_editdata.type="edititem";
 	statcompare_editdata.id=0;
-	statcompare_editdata.text="Shift点击物品或者链接";
+	--statcompare_editdata.text="Shift点击物品或者链接"; -- TODO
+	statcompare_editdata.text="ShiftShift click on an item or link";
 	statcompare_editdata.value="";
 	StatCompare_GeneralEditFrame:Show();
 end
@@ -892,7 +901,8 @@ end
 
 local StatCompare_DelItem="";
 StaticPopupDialogs["StatCompare_DelItem"] = {
-	text = "确认要删除吗？",
+	--text = "确认要删除吗？", -- TODO
+	text = "Are you sure you want to delete?",
 	button1 = TEXT(ACCEPT),
 	button2 = TEXT(CANCEL),
 	OnAccept = function()
@@ -959,7 +969,8 @@ function StatCompare_ItemCollection_ScrollFrame_Update()
 end
 
 -- 2006.02.03 edit --
--------------------------------------- 物品稀有度下拉框------------------------------------------
+-------------------------------------- 物品稀有度下拉框 ------------------------------------------
+----------------------------------- Item Rarity Dropdown ---------------------------------------
 StatCompare_ItemRarity_DROPDOWN_LIST = {
 	{name = "全部", value = -1},
 	{name = "|c009d9d9d粗糙|r", value = 0},
@@ -968,6 +979,16 @@ StatCompare_ItemRarity_DROPDOWN_LIST = {
 	{name = "|c000070dd精良|r", value = 3},
 	{name = "|c00a335ee史诗|r", value = 4},
 	{name = "|c00ff8000传说|r", value = 5},
+};
+-- TODO - fix language i18n
+StatCompare_ItemRarity_DROPDOWN_LIST = {
+	{name = "All", value = -1},
+	{name = "|c009d9d9dRough|r", value = 0},
+	{name = "|c00ffffffCommon|r", value = 1},
+	{name = "|c001eff00Uncommon|r", value = 2},
+	{name = "|c000070ddRare|r", value = 3},
+	{name = "|c00a335eeEpic|r", value = 4},
+	{name = "|c00ff8000Legendary|r", value = 5},
 };
 
 function StatCompare_ItemRarityDropDown_OnLoad()
@@ -993,7 +1014,8 @@ function StatCompare_ItemRarityDropDown_OnClick()
 	StatCompare_ItemCollection_ScrollFrame_Update();
 end
 
--------------------------------------- 物品类型下拉框------------------------------------------
+-------------------------------------- 物品类型下拉框 -----------------------------------------
+---------------------------------- Item Type Dropdown --------------------------------------
 StatCompare_ItemType_DROPDOWN_LIST = {
 	{name = "全部", value = "全部", subvalue="全部"},
 	{name = "武器", value = "武器", subvalue="全部"},
@@ -1005,6 +1027,19 @@ StatCompare_ItemType_DROPDOWN_LIST = {
 	{name = "- 盾牌", value = "护甲", subvalue="盾牌"},
 	{name = "- 其它", value = "护甲", subvalue="其它"},
 	{name = "其它", value = "其它", subvalue="全部"},
+};
+ -- TODO fix language i18n
+StatCompare_ItemType_DROPDOWN_LIST = {
+	{name = "All", value = "All", subvalue="All"},
+	{name = "Arms", value = "Arms", subvalue="All"},
+	{name = "Armor", value = "Armor", subvalue="All"},
+	{name = "- Plate", value = "Armor", subvalue="Plate"},
+	{name = "- Mail", value = "Armor", subvalue="Mail"},
+	{name = "- Leather", value = "Armor", subvalue="Leather"},
+	{name = "- Cloth", value = "Armor", subvalue="Cloth"},
+	{name = "- Shield", value = "Armor", subvalue="Shield"},
+	{name = "- Other", value = "Armor", subvalue="Other"},
+	{name = "Other", value = "Other", subvalue="All"},
 };
 
 function StatCompare_ItemTypeDropDown_OnLoad()
