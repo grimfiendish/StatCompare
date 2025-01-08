@@ -62,7 +62,7 @@
                     </Anchor>
                 </Anchors>
             </Button>
-			<Button name="StatCompareSelfFrameSpellsButton">
+			<Button name="StatCompareSelfFrameSpellsButton" hidden="true">
 				<Size>
 					<AbsDimension x="16" y="16"/>
 				</Size>
@@ -91,7 +91,7 @@
                 <Anchors>
                     <Anchor point="BOTTOMLEFT" relativeTo="StatCompareSelfFrame" relativePoint="BOTTOMLEFT">
                         <Offset>
-                            <AbsDimension x="30" y="10"/>
+                            <AbsDimension x="5" y="5"/>
                         </Offset>
                     </Anchor>
                     <Anchor point="BOTTOMRIGHT" relativeTo="StatCompareSelfFrame" relativePoint="BOTTOMRIGHT">
@@ -182,7 +182,7 @@
                 <Anchors>
                     <Anchor point="BOTTOMLEFT" relativeTo="StatCompareTargetFrame" relativePoint="BOTTOMLEFT">
                         <Offset>
-                            <AbsDimension x="30" y="10"/>
+                            <AbsDimension x="5" y="5"/>
                         </Offset>
                     </Anchor>
                     <Anchor point="BOTTOMRIGHT" relativeTo="StatCompareTargetFrame" relativePoint="BOTTOMRIGHT">
