@@ -3,6 +3,8 @@ StatCompare adds a stats panel next to your Character and Inspection Panes, maki
 
 This version has been updated to make gear checks easier by showing the list of equipped item names and their enchants, as well as all active buffs.
 
+<b>As of January 2025 the enchants and buff info is considered beta</b>
+
 ## Screenshot
 
 View  your own stats (e.g. for Gear Checks)
