@@ -5,7 +5,13 @@ This version has been updated to make gear checks easier by showing the list of 
 
 ## Screenshot
 
-![statcompare](https://user-images.githubusercontent.com/24671466/27562912-1a698a34-5acf-11e7-9bac-b029c9160eb4.png)
+View  your own stats (e.g. for Gear Checks)
+
+![Use StatCompare to view your own stats](https://raw.githubusercontent.com/grimfiendish/StatCompare/391ff026dbcefe209e248533717122044644b0fe/media/stats_on_self.jpg)
+
+View detailed stats on your inspection target
+
+![Use StatCompare to compare with others](https://raw.githubusercontent.com/grimfiendish/StatCompare/391ff026dbcefe209e248533717122044644b0fe/media/compare_stats.jpg)
 
 ## Installation
 1. Close any instance of WoW
