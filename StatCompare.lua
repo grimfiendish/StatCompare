@@ -541,12 +541,12 @@ function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
 	frame:SetHeight(height+90);
 	frame:SetWidth(width+30);
 
-	-- get StatCompareTargetFrame or PaperDollFrame
+	-- Here we're after the buff list, which displays icons at the bottom of the dialog. Expected values are StatCompareTargetFrame or PaperDollFrame.
 	local buffFrame = getglobal(frame:GetName().."BuffList")
 	if buffFrame ~= nil then
 		local frameWidth = frame:GetWidth()
 		buffFrame:SetWidth(frameWidth)
-		-- target:GetName() is PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
+		-- GerName here is PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
 		StatCompare_AddBuffIconsToTooltip(buffFrame, target:GetName() == "InspectFrame" and "target" or "player")
 	end
 
