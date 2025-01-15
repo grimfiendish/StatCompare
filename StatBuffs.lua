@@ -56,12 +56,15 @@ function StatCompare_AddBuffIconsToTooltip(tooltipFrame, unit)
 			curIconInRow = 0
 		end
 
-        local iconTexture = tooltipFrame.buffTextures[i] ~= nil and tooltipFrame.buffTextures[i] or tooltipFrame:CreateTexture(nil, "BACKGROUND")
-        iconTexture:SetWidth(iconSize)
-        iconTexture:SetHeight(iconSize)
-        iconTexture:SetTexture(iconPath)
+        if tooltipFrame.buffTextures[i] == nil then
+			tooltipFrame.buffTextures[i] = tooltipFrame:CreateTexture(nil, "BACKGROUND")
+		end
+        tooltipFrame.buffTextures[i]:SetWidth(iconSize)
+        tooltipFrame.buffTextures[i]:SetHeight(iconSize)
+        tooltipFrame.buffTextures[i]:SetTexture(iconPath)
+		tooltipFrame.buffTextures[i]:Show()
 
-        iconTexture:SetPoint("BOTTOMLEFT", tooltipFrame, "BOTTOMLEFT", (curIconInRow - 1) * (iconSize + spacing), (5 + (20 * (curRow - 1))))
+        tooltipFrame.buffTextures[i]:SetPoint("BOTTOMLEFT", tooltipFrame, "BOTTOMLEFT", (curIconInRow - 1) * (iconSize + spacing), (5 + (20 * (curRow - 1))))
     end
 end
 
