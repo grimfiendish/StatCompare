@@ -8,10 +8,10 @@
 ## Author: provocateur @ Nordanaar / Turtle WoW (updated addon to be more "gear check" centric) 
 ## SavedVariables: StatCompare_SaveVar, StatCompare_Info
 ## SavedVariablesPerCharacter: StatCompare_Player
-Localization_zhCN.lua
-Localization_zhTW.lua
-Localization_enUS.lua
-Localization.lua
+lang\Localization_zhCN.lua
+lang\Localization_zhTW.lua
+lang\Localization_enUS.lua
+lang\Localization.lua
 StatEnchants.lua
 StatBuffs.lua
 SCOptions.lua
