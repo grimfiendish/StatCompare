@@ -19,7 +19,7 @@ function SC_Localization_enUS()
 	STATCOMPARE_CAT_SBON = "Spells";
 	STATCOMPARE_CAT_OBON = "Health & Mana";
 	STATCOMPARE_EQUIPPED = "Equipped Items";
-
+	STATCOMPARE_ACTIVEBUFFS = "Active Buffs";
 	STATCOMPARE_ATTACKNAME = "Attack";
 		
 	-- bonus names --- for display usage

@@ -87,6 +87,20 @@
 				<Size>
 					<AbsDimension x="16" y="16"/>
 				</Size>
+				
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="StatCompareSelfFrameBuffListTitle" inherits="GameTooltipHeaderText">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativeTo="StatCompareSelfFrameBuffList" relativePoint="TOPLEFT">
+									<Offset>
+										<AbsDimension x="5" y="10"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
 
                 <Anchors>
                     <Anchor point="BOTTOMLEFT" relativeTo="StatCompareSelfFrame" relativePoint="BOTTOMLEFT">
@@ -178,20 +192,35 @@
 				<Size>
 					<AbsDimension x="16" y="16"/>
 				</Size>
+				
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="StatCompareTargetFrameBuffListTitle" inherits="GameTooltipHeaderText">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativeTo="StatCompareTargetFrameBuffList" relativePoint="TOPLEFT">
+									<Offset>
+										<AbsDimension x="5" y="10"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
 
-                <Anchors>
-                    <Anchor point="BOTTOMLEFT" relativeTo="StatCompareTargetFrame" relativePoint="BOTTOMLEFT">
-                        <Offset>
-                            <AbsDimension x="5" y="5"/>
-                        </Offset>
-                    </Anchor>
-                    <Anchor point="BOTTOMRIGHT" relativeTo="StatCompareTargetFrame" relativePoint="BOTTOMRIGHT">
-                        <Offset>
-                            <AbsDimension x="5" y="5"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativeTo="StatCompareTargetFrame" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="5" y="5"/>
+						</Offset>
+					</Anchor>
+					<Anchor point="BOTTOMRIGHT" relativeTo="StatCompareTargetFrame" relativePoint="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="5" y="5"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
 			</Frame>
+
         </Frames>
 		<Scripts>
 			<OnHide>

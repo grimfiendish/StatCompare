@@ -548,6 +548,9 @@ function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
 		buffFrame:SetWidth(frameWidth)
 		-- GerName here is PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
 		StatCompare_AddBuffIconsToTooltip(buffFrame, target:GetName() == "InspectFrame" and "target" or "player")
+		
+		local buffFrameTitle = getglobal(frame:GetName().."BuffListTitle")
+		buffFrameTitle:SetText(GREEN_FONT_COLOR_CODE..STATCOMPARE_ACTIVEBUFFS..":"..FONT_COLOR_CODE_CLOSE)
 	end
 
 	if(IsAddOnLoaded("oSkin")) then

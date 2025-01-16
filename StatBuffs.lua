@@ -18,6 +18,28 @@ function StatBuffs_GetBuffs(unit)
 	return buffs
 end
 
+--[[ debugging - uncomment and it'll print a big pile of your first couple buffs repeated a lot
+function StatBuffs_GetBuffs(unit)
+	local buffs = {}
+    local i = 1
+	local buffIconPath, rank = UnitBuff(unit, 1)
+		table.insert(buffs, buffIconPath)
+
+    while true do
+        local buffIconPath, rank = UnitBuff(unit, 2)
+        --local buffIconPath, rank = UnitBuff(unit, i)
+
+        if not buffIconPath or i > 25 then
+            break
+        end
+
+		table.insert(buffs, buffIconPath)
+        i = i + 1
+    end
+	return buffs
+end
+--]]
+
 -- Add buff icons to the StatCompare dialog
 function StatCompare_AddBuffIconsToTooltip(tooltipFrame, unit)
     local iconSize = 16
@@ -53,7 +75,7 @@ function StatCompare_AddBuffIconsToTooltip(tooltipFrame, unit)
 		curIconInRow = curIconInRow + 1
 		if curIconInRow > iconsPerRow then
 			curRow = curRow + 1
-			curIconInRow = 0
+			curIconInRow = 1
 		end
 
         if tooltipFrame.buffTextures[i] == nil then
