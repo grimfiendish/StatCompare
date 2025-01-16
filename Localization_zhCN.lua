@@ -14,7 +14,8 @@ function SC_Localization_zhCN()
 	STATCOMPARE_CAT_BON = "近战&远程攻击";
 	STATCOMPARE_CAT_SBON = "法术";
 	STATCOMPARE_CAT_OBON = "生命&法力";
-	STATCOMPARE_EQUIPPED = "Equipped Items"; -- Sorry y'all I don't know.
+	STATCOMPARE_EQUIPPED = "Equipped Items";
+	STATCOMPARE_ACTIVEBUFFS = "Active Buffs";
 
 	STATCOMPARE_ATTACKNAME = "攻击";
 		
