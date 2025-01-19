@@ -7,6 +7,8 @@
 
 StatCompareSelfFrameShowSpells = false;
 StatCompareTargetFrameShowSpells = false;
+StatCompareSelfFrameShowArmor = true;
+StatCompareSelfFrameShowStats = true;
 StatCompare_ItemCollection = {};
 StatCompare_ItemCache = {};
 StatCompare_bonuses_single = {};
@@ -258,13 +260,11 @@ function StatCompare_Register(register)
 		this:RegisterEvent("PLAYER_ENTERING_WORLD");
 		this:RegisterEvent("UNIT_INVENTORY_CHANGED");
 		this:RegisterEvent("PLAYER_LOGOUT");
-		this:RegisterEvent("PLAYER_ENTERING_WORLD");
 		this:RegisterEvent("UNIT_NAME_UPDATE");
 	else	
 		this:UnregisterEvent("PLAYER_ENTERING_WORLD");
 		this:UnregisterEvent("UNIT_INVENTORY_CHANGED");
 		this:UnregisterEvent("PLAYER_LOGOUT");
-		this:UnregisterEvent("PLAYER_ENTERING_WORLD");
 		this:UnregisterEvent("UNIT_NAME_UPDATE");
 	end
 end
@@ -358,6 +358,14 @@ function StatCompare_OnEvent()
 	if ((event == "PLAYER_ENTERING_WORLD" or event=="UNIT_NAME_UPDATE") and StatCompare_enable) then
 		if(StatCompare_isLoaded ~= 1) then
 			StatCompare_InitConfig();
+		end
+		if (not StatCompare_CharStats_Scan) then
+			-- in 2006 i think dude made a separate addon but changed the base addon to make it work. 
+			-- So there's this spell book that does nothing but is always visible.
+			-- I can't find the addon online but it surely exists somewhere, 
+			-- so I haven't removed the code but.. now it'll only show when it's abble to be useful.
+			StatCompareSelfFrameSpellsButton:Hide()
+			StatCompareTargetFrameSpellsButton:Hide()
 		end
 		local showIcon = StatCompare_GetSetting("ShowMinimapIcon");
 		if(showIcon == 0 and StatCompareMinimapFrame and StatCompareMinimapFrame:IsVisible()) then
@@ -531,15 +539,21 @@ end
 function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
 	local text = getglobal(frame:GetName().."Text");
 	local title = getglobal(frame:GetName().."Title");
-	title:SetText((tiptitle and tiptitle .. " / " or "")..GREEN_FONT_COLOR_CODE..STATCOMPARE_ADDON_NAME..FONT_COLOR_CODE_CLOSE.." "..STATCOMPARE_ADDON_VERSION.."            "); -- Padding so the weird book icon (that i don't know what it's for) won't cover the text.
+	title:SetText((tiptitle and tiptitle .. " / " or "")..GREEN_FONT_COLOR_CODE..STATCOMPARE_ADDON_NAME..FONT_COLOR_CODE_CLOSE.." "..STATCOMPARE_ADDON_VERSION);
 	text:SetText(tiptext);
-	height = text:GetHeight();
-	width = text:GetWidth();
-	if(width < title:GetWidth()) then
-		width = title:GetWidth();
+	local textheight = text:GetHeight();
+	local width = text:GetWidth();
+	local iconwidth = 20*4;
+	local titlewidth = title:GetWidth() + iconwidth;
+	if(width < titlewidth) then
+		width = titlewidth;
 	end
-	frame:SetHeight(height+90);
-	frame:SetWidth(width+30);
+	frame:SetHeight(textheight+90);
+	if (frame:GetWidth() < width) then
+		-- Limit how much the frame changes, as it's annoying to move your mouse to toggle the button. 
+		-- If the frame gets wider, well that's life, but if it gets thinner we don't adjust the width.
+		frame:SetWidth(width);
+	end
 
 	-- Here we're after the buff list, which displays icons at the bottom of the dialog. Expected values are StatCompareTargetFrame or PaperDollFrame.
 	local buffFrame = getglobal(frame:GetName().."BuffList")
@@ -630,7 +644,7 @@ function SCHideUIPanel(frame)
 	oldHideUIPanel(frame);
 end
 
-function StatCompare_GetTooltipText(bonuses,bSelfStat)
+function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 	local retstr,cat,val,lval = "","","","","";
 	local i;
 	local baseval = {};
@@ -774,17 +788,33 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 			end
 		end
 	end
+	return retstr;
+end
 
+function StatCompare_GetSetTooltipText(bonuses,bSelfStat)
 	local setstr=""
-	local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SET_PREFIX..FONT_COLOR_CODE_CLOSE
 	for i,v in StatScanner_setcount do
 		setstr=setstr..'\n|cff'..v.color..i..v.count.."/"..v.total.."）"..FONT_COLOR_CODE_CLOSE;
 	end
-	if (setstr~="") then setstr=settitle..setstr; end
-	retstr=retstr..setstr
+	return setstr
+end
 
-	local itemsandenchants=StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(bSelfStat==1 and "player" or "target")
-	retstr=retstr.."\n\n"..itemsandenchants
+function StatCompare_GetTooltipText(bonuses,bSelfStat)
+	local retstr=""
+	if (StatCompareSelfFrameShowArmor == true) then
+		local statstr=StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
+		retstr=retstr..statstr
+	end
+	
+	retstr= retstr..StatCompare_GetSetTooltipText(bonuses,bSelfStat)
+
+	if (StatCompareSelfFrameShowArmor == true) then
+		local itemsandenchants=StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(bSelfStat==1 and "player" or "target")
+		retstr=retstr.."\n\n"..itemsandenchants
+	end
+	
+	local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SET_PREFIX..FONT_COLOR_CODE_CLOSE
+	if (retstr~="") then setstr=settitle..retstr; end
 
 	return retstr;
 end
@@ -1096,6 +1126,30 @@ function StatCompare_BuildItemCache()
 			end
 		end
 	end
+end
+
+function StatCompareSelfFrameArmorButton_OnClick()
+	-- toggle showing equipped item names and buffs
+	local tiptext = ""
+	if (StatCompareSelfFrameShowArmor == false) then
+		StatCompareSelfFrameShowArmor = true
+		tiptext = StatScanner_GetEquippedItemNamesAndEnchantsDisplayText("player")
+	else
+		StatCompareSelfFrameShowArmor = false
+	end
+	text = getglobal(StatCompareSelfFrame:GetName().."Text");
+	title = getglobal(StatCompareSelfFrame:GetName().."Title");
+	text:SetText(tiptext);
+	height = text:GetHeight();
+	width = text:GetWidth();
+	if(width < title:GetWidth()) then
+		width = title:GetWidth();
+	end
+	StatCompareSelfFrame:SetHeight(height+30);
+	StatCompareSelfFrame:SetWidth(width+30);
+end
+
+function StatCompareSelfFrameStatsButton_OnClick()
 end
 
 function StatCompareSelfFrameSpellsButton_OnClick()
