@@ -114,57 +114,6 @@
 				<PushedTexture file="Interface\Icons\INV_Misc_Book_08"/>
 				<HighlightTexture file="Interface\AddOns\StatCompare\Status-Idle" alphaMode="ADD"/>
             </Button>
-			<!--
-			<Button name="StatCompareSelfFrameArmorButton">
-				<Size>
-					<AbsDimension x="16" y="16"/>
-				</Size>
-                <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="StatCompareSelfFrameCloseButton" relativePoint="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="6" y="-8"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-				<Scripts>
-					<OnClick>
-						StatCompareSelfFrameArmorButton_OnClick()
-					</OnClick>
-				</Scripts>
-				<NormalTexture file="Interface\Icons\INV_Helmet_10"/>
-				<PushedTexture file="Interface\Icons\INV_Helmet_10"/>
-				<HighlightTexture file="Interface\AddOns\StatCompare\Status-Idle" alphaMode="ADD"/>
-            </Button>
-			<Button name="StatCompareSelfFrameStatsButton">
-                <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="StatCompareSelfFrameArmorButton" relativePoint="TOPLEFT"/>
-                </Anchors>
-				<Scripts>
-					<OnClick>
-						StatCompareSelfFrameStatsButton_OnClick()
-					</OnClick>
-				</Scripts>
-				<NormalTexture file="Interface\Icons\INV_Misc_Note_01"/>
-				<PushedTexture file="Interface\Icons\INV_Misc_Note_01"/>
-				<HighlightTexture file="Interface\AddOns\StatCompare\Status-Idle" alphaMode="ADD"/>
-            </Button>
-			<Button name="StatCompareSelfFrameSpellsButton">
-				<Size>
-					<AbsDimension x="16" y="16"/>
-				</Size>
-                <Anchors>
-                    <Anchor point="TOPRIGHT" relativeTo="StatCompareSelfFrameStatsButton" relativePoint="TOPLEFT"/>
-                </Anchors>
-				<Scripts>
-					<OnClick>
-						StatCompareSelfFrameSpellsButton_OnClick()
-					</OnClick>
-				</Scripts>
-				<NormalTexture file="Interface\Icons\INV_Misc_Book_08"/>
-				<PushedTexture file="Interface\Icons\INV_Misc_Book_08"/>
-				<HighlightTexture file="Interface\AddOns\StatCompare\Status-Idle" alphaMode="ADD"/>
-            </Button>
-			-->
 			<Frame name="StatCompareSelfFrameBuffList" frameStrata="LOW" toplevel="true" enableMouse="true" movable="true" hidden="false"  parent="StatCompareSelfFrame">
 				<Size>
 					<AbsDimension x="16" y="16"/>
