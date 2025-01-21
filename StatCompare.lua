@@ -545,23 +545,7 @@ end
 function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
 	local titletext = (tiptitle and tiptitle .. " / " or "")..GREEN_FONT_COLOR_CODE..STATCOMPARE_ADDON_NAME..FONT_COLOR_CODE_CLOSE.." "..STATCOMPARE_ADDON_VERSION
 
-	-- Here we're after the buff list, which displays icons at the bottom of the dialog. Expected values are StatCompareTargetFrame or PaperDollFrame.
-	local buffFrame = getglobal(frame:GetName().."BuffList")
-
-	if buffFrame ~= nil then
-		if StatCompare_Display["Buffs"] == true then
-			local frameWidth = frame:GetWidth()
-			buffFrame:SetWidth(frameWidth)
-			-- GerName here is PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
-			StatCompare_AddBuffIconsToTooltip(buffFrame, target:GetName() == "InspectFrame" and "target" or "player")
-			
-			local buffFrameTitle = getglobal(frame:GetName().."BuffListTitle")
-			buffFrameTitle:SetText(GREEN_FONT_COLOR_CODE..STATCOMPARE_ACTIVEBUFFS..":"..FONT_COLOR_CODE_CLOSE)
-			buffFrame:Show()
-		else
-			buffFrame:Hide()
-		end
-	end
+	StatBuffs_UpdateBuffs(frame:GetName(), target:GetName() == "InspectFrame" and "target" or "player")
 
 	StatCompare_UpdateFrameText(frame:GetName(), tiptext, titletext)
 
@@ -791,9 +775,12 @@ end
 
 function StatCompare_GetSetTooltipText(bonuses,bSelfStat)
 	local setstr=""
+	
+	local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SET_PREFIX..FONT_COLOR_CODE_CLOSE
 	for i,v in StatScanner_setcount do
 		setstr=setstr..'\n|cff'..v.color..i..v.count.."/"..v.total.."）"..FONT_COLOR_CODE_CLOSE;
 	end
+	if (setstr~="") then setstr=settitle..setstr; end
 	return setstr
 end
 
@@ -808,9 +795,6 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 		local itemsandenchants=StatCompare_GetEquippedItemNamesAndEnchantsDisplayText(bSelfStat==1 and "player" or "target")
 		retstr=retstr.."\n\n"..itemsandenchants
 	end
-	
-	local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SET_PREFIX..FONT_COLOR_CODE_CLOSE
-	if (retstr~="") then setstr=settitle..retstr; end
 
 	return retstr;
 end
@@ -1137,6 +1121,7 @@ function StatCompareSelfFrameArmorButton_OnClick()
 	end
 	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, 1)
 	StatCompare_UpdateFrameText("StatCompareSelfFrame", tiptext)
+	StatBuffs_UpdateBuffs("StatCompareSelfFrame", "player")
 end
 
 function StatCompareSelfFrameStatsButton_OnClick()
@@ -1148,6 +1133,7 @@ function StatCompareSelfFrameStatsButton_OnClick()
 	end
 	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, 1)
 	StatCompare_UpdateFrameText("StatCompareSelfFrame", tiptext)
+	StatBuffs_UpdateBuffs("StatCompareSelfFrame", "player")
 end
 
 function StatCompare_UpdateFrameText(frameName, textbody, texttitle) 

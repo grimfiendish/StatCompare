@@ -40,6 +40,19 @@ function StatBuffs_GetBuffs(unit)
 end
 --]]
 
+function StatCompare_ResetBuffIcons(tooltipFrame, unit)
+
+	if tooltipFrame.buffTextures == nil then
+		tooltipFrame.buffTextures = {}
+	else
+		for i, tx in ipairs(tooltipFrame.buffTextures) do
+			tx:Hide()
+			tx:ClearAllPoints()
+		end
+	end
+	
+	tooltipFrame:Hide()
+end
 -- Add buff icons to the StatCompare dialog
 function StatCompare_AddBuffIconsToTooltip(tooltipFrame, unit)
     local iconSize = 16
@@ -51,6 +64,8 @@ function StatCompare_AddBuffIconsToTooltip(tooltipFrame, unit)
 	
 	local iconPaths = StatBuffs_GetBuffs(unit)
 
+	StatCompare_ResetBuffIcons(tooltipFrame, unit)
+
     local iconCount = 0
     for _, _ in pairs(iconPaths) do
         iconCount = iconCount + 1
@@ -61,15 +76,6 @@ function StatCompare_AddBuffIconsToTooltip(tooltipFrame, unit)
 	
 	rows = math.ceil(totalWidth / tooltipFrame:GetWidth())
 	tooltipFrame:SetHeight((iconSize + spacing) * rows)
-	
-	if tooltipFrame.buffTextures == nil then
-		tooltipFrame.buffTextures = {}
-	else
-		for i, tx in ipairs(tooltipFrame.buffTextures) do
-			tx:Hide()
-			tx:ClearAllPoints()
-		end
-	end
 
     for i, iconPath in ipairs(iconPaths) do
 		curIconInRow = curIconInRow + 1
@@ -88,5 +94,29 @@ function StatCompare_AddBuffIconsToTooltip(tooltipFrame, unit)
 
         tooltipFrame.buffTextures[i]:SetPoint("BOTTOMLEFT", tooltipFrame, "BOTTOMLEFT", (curIconInRow - 1) * (iconSize + spacing), (5 + (20 * (curRow - 1))))
     end
+	tooltipFrame:Show()
 end
 
+
+function StatBuffs_UpdateBuffs(frameName, unit)
+	local frame = getglobal(frameName)
+	-- Here we're after the buff list, which displays icons at the bottom of the dialog. Expected values are StatCompareTargetFrame or PaperDollFrame.
+	local buffFrame = getglobal(frame:GetName().."BuffList")
+
+print("XXXX - about to add buffs")
+	if buffFrame ~= nil then
+		if StatCompare_Display["Buffs"] == true then
+print("XXXX - showing buffs")
+			local frameWidth = frame:GetWidth()
+			buffFrame:SetWidth(frameWidth)
+			-- GerName here is PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
+			StatCompare_AddBuffIconsToTooltip(buffFrame, unit)
+			
+			local buffFrameTitle = getglobal(frame:GetName().."BuffListTitle")
+			buffFrameTitle:SetText(GREEN_FONT_COLOR_CODE..STATCOMPARE_ACTIVEBUFFS..":"..FONT_COLOR_CODE_CLOSE)
+		else
+print("XXXX - resetting buffs")
+			StatCompare_ResetBuffIcons(buffFrame, unit)
+		end
+	end
+end
