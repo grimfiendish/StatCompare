@@ -1630,7 +1630,7 @@ function StatCompare_GetEnchantName(id)
 	return enchantName
 end
 
-function StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(unit)
+function StatCompare_GetEquippedItemNamesAndEnchantsDisplayText(unit)
 	if (unit) then
 		sunit=unit;
 	else
@@ -1661,5 +1661,5 @@ end
 --	print("XXX - StatCompare_CharStats_Scan - called.")
 --end
 --function StatCompare_GetSpellsTooltipText(unknown, unit)
---	return StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(unit)
+--	return StatCompare_GetEquippedItemNamesAndEnchantsDisplayText(unit)
 --end

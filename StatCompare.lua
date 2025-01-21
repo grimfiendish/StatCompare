@@ -7,12 +7,18 @@
 
 StatCompareSelfFrameShowSpells = false;
 StatCompareTargetFrameShowSpells = false;
-StatCompareSelfFrameShowArmor = true;
-StatCompareSelfFrameShowStats = true;
 StatCompare_ItemCollection = {};
 StatCompare_ItemCache = {};
 StatCompare_bonuses_single = {};
 StatCompare_IsDebugMode = false;
+StatCompare_Display = {
+	-- Ok currently Armor/Enchants/Buffs are all controlled by the Armor button. It felt weird naming it "ArmorAndEnchantsAndBuffs". So now it's separate and if anyone ever wants it separate it'll be a very easy change.
+	["Armor"] = true,
+	["Enchants"] = true,
+	["Buffs"] = true,
+	["Stats"] = true,
+	["Spells"] = false
+}
 
 --STATCOMPARE_SETNAME_PATTERN = "^(.*)%d/%d.*$";
 STATCOMPARE_SETNAME_PATTERN = "^(.*)%d/(%d).*$";
@@ -537,35 +543,27 @@ function SCClearInspectPlayer()
 end
 
 function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
-	local text = getglobal(frame:GetName().."Text");
-	local title = getglobal(frame:GetName().."Title");
-	title:SetText((tiptitle and tiptitle .. " / " or "")..GREEN_FONT_COLOR_CODE..STATCOMPARE_ADDON_NAME..FONT_COLOR_CODE_CLOSE.." "..STATCOMPARE_ADDON_VERSION);
-	text:SetText(tiptext);
-	local textheight = text:GetHeight();
-	local width = text:GetWidth();
-	local iconwidth = 20*4;
-	local titlewidth = title:GetWidth() + iconwidth;
-	if(width < titlewidth) then
-		width = titlewidth;
-	end
-	frame:SetHeight(textheight+90);
-	if (frame:GetWidth() < width) then
-		-- Limit how much the frame changes, as it's annoying to move your mouse to toggle the button. 
-		-- If the frame gets wider, well that's life, but if it gets thinner we don't adjust the width.
-		frame:SetWidth(width);
-	end
+	local titletext = (tiptitle and tiptitle .. " / " or "")..GREEN_FONT_COLOR_CODE..STATCOMPARE_ADDON_NAME..FONT_COLOR_CODE_CLOSE.." "..STATCOMPARE_ADDON_VERSION
 
 	-- Here we're after the buff list, which displays icons at the bottom of the dialog. Expected values are StatCompareTargetFrame or PaperDollFrame.
 	local buffFrame = getglobal(frame:GetName().."BuffList")
+
 	if buffFrame ~= nil then
-		local frameWidth = frame:GetWidth()
-		buffFrame:SetWidth(frameWidth)
-		-- GerName here is PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
-		StatCompare_AddBuffIconsToTooltip(buffFrame, target:GetName() == "InspectFrame" and "target" or "player")
-		
-		local buffFrameTitle = getglobal(frame:GetName().."BuffListTitle")
-		buffFrameTitle:SetText(GREEN_FONT_COLOR_CODE..STATCOMPARE_ACTIVEBUFFS..":"..FONT_COLOR_CODE_CLOSE)
+		if StatCompare_Display["Buffs"] == true then
+			local frameWidth = frame:GetWidth()
+			buffFrame:SetWidth(frameWidth)
+			-- GerName here is PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
+			StatCompare_AddBuffIconsToTooltip(buffFrame, target:GetName() == "InspectFrame" and "target" or "player")
+			
+			local buffFrameTitle = getglobal(frame:GetName().."BuffListTitle")
+			buffFrameTitle:SetText(GREEN_FONT_COLOR_CODE..STATCOMPARE_ACTIVEBUFFS..":"..FONT_COLOR_CODE_CLOSE)
+			buffFrame:Show()
+		else
+			buffFrame:Hide()
+		end
 	end
+
+	StatCompare_UpdateFrameText(frame:GetName(), tiptext, titletext)
 
 	if(IsAddOnLoaded("oSkin")) then
 		if(target == "InspectFrame" or target == "PaperDollFrame") then
@@ -801,15 +799,13 @@ end
 
 function StatCompare_GetTooltipText(bonuses,bSelfStat)
 	local retstr=""
-	if (StatCompareSelfFrameShowArmor == true) then
-		local statstr=StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
-		retstr=retstr..statstr
+	if StatCompare_Display["Stats"] == true then
+		retstr= retstr..StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
+		retstr= retstr..StatCompare_GetSetTooltipText(bonuses,bSelfStat)
 	end
-	
-	retstr= retstr..StatCompare_GetSetTooltipText(bonuses,bSelfStat)
 
-	if (StatCompareSelfFrameShowArmor == true) then
-		local itemsandenchants=StatScanner_GetEquippedItemNamesAndEnchantsDisplayText(bSelfStat==1 and "player" or "target")
+	if StatCompare_Display["Armor"] == true or StatCompare_Display["Enchants"] == true then
+		local itemsandenchants=StatCompare_GetEquippedItemNamesAndEnchantsDisplayText(bSelfStat==1 and "player" or "target")
 		retstr=retstr.."\n\n"..itemsandenchants
 	end
 	
@@ -1130,26 +1126,58 @@ end
 
 function StatCompareSelfFrameArmorButton_OnClick()
 	-- toggle showing equipped item names and buffs
-	local tiptext = ""
-	if (StatCompareSelfFrameShowArmor == false) then
-		StatCompareSelfFrameShowArmor = true
-		tiptext = StatScanner_GetEquippedItemNamesAndEnchantsDisplayText("player")
-	else
-		StatCompareSelfFrameShowArmor = false
+	if (StatCompare_Display["Armor"] == false) then
+		StatCompare_Display["Armor"] = true
+		StatCompare_Display["Enchants"] = true
+		StatCompare_Display["Buffs"] = true
+	elseif (StatCompare_Display["Stats"] == true or StatCompareSelfFrameShowSpells == true) then -- Basically not wanting everything hidden... then the dialog closes.
+		StatCompare_Display["Armor"] = false
+		StatCompare_Display["Enchants"] = false
+		StatCompare_Display["Buffs"] = false
 	end
-	text = getglobal(StatCompareSelfFrame:GetName().."Text");
-	title = getglobal(StatCompareSelfFrame:GetName().."Title");
-	text:SetText(tiptext);
-	height = text:GetHeight();
-	width = text:GetWidth();
-	if(width < title:GetWidth()) then
-		width = title:GetWidth();
-	end
-	StatCompareSelfFrame:SetHeight(height+30);
-	StatCompareSelfFrame:SetWidth(width+30);
+	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, 1)
+	StatCompare_UpdateFrameText("StatCompareSelfFrame", tiptext)
 end
 
 function StatCompareSelfFrameStatsButton_OnClick()
+	-- toggle showing numeric stats
+	if (StatCompare_Display["Stats"] == false) then
+		StatCompare_Display["Stats"] = true
+	elseif (StatCompare_Display["Armor"] == true or StatCompare_Display["Buffs"] == true or StatCompare_Display["Enchants"] == true or StatCompareSelfFrameShowSpells == true) then -- Basically not wanting everything hidden... then the dialog closes.
+		StatCompare_Display["Stats"] = false
+	end
+	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, 1)
+	StatCompare_UpdateFrameText("StatCompareSelfFrame", tiptext)
+end
+
+function StatCompare_UpdateFrameText(frameName, textbody, texttitle) 
+	local frame = getglobal(frameName);
+	local text = getglobal(frameName.."Text");
+	local title = getglobal(frameName.."Title");
+	local buffFrame = getglobal(frame:GetName().."BuffList")
+	text:SetText(textbody);
+	if (texttitle ~= nil) then
+		title:SetText(texttitle)
+	end
+	local height = text:GetHeight();
+
+
+	if buffFrame ~= nil and StatCompare_Display["Buffs"] == true then
+		local buffheight = 90; -- buffs haven't been rendered yet so don't know the height... blarg... TODO
+		height = height + buffheight
+	end
+	local newwidth = text:GetWidth();
+	local framewidth = frame:GetWidth();
+	if newwidth < framewidth then 
+		newwidth = framewidth
+	end
+	local iconwidth = 20*4;
+	local titlewidth = title:GetWidth() + iconwidth;
+	if(newwidth < titlewidth) then
+		newwidth = titlewidth
+	end
+	frame:SetHeight(height);
+	frame:SetWidth(newwidth);
 end
 
 function StatCompareSelfFrameSpellsButton_OnClick()
