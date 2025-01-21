@@ -1108,32 +1108,50 @@ function StatCompare_BuildItemCache()
 	end
 end
 
-function StatCompareSelfFrameArmorButton_OnClick()
-	-- toggle showing equipped item names and buffs
-	if (StatCompare_Display["Armor"] == false) then
-		StatCompare_Display["Armor"] = true
-		StatCompare_Display["Enchants"] = true
-		StatCompare_Display["Buffs"] = true
-	elseif (StatCompare_Display["Stats"] == true or StatCompareSelfFrameShowSpells == true) then -- Basically not wanting everything hidden... then the dialog closes.
-		StatCompare_Display["Armor"] = false
-		StatCompare_Display["Enchants"] = false
-		StatCompare_Display["Buffs"] = false
+function StatCompare_ToggleAndUpdate(attributesToToggle, buttonName, frameName, unit)
+	for i, attributeToToggle in pairs(attributesToToggle) do 
+		if StatCompare_Display[attributeToToggle] == false then
+			StatCompare_Display[attributeToToggle] = true
+			getglobal(buttonName):UnlockHighlight();
+		else
+			local willHaveAtLeastOneAttributeVisible = false
+			for key, value in pairs(StatCompare_Display) do 
+				ignore = false
+				for i, toggle in pairs(attributesToToggle) do
+					if key == toggle then ignore = true; break; end
+				end
+				if ignore == false and value == true then 
+					willHaveAtLeastOneAttributeVisible = true
+					break
+				end
+			end
+			if willHaveAtLeastOneAttributeVisible == true then
+				StatCompare_Display[attributeToToggle] = false
+				getglobal(buttonName):LockHighlight();
+			else
+				print("StatCompare - Cannot hide all fields.")
+			end
+		end
 	end
-	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, 1)
-	StatCompare_UpdateFrameText("StatCompareSelfFrame", tiptext)
-	StatBuffs_UpdateBuffs("StatCompareSelfFrame", "player")
+	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, (unit == "player" and 1 or 0))
+	StatCompare_UpdateFrameText(frameName, tiptext)
+	StatBuffs_UpdateBuffs(frameName, unit)
+end
+
+function StatCompareTargetFrameArmorButton_OnClick()
+	StatCompare_ToggleAndUpdate({"Armor", "Enchants", "Buffs"},"StatCompareTargetFrameArmorButton", "StatCompareTargetFrame", "target")
+end
+
+function StatCompareTargetFrameStatsButton_OnClick()
+	StatCompare_ToggleAndUpdate({"Stats"}, "StatCompareTargetFrameStatsButton", "StatCompareTargetFrame", "target")
+end
+
+function StatCompareSelfFrameArmorButton_OnClick()
+	StatCompare_ToggleAndUpdate({"Armor", "Enchants", "Buffs"}, "StatCompareSelfFrameArmorButton", "StatCompareSelfFrame", "player")
 end
 
 function StatCompareSelfFrameStatsButton_OnClick()
-	-- toggle showing numeric stats
-	if (StatCompare_Display["Stats"] == false) then
-		StatCompare_Display["Stats"] = true
-	elseif (StatCompare_Display["Armor"] == true or StatCompare_Display["Buffs"] == true or StatCompare_Display["Enchants"] == true or StatCompareSelfFrameShowSpells == true) then -- Basically not wanting everything hidden... then the dialog closes.
-		StatCompare_Display["Stats"] = false
-	end
-	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, 1)
-	StatCompare_UpdateFrameText("StatCompareSelfFrame", tiptext)
-	StatBuffs_UpdateBuffs("StatCompareSelfFrame", "player")
+	StatCompare_ToggleAndUpdate({"Stats"}, "StatCompareSelfFrameStatsButton", "StatCompareSelfFrame", "player")
 end
 
 function StatCompare_UpdateFrameText(frameName, textbody, texttitle) 
@@ -1141,15 +1159,16 @@ function StatCompare_UpdateFrameText(frameName, textbody, texttitle)
 	local text = getglobal(frameName.."Text");
 	local title = getglobal(frameName.."Title");
 	local buffFrame = getglobal(frame:GetName().."BuffList")
+	local paddingForAesthetics = 20;
 	text:SetText(textbody);
 	if (texttitle ~= nil) then
 		title:SetText(texttitle)
 	end
-	local height = text:GetHeight();
+	local height = text:GetHeight() + title:GetHeight() + paddingForAesthetics;
 
 
 	if buffFrame ~= nil and StatCompare_Display["Buffs"] == true then
-		local buffheight = 90; -- buffs haven't been rendered yet so don't know the height... blarg... TODO
+		local buffheight = 16*3; -- buffs haven't been rendered yet so don't know the height... blarg... TODO
 		height = height + buffheight
 	end
 	local newwidth = text:GetWidth();

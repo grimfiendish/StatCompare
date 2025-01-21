@@ -103,10 +103,8 @@ function StatBuffs_UpdateBuffs(frameName, unit)
 	-- Here we're after the buff list, which displays icons at the bottom of the dialog. Expected values are StatCompareTargetFrame or PaperDollFrame.
 	local buffFrame = getglobal(frame:GetName().."BuffList")
 
-print("XXXX - about to add buffs")
 	if buffFrame ~= nil then
 		if StatCompare_Display["Buffs"] == true then
-print("XXXX - showing buffs")
 			local frameWidth = frame:GetWidth()
 			buffFrame:SetWidth(frameWidth)
 			-- GerName here is PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
@@ -115,7 +113,6 @@ print("XXXX - showing buffs")
 			local buffFrameTitle = getglobal(frame:GetName().."BuffListTitle")
 			buffFrameTitle:SetText(GREEN_FONT_COLOR_CODE..STATCOMPARE_ACTIVEBUFFS..":"..FONT_COLOR_CODE_CLOSE)
 		else
-print("XXXX - resetting buffs")
 			StatCompare_ResetBuffIcons(buffFrame, unit)
 		end
 	end
