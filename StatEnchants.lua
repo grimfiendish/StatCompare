@@ -1576,6 +1576,7 @@ StatBuffs_Private_Server_Custom_EnchantsById = {
 		[2715] = { ["enchantId"] = "2715", ["effect"] = "Healing +31/5 Mp5" },
 		[3001] = { ["enchantId"] = "3001", ["effect"] = "Arcane Damage +20" },
 		[3002] = { ["enchantId"] = "3002", ["effect"] = "Nature Damage +20" },
+		[3004] = { ["enchantId"] = "3004", ["effect"] = "Wolfsheart" },
 		[3005] = { ["enchantId"] = "3005", ["effect"] = "+14 Stamina" },
 		[3011] = { ["enchantId"] = "3011", ["effect"] = "1% Vampirism" },
 		[3012] = { ["enchantId"] = "3012", ["effect"] = "2% Vampirism" },
