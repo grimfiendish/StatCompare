@@ -1,0 +1,6 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+  <Include file="..\StatCompareBuff\Localization_enUS.lua"/>
+  <Include file="..\StatCompareBuff\Localization_zhCN.lua"/>
+  <Include file="..\StatCompareBuff\Localization.lua"/>
+  <Include file="..\StatCompareBuff\BuffScanner.lua"/>
+</Ui>
