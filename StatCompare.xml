@@ -197,9 +197,9 @@
                 </FontString>                
                 <FontString name="StatCompareTargetFrameText" inherits="GameTooltipText">
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT" relativeTo="StatCompareTargetFrame" relativePoint="BOTTOMLEFT">
+                        <Anchor point="TOPLEFT" relativeTo="StatCompareTargetFrame" relativePoint="TOPLEFT">
                             <Offset>
-                                <AbsDimension x="10" y="10"/>
+                                <AbsDimension x="10" y="-20"/>
                             </Offset>
                         </Anchor>
                     </Anchors>
