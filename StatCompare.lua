@@ -1,7 +1,7 @@
 ﻿--
 --  $Id: slashboy @ DreamLand 九藜方舟 & lasthime @ 艾森纳 幻物梵天
---  $ver: v1.7.010
---  $Date: 2007-01-22 18:00:00
+--  $ver: v1.8.005
+--  $Date: 2025-01-25 18:00:00
 --  &Note: Thanks for crowley@headshot.de , the author of Titan Plugin - Item Bonuses.
 --
 
@@ -10,6 +10,15 @@ StatCompareTargetFrameShowSpells = false;
 StatCompare_ItemCollection = {};
 StatCompare_ItemCache = {};
 StatCompare_bonuses_single = {};
+StatCompare_IsDebugMode = false;
+StatCompare_Display = { -- TODO move to the player prefs object
+	-- Ok currently Armor/Enchants/Buffs are all controlled by the Armor button. It felt weird naming it "ArmorAndEnchantsAndBuffs". So now it's separate and if anyone ever wants it separate it'll be a very easy change.
+	["Armor"] = true,
+	["Enchants"] = true,
+	["Buffs"] = true,
+	["Stats"] = true,
+	["Spells"] = false
+}
 
 --STATCOMPARE_SETNAME_PATTERN = "^(.*)%d/%d.*$";
 STATCOMPARE_SETNAME_PATTERN = "^(.*)%d/(%d).*$";
@@ -300,6 +309,12 @@ function STATCOMPARE_SlashCmdHandler(msg)
 		else
 			DEFAULT_CHAT_FRAME:AddMessage(NORMAL.."Need load StatCompareUI plugin first."..CLOSE);
 		end
+	elseif (msg == "debug on") then
+		StatCompare_IsDebugMode = true
+			DEFAULT_CHAT_FRAME:AddMessage(GREEN.." StatCompare  "..CLOSE.." Debugging enabled");
+	elseif (msg == "debug off") then
+		StatCompare_IsDebugMode = false
+			DEFAULT_CHAT_FRAME:AddMessage(GREEN.." StatCompare  "..CLOSE.." Debugging disabled");
 	elseif (msg == "on") then
 		StatCompare_Register(1);
 		StatCompare_SetupHook(1);
@@ -355,6 +370,14 @@ function StatCompare_OnEvent()
 	if ((event == "PLAYER_ENTERING_WORLD" or event=="UNIT_NAME_UPDATE") and StatCompare_enable) then
 		if(StatCompare_isLoaded ~= 1) then
 			StatCompare_InitConfig();
+		end
+		if (not StatCompare_CharStats_Scan) then
+			-- in 2006 i think dude made a separate addon but changed the base addon to make it work. 
+			-- So there's this spell book that does nothing but is always visible.
+			-- I can't find the addon online but it surely exists somewhere, 
+			-- so I haven't removed the code but.. now it'll only show when it's abble to be useful.
+			StatCompareSelfFrameSpellsButton:Hide()
+			StatCompareTargetFrameSpellsButton:Hide()
 		end
 		local showIcon = StatCompare_GetSetting("ShowMinimapIcon");
 		if(showIcon == 0 and StatCompareMinimapFrame and StatCompareMinimapFrame:IsVisible()) then
@@ -536,23 +559,17 @@ function SCClearInspectPlayer()
 end
 
 function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
-	local text = getglobal(frame:GetName().."Text");
-	local title = getglobal(frame:GetName().."Title");
-	title:SetText(tiptitle);
-	text:SetText(tiptext);
-	height = text:GetHeight();
-	width = text:GetWidth();
-	if(width < title:GetWidth()) then
-		width = title:GetWidth();
-	end
-	
+	local titletext = (tiptitle and tiptitle .. " / " or "")..GREEN_FONT_COLOR_CODE..STATCOMPARE_ADDON_NAME..FONT_COLOR_CODE_CLOSE.." "..STATCOMPARE_ADDON_VERSION
+
+	StatCompare_UpdateFrameText(frame:GetName(), tiptext, titletext)
+
+	StatBuffs_UpdateBuffs(frame:GetName(), target:GetName() == "InspectFrame" and "target" or "player")
+
 	if IsAddOnLoaded("S_ItemTip") then
 		local score = ItemSocre:ScanUnit("player")
-		if score and score > 0 then frame:SetHeight(height+60) else frame:SetHeight(height+30) end
-	else
-		frame:SetHeight(height+30)
+		if score and score > 0 then frame:SetHeight(frame:GetHeight()+30) end
 	end
-	frame:SetWidth(width+30);
+
 	if(IsAddOnLoaded("oSkin") or IsAddOnLoaded("Skinner")) then
 		if(target:GetName() == "InspectFrame" or target:GetName() == "PaperDollFrame") then
 			frame:SetPoint("TOPLEFT", target:GetName(), "TOPRIGHT", anchorx + 30, anchory + 12);
@@ -631,7 +648,7 @@ function SCHideUIPanel(frame)
 	oldHideUIPanel(frame);
 end
 
-function StatCompare_GetTooltipText(bonuses,bSelfStat)
+function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 	local retstr,cat,val,lval = "","","","","";
 	local i;
 	local baseval = {};
@@ -653,7 +670,7 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 		if(baseval["TOBLOCK"] == 0) then
 			baseval["PARRY"] = nil;
 		end
-		if IsAddOnLoaded("BetterCharacterStats") then
+		if IsAddOnLoaded("BetterCharacterStats") then -- XXX OMG! Awesome
 			baseval["CRIT"] = BCS:GetCritChance()
 		else
 			baseval["CRIT"] = StatCompare_CharStats_GetCritChance()
@@ -734,6 +751,13 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 			else
 				retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 			end
+--[[ XXX Interestingly this was in my version but not the updated version. wonder if it's a different fork version or if it's intentionally removed code. copying it over but commenting it out 
+			-- special hack for DRUID AP
+			if(e.effect == "ATTACKPOWER" and CharStats_fullvals and CharStats_fullvals["BEARAP"]) then
+				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
+				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
+			end
+--]]
 		elseif(CharStats_fullvals and CharStats_fullvals[e.effect]) then
 			if(e.effect == "SPELLHIT" or e.effect == "TOHIT") then
 			elseif(CharStats_fullvals[e.effect] == 0) then
@@ -772,19 +796,44 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 					retstr = retstr.. GREEN_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 				else
 					retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
+				end				
+--[[
+				-- special hack for DRUID AP
+				if(e.effect == "ATTACKPOWER" and CharStats_fullvals["BEARAP"]) then
+					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
+					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
 				end
+--]]
 			end
 		end
 	end
+	return retstr;
+end
 
+function StatCompare_GetSetTooltipText(bonuses,bSelfStat)
 	local setstr=""
-	local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SET_PREFIX..FONT_COLOR_CODE_CLOSE.."\n"
+	
+	local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SET_PREFIX..FONT_COLOR_CODE_CLOSE
 	for i,v in pairs(StatScanner_setcount) do
-		setstr=setstr..'|cff'..v.color..i..v.count.."/"..v.total.."）"..FONT_COLOR_CODE_CLOSE.."\n";
+		setstr=setstr.."\n"..'|cff'..v.color..i..v.count.."/"..v.total.."）"..FONT_COLOR_CODE_CLOSE;
 	end
 	if (setstr~="") then setstr=settitle..setstr; end
+	return setstr
+end
 
-	return retstr..setstr;
+function StatCompare_GetTooltipText(bonuses,bSelfStat)
+	local retstr=""
+	if StatCompare_Display["Stats"] == true then
+		retstr= retstr..StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
+		retstr= retstr..StatCompare_GetSetTooltipText(bonuses,bSelfStat)
+	end
+
+	if StatCompare_Display["Armor"] == true or StatCompare_Display["Enchants"] == true then
+		local itemsandenchants=StatCompare_GetEquippedItemNamesAndEnchantsDisplayText(bSelfStat==1 and "player" or "target")
+		retstr=retstr.."\n\n"..itemsandenchants
+	end
+
+	return retstr;
 end
 
 function StatComparePaintText(short,val)
@@ -875,7 +924,8 @@ local statcompare_editdata = {type="",id="",text="",value=""};
 function StatCompare_ItemCollection_Add_OnClick()
 	statcompare_editdata.type="edititem";
 	statcompare_editdata.id=0;
-	statcompare_editdata.text="Shift点击物品或者链接";
+	--statcompare_editdata.text="Shift点击物品或者链接"; -- TODO
+	statcompare_editdata.text="ShiftShift click on an item or link";
 	statcompare_editdata.value="";
 	StatCompare_GeneralEditFrame:Show();
 end
@@ -901,7 +951,8 @@ end
 
 local StatCompare_DelItem="";
 StaticPopupDialogs["StatCompare_DelItem"] = {
-	text = "确认要删除吗？",
+	--text = "确认要删除吗？", -- TODO
+	text = "Are you sure you want to delete?",
 	button1 = TEXT(ACCEPT),
 	button2 = TEXT(CANCEL),
 	OnAccept = function()
@@ -968,7 +1019,8 @@ function StatCompare_ItemCollection_ScrollFrame_Update()
 end
 
 -- 2006.02.03 edit --
--------------------------------------- 物品稀有度下拉框------------------------------------------
+-------------------------------------- 物品稀有度下拉框 ------------------------------------------
+----------------------------------- Item Rarity Dropdown ---------------------------------------
 StatCompare_ItemRarity_DROPDOWN_LIST = {
 	{name = "全部", value = -1},
 	{name = "|c009d9d9d粗糙|r", value = 0},
@@ -977,6 +1029,16 @@ StatCompare_ItemRarity_DROPDOWN_LIST = {
 	{name = "|c000070dd精良|r", value = 3},
 	{name = "|c00a335ee史诗|r", value = 4},
 	{name = "|c00ff8000传说|r", value = 5},
+};
+-- TODO - fix language i18n
+StatCompare_ItemRarity_DROPDOWN_LIST = {
+	{name = "All", value = -1},
+	{name = "|c009d9d9dRough|r", value = 0},
+	{name = "|c00ffffffCommon|r", value = 1},
+	{name = "|c001eff00Uncommon|r", value = 2},
+	{name = "|c000070ddRare|r", value = 3},
+	{name = "|c00a335eeEpic|r", value = 4},
+	{name = "|c00ff8000Legendary|r", value = 5},
 };
 
 function StatCompare_ItemRarityDropDown_OnLoad()
@@ -1002,7 +1064,8 @@ function StatCompare_ItemRarityDropDown_OnClick()
 	StatCompare_ItemCollection_ScrollFrame_Update();
 end
 
--------------------------------------- 物品类型下拉框------------------------------------------
+-------------------------------------- 物品类型下拉框 -----------------------------------------
+---------------------------------- Item Type Dropdown --------------------------------------
 StatCompare_ItemType_DROPDOWN_LIST = {
 	{name = "全部", value = "全部", subvalue="全部"},
 	{name = "武器", value = "武器", subvalue="全部"},
@@ -1014,6 +1077,19 @@ StatCompare_ItemType_DROPDOWN_LIST = {
 	{name = "- 盾牌", value = "护甲", subvalue="盾牌"},
 	{name = "- 其它", value = "护甲", subvalue="其它"},
 	{name = "其它", value = "其它", subvalue="全部"},
+};
+ -- TODO fix language i18n
+StatCompare_ItemType_DROPDOWN_LIST = {
+	{name = "All", value = "All", subvalue="All"},
+	{name = "Arms", value = "Arms", subvalue="All"},
+	{name = "Armor", value = "Armor", subvalue="All"},
+	{name = "- Plate", value = "Armor", subvalue="Plate"},
+	{name = "- Mail", value = "Armor", subvalue="Mail"},
+	{name = "- Leather", value = "Armor", subvalue="Leather"},
+	{name = "- Cloth", value = "Armor", subvalue="Cloth"},
+	{name = "- Shield", value = "Armor", subvalue="Shield"},
+	{name = "- Other", value = "Armor", subvalue="Other"},
+	{name = "Other", value = "Other", subvalue="All"},
 };
 
 function StatCompare_ItemTypeDropDown_OnLoad()
@@ -1067,6 +1143,77 @@ function StatCompare_BuildItemCache()
 			end
 		end
 	end
+end
+
+function StatCompare_ToggleAndUpdate(attributesToToggle, buttonName, frameName, unit)
+	for i, attributeToToggle in pairs(attributesToToggle) do 
+		if StatCompare_Display[attributeToToggle] == false then
+			StatCompare_Display[attributeToToggle] = true
+			getglobal(buttonName):UnlockHighlight();
+		else
+			local willHaveAtLeastOneAttributeVisible = false
+			for key, value in pairs(StatCompare_Display) do 
+				ignore = false
+				for i, toggle in pairs(attributesToToggle) do
+					if key == toggle then ignore = true; break; end
+				end
+				if ignore == false and value == true then 
+					willHaveAtLeastOneAttributeVisible = true
+					break
+				end
+			end
+			if willHaveAtLeastOneAttributeVisible == true then
+				StatCompare_Display[attributeToToggle] = false
+				getglobal(buttonName):LockHighlight();
+			else
+				print("StatCompare - Cannot hide all fields.")
+			end
+		end
+	end
+	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, (unit == "player" and 1 or 0))
+	StatCompare_UpdateFrameText(frameName, tiptext)
+	StatBuffs_UpdateBuffs(frameName, unit)
+end
+
+function StatCompareTargetFrameArmorButton_OnClick()
+	StatCompare_ToggleAndUpdate({"Armor", "Enchants", "Buffs"},"StatCompareTargetFrameArmorButton", "StatCompareTargetFrame", "target")
+end
+
+function StatCompareTargetFrameStatsButton_OnClick()
+	StatCompare_ToggleAndUpdate({"Stats"}, "StatCompareTargetFrameStatsButton", "StatCompareTargetFrame", "target")
+end
+
+function StatCompareSelfFrameArmorButton_OnClick()
+	StatCompare_ToggleAndUpdate({"Armor", "Enchants", "Buffs"}, "StatCompareSelfFrameArmorButton", "StatCompareSelfFrame", "player")
+end
+
+function StatCompareSelfFrameStatsButton_OnClick()
+	StatCompare_ToggleAndUpdate({"Stats"}, "StatCompareSelfFrameStatsButton", "StatCompareSelfFrame", "player")
+end
+
+function StatCompare_UpdateFrameText(frameName, textbody, texttitle) 
+	local frame = getglobal(frameName);
+	local text = getglobal(frameName.."Text");
+	local title = getglobal(frameName.."Title");
+	local buffFrame = getglobal(frame:GetName().."BuffList")
+	local paddingForAesthetics = 20;
+	text:SetText(textbody);
+	if (texttitle ~= nil) then
+		title:SetText(texttitle)
+	end
+	local height = text:GetHeight() + title:GetHeight() + paddingForAesthetics;
+	local newwidth = text:GetWidth();
+	local framewidth = frame:GetWidth();
+	if newwidth < framewidth then 
+		newwidth = framewidth
+	end
+	local iconwidth = 20*4;
+	local titlewidth = title:GetWidth() + iconwidth;
+	if(newwidth < titlewidth) then
+		newwidth = titlewidth
+	end
+	frame:SetHeight(height);
+	frame:SetWidth(newwidth);
 end
 
 function StatCompareSelfFrameSpellsButton_OnClick()
