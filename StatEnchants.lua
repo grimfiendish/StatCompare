@@ -1656,11 +1656,3 @@ function StatCompare_GetEquippedItemNamesAndEnchantsDisplayText(unit)
 	end
 	return retstr
 end
-
--- Playing around with usurping the useless spellbook icon. 
---function StatCompare_CharStats_Scan(unknown, unit)
---	print("XXX - StatCompare_CharStats_Scan - called.")
---end
---function StatCompare_GetSpellsTooltipText(unknown, unit)
---	return StatCompare_GetEquippedItemNamesAndEnchantsDisplayText(unit)
---end
