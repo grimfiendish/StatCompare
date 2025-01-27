@@ -287,15 +287,16 @@ function STATCOMPARE_SlashCmdHandler(msg)
 	local NORMAL = NORMAL_FONT_COLOR_CODE;
 
 	if ( (not msg) or (strlen(msg) <= 0 ) or (msg == "help") ) then
-		DEFAULT_CHAT_FRAME:AddMessage(NORMAL.."StatCompare  用法:"..CLOSE);
-		DEFAULT_CHAT_FRAME:AddMessage(GREEN.." /statc help    "..CLOSE.." - 帮助");
-		DEFAULT_CHAT_FRAME:AddMessage(GREEN.." /statc item    "..CLOSE.." - 打开物品收藏窗口");
-		DEFAULT_CHAT_FRAME:AddMessage(GREEN.." /statc on | off"..CLOSE.." - 开启/关闭 StatCompare");
+		DEFAULT_CHAT_FRAME:AddMessage(NORMAL.."StatCompare "..STATCOMPARE_CFG_USAGE..": "..CLOSE);
+		DEFAULT_CHAT_FRAME:AddMessage(GREEN.." /statc help    "..CLOSE.." - ".. STATCOMPARE_CFG_HELP);
+		DEFAULT_CHAT_FRAME:AddMessage(GREEN.." /statc item    "..CLOSE.." - ".. STATCOMPARE_CFG_OPEN_ITEM_CONFIG);
+		DEFAULT_CHAT_FRAME:AddMessage(GREEN.." /statc on | off"..CLOSE.." - ".. STATCOMPARE_CFG_ON_OFF_ADDON);
+		DEFAULT_CHAT_FRAME:AddMessage(GREEN.." /statc debug on | off"..CLOSE.." - ".. STATCOMPARE_CFG_TOGGLE_DEBUG);
 		if(StatCompareOptFrame) then
-			DEFAULT_CHAT_FRAME:AddMessage(GREEN.." /statc config  "..CLOSE.." - 开启/关闭 StatCompare 配置窗口");
+			DEFAULT_CHAT_FRAME:AddMessage(GREEN.." /statc config  "..CLOSE.." - "..STATCOMPARE_CFG_SHOW_OPTIONS_WINDOW);
 		end
 		if(StatCompareSetsFrame) then
-			DEFAULT_CHAT_FRAME:AddMessage(GREEN.." /statc sets  "..CLOSE.." - 打开 StatCompareSets 窗口");
+			DEFAULT_CHAT_FRAME:AddMessage(GREEN.." /statc sets  "..CLOSE.." - "..STATCOMPARE_CFG_SHOW_SETS_WINDOW);
 		end
 	elseif (msg == "sets") then
 		if(StatCompareSetsFrame) then
@@ -320,28 +321,28 @@ function STATCOMPARE_SlashCmdHandler(msg)
 		StatCompare_SetupHook(1);
 		StatCompare_SaveVar["enable"]=1;
 		StatCompare_enable=1;
-		DEFAULT_CHAT_FRAME:AddMessage("StatCompare "..GREEN.."开启"..CLOSE);
+		DEFAULT_CHAT_FRAME:AddMessage("StatCompare "..GREEN..STATCOMPARE_MSG_ADDON_ENABLED..CLOSE);
 	elseif (msg == "off") then
 		StatCompare_Register(0);
 		StatCompare_SetupHook(0);
 		StatCompare_SaveVar["enable"]=0;
 		StatCompare_enable=0;
-		DEFAULT_CHAT_FRAME:AddMessage("StatCompare "..GREEN.."关闭"..CLOSE);
+		DEFAULT_CHAT_FRAME:AddMessage("StatCompare "..GREEN..STATCOMPARE_MSG_ADDON_DISABLED..CLOSE);
 	elseif (msg == "DressOn") then
 		StatCompare_IsDressUpStat=1;
 		StatCompare_SaveVar["IsDressUpStat"]=1;
 		StatCompare_SetupDressHook();
-		DEFAULT_CHAT_FRAME:AddMessage("StatCompare "..GREEN.."试衣间显示开启"..CLOSE);
+		DEFAULT_CHAT_FRAME:AddMessage("StatCompare "..GREEN..STATCOMPARE_MSG_FITTING_ROOM_ENABLED..CLOSE);
 	elseif (msg == "DressOff") then
 		StatCompare_IsDressUpStat=0;
 		StatCompare_SaveVar["IsDressUpStat"]=0;
 		StatCompare_SetupDressHook();
-		DEFAULT_CHAT_FRAME:AddMessage("StatCompare "..GREEN.."试衣间显示关闭"..CLOSE);
+		DEFAULT_CHAT_FRAME:AddMessage("StatCompare "..GREEN..STATCOMPARE_MSG_FITTING_ROOM_DISABLED..CLOSE);
 	elseif (msg == "item") then
 		StatCompare_ItemCollectionFrame:Show();
 	else
-		DEFAULT_CHAT_FRAME:AddMessage("未知的命令: "..GREEN..msg..CLOSE..
-					      ", 试试 "..GREEN.."/statc help"..CLOSE);
+		DEFAULT_CHAT_FRAME:AddMessage(STATCOMPARE_MSG_UNKNOWN_COMMAND..": "..GREEN..msg..CLOSE..
+					      ", "..STATCOMPARE_MSG_TRY..GREEN.." /statc help"..CLOSE);
 	end
 end
 
@@ -543,7 +544,7 @@ function SCSuperInspect_InspectFrame_Show(unit)
 		if IsAddOnLoaded("S_ItemTip") then
 			local score, r, g, b = ItemSocre:ScanUnit("target")
 			if score and score > 0 then
-				TargetItemGS:SetText("装备等级: " .. score)
+				TargetItemGS:SetText(STATCOMPARE_MSG_EQUIPMENT_LEVEL..": " .. score)
 				TargetItemGS:SetTextColor(r, g, b)
 			else
 				TargetItemGS:SetText()
@@ -751,13 +752,12 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 			else
 				retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 			end
---[[ XXX Interestingly this was in my version but not the updated version. wonder if it's a different fork version or if it's intentionally removed code. copying it over but commenting it out 
 			-- special hack for DRUID AP
 			if(e.effect == "ATTACKPOWER" and CharStats_fullvals and CharStats_fullvals["BEARAP"]) then
 				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
 				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
 			end
---]]
+
 		elseif(CharStats_fullvals and CharStats_fullvals[e.effect]) then
 			if(e.effect == "SPELLHIT" or e.effect == "TOHIT") then
 			elseif(CharStats_fullvals[e.effect] == 0) then
@@ -797,20 +797,19 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 				else
 					retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 				end				
---[[
+
 				-- special hack for DRUID AP
 				if(e.effect == "ATTACKPOWER" and CharStats_fullvals["BEARAP"]) then
 					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
 					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
 				end
---]]
 			end
 		end
 	end
 	return retstr;
 end
 
-function StatCompare_GetSetTooltipText(bonuses,bSelfStat)
+function StatCompare_GetGearsetTooltipText(bonuses,bSelfStat)
 	local setstr=""
 	
 	local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SET_PREFIX..FONT_COLOR_CODE_CLOSE
@@ -825,7 +824,7 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 	local retstr=""
 	if StatCompare_Display["Stats"] == true then
 		retstr= retstr..StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
-		retstr= retstr..StatCompare_GetSetTooltipText(bonuses,bSelfStat)
+		retstr= retstr..StatCompare_GetGearsetTooltipText(bonuses,bSelfStat)
 	end
 
 	if StatCompare_Display["Armor"] == true or StatCompare_Display["Enchants"] == true then
@@ -924,8 +923,7 @@ local statcompare_editdata = {type="",id="",text="",value=""};
 function StatCompare_ItemCollection_Add_OnClick()
 	statcompare_editdata.type="edititem";
 	statcompare_editdata.id=0;
-	--statcompare_editdata.text="Shift点击物品或者链接"; -- TODO
-	statcompare_editdata.text="ShiftShift click on an item or link";
+	statcompare_editdata.text=STATCOMPARE_MSG_SHIFTCLICK_ITEM_OR_LINK
 	statcompare_editdata.value="";
 	StatCompare_GeneralEditFrame:Show();
 end
@@ -951,8 +949,7 @@ end
 
 local StatCompare_DelItem="";
 StaticPopupDialogs["StatCompare_DelItem"] = {
-	--text = "确认要删除吗？", -- TODO
-	text = "Are you sure you want to delete?",
+	text = STATCOMPARE_MSG_CONFIRM_DELETE,
 	button1 = TEXT(ACCEPT),
 	button2 = TEXT(CANCEL),
 	OnAccept = function()
@@ -1022,23 +1019,13 @@ end
 -------------------------------------- 物品稀有度下拉框 ------------------------------------------
 ----------------------------------- Item Rarity Dropdown ---------------------------------------
 StatCompare_ItemRarity_DROPDOWN_LIST = {
-	{name = "全部", value = -1},
-	{name = "|c009d9d9d粗糙|r", value = 0},
-	{name = "|c00ffffff普通|r", value = 1},
-	{name = "|c001eff00优秀|r", value = 2},
-	{name = "|c000070dd精良|r", value = 3},
-	{name = "|c00a335ee史诗|r", value = 4},
-	{name = "|c00ff8000传说|r", value = 5},
-};
--- TODO - fix language i18n
-StatCompare_ItemRarity_DROPDOWN_LIST = {
-	{name = "All", value = -1},
-	{name = "|c009d9d9dRough|r", value = 0},
-	{name = "|c00ffffffCommon|r", value = 1},
-	{name = "|c001eff00Uncommon|r", value = 2},
-	{name = "|c000070ddRare|r", value = 3},
-	{name = "|c00a335eeEpic|r", value = 4},
-	{name = "|c00ff8000Legendary|r", value = 5},
+	{name = STATCOMPARE_ITEMTYPE_ALL, value = -1},
+	{name = "|c009d9d9d"..STATCOMPARE_ITEMRARITY_GRAY.."|r", value = 0},
+	{name = "|c00ffffff"..STATCOMPARE_ITEMRARITY_WHITE.."|r", value = 1},
+	{name = "|c001eff00"..STATCOMPARE_ITEMRARITY_GREEN.."|r", value = 2},
+	{name = "|c000070dd"..STATCOMPARE_ITEMRARITY_BLUE.."|r", value = 3},
+	{name = "|c00a335ee"..STATCOMPARE_ITEMRARITY_PURPLE.."|r", value = 4},
+	{name = "|c00ff8000"..STATCOMPARE_ITEMRARITY_ORANGE.."|r", value = 5},
 };
 
 function StatCompare_ItemRarityDropDown_OnLoad()
@@ -1067,29 +1054,16 @@ end
 -------------------------------------- 物品类型下拉框 -----------------------------------------
 ---------------------------------- Item Type Dropdown --------------------------------------
 StatCompare_ItemType_DROPDOWN_LIST = {
-	{name = "全部", value = "全部", subvalue="全部"},
-	{name = "武器", value = "武器", subvalue="全部"},
-	{name = "护甲", value = "护甲", subvalue="全部"},
-	{name = "- 板甲", value = "护甲", subvalue="板甲"},
-	{name = "- 锁甲", value = "护甲", subvalue="锁甲"},
-	{name = "- 皮甲", value = "护甲", subvalue="皮甲"},
-	{name = "- 布甲", value = "护甲", subvalue="布甲"},
-	{name = "- 盾牌", value = "护甲", subvalue="盾牌"},
-	{name = "- 其它", value = "护甲", subvalue="其它"},
-	{name = "其它", value = "其它", subvalue="全部"},
-};
- -- TODO fix language i18n
-StatCompare_ItemType_DROPDOWN_LIST = {
-	{name = "All", value = "All", subvalue="All"},
-	{name = "Arms", value = "Arms", subvalue="All"},
-	{name = "Armor", value = "Armor", subvalue="All"},
-	{name = "- Plate", value = "Armor", subvalue="Plate"},
-	{name = "- Mail", value = "Armor", subvalue="Mail"},
-	{name = "- Leather", value = "Armor", subvalue="Leather"},
-	{name = "- Cloth", value = "Armor", subvalue="Cloth"},
-	{name = "- Shield", value = "Armor", subvalue="Shield"},
-	{name = "- Other", value = "Armor", subvalue="Other"},
-	{name = "Other", value = "Other", subvalue="All"},
+	{name = STATCOMPARE_ITEMTYPE_ALL, value = STATCOMPARE_ITEMTYPE_ALL, subvalue=STATCOMPARE_ITEMTYPE_ALL},
+	{name = STATCOMPARE_ITEMTYPE_ARMS, value = STATCOMPARE_ITEMTYPE_ARMS, subvalue=STATCOMPARE_ITEMTYPE_ALL},
+	{name = STATCOMPARE_ITEMTYPE_ARMOR, value = STATCOMPARE_ITEMTYPE_ARMOR, subvalue=STATCOMPARE_ITEMTYPE_ALL},
+	{name = "- "..STATCOMPARE_ITEMTYPE_ARMOR_PLATE, value = STATCOMPARE_ITEMTYPE_ARMOR, subvalue=STATCOMPARE_ITEMTYPE_ARMOR_PLATE},
+	{name = "- "..STATCOMPARE_ITEMTYPE_ARMOR_MAIL, value = STATCOMPARE_ITEMTYPE_ARMOR, subvalue=STATCOMPARE_ITEMTYPE_ARMOR_MAIL},
+	{name = "- "..STATCOMPARE_ITEMTYPE_ARMOR_LEATHER, value = STATCOMPARE_ITEMTYPE_ARMOR, subvalue=STATCOMPARE_ITEMTYPE_ARMOR_LEATHER},
+	{name = "- "..STATCOMPARE_ITEMTYPE_ARMOR_CLOTH, value = STATCOMPARE_ITEMTYPE_ARMOR, subvalue=STATCOMPARE_ITEMTYPE_ARMOR_CLOTH},
+	{name = "- "..STATCOMPARE_ITEMTYPE_ARMOR_SHIELD, value = STATCOMPARE_ITEMTYPE_ARMOR, subvalue=STATCOMPARE_ITEMTYPE_ARMOR_SHIELD},
+	{name = "- "..STATCOMPARE_ITEMTYPE_ARMOR_OTHER, value = STATCOMPARE_ITEMTYPE_ARMOR, subvalue=STATCOMPARE_ITEMTYPE_ARMOR_OTHER},
+	{name = STATCOMPARE_ITEMTYPE_ARMOR_OTHER, value = STATCOMPARE_ITEMTYPE_ARMOR_OTHER, subvalue=STATCOMPARE_ITEMTYPE_ALL},
 };
 
 function StatCompare_ItemTypeDropDown_OnLoad()
@@ -1122,8 +1096,8 @@ function StatCompare_BuildItemCache()
 
 	local typeFilter=StatCompare_ItemType_DROPDOWN_LIST[UIDropDownMenu_GetSelectedID(StatCompare_ItemTypeDropDown)].value;
 	local subtypeFilter=StatCompare_ItemType_DROPDOWN_LIST[UIDropDownMenu_GetSelectedID(StatCompare_ItemTypeDropDown)].subvalue;
-	if(not typeFilter) then typeFilter="全部"; end
-	if(not subtypeFilter) then subtypeFilter="全部"; end
+	if(not typeFilter) then typeFilter=STATCOMPARE_ITEMTYPE_ALL; end
+	if(not subtypeFilter) then subtypeFilter=STATCOMPARE_ITEMTYPE_ALL; end
 
 	for i=1,getn(StatCompare_ItemCollection) do
 		local _,_,_,sItem,_=string.find(StatCompare_ItemCollection[i],"|(.-)|H(.-)|(.-)|h|r");
@@ -1133,11 +1107,11 @@ function StatCompare_BuildItemCache()
 				iRarity = -1;
 			end
 			if (iRarity>=rarityFilter) then
-				if (typeFilter=="全部") then
+				if (typeFilter==STATCOMPARE_ITEMTYPE_ALL) then
 					table.insert(StatCompare_ItemCache,StatCompare_ItemCollection[i]);
-				elseif (sType==typeFilter and (subtypeFilter=="全部" or sSubType==subtypeFilter)) then
+				elseif (sType==typeFilter and (subtypeFilter==STATCOMPARE_ITEMTYPE_ALL or sSubType==subtypeFilter)) then
 					table.insert(StatCompare_ItemCache,StatCompare_ItemCollection[i]);
-				elseif (typeFilter=="其它" and sType~="武器" and sType~="护甲") then
+				elseif (typeFilter==STATCOMPARE_ITEMTYPE_OTHER and sType~=STATCOMPARE_ITEMTYPE_ARMS and sType~=STATCOMPARE_ITEMTYPE_ARMOR) then
 					table.insert(StatCompare_ItemCache,StatCompare_ItemCollection[i]);
 				end
 			end
@@ -1166,7 +1140,7 @@ function StatCompare_ToggleAndUpdate(attributesToToggle, buttonName, frameName, 
 				StatCompare_Display[attributeToToggle] = false
 				getglobal(buttonName):LockHighlight();
 			else
-				print("StatCompare - Cannot hide all fields.")
+				DEFAULT_CHAT_FRAME:AddMessage("StatCompare - "..GREEN_FONT_COLOR_CODE..ERROR_CANNOT_HIDE_ALL_FIELDS..FONT_COLOR_CODE_CLOSE);
 			end
 		end
 	end
@@ -1196,13 +1170,13 @@ function StatCompare_UpdateFrameText(frameName, textbody, texttitle)
 	local text = getglobal(frameName.."Text");
 	local title = getglobal(frameName.."Title");
 	local buffFrame = getglobal(frame:GetName().."BuffList")
-	local paddingForAesthetics = 20;
+	local paddingForAesthetics = 20; -- Without this, the content stopped precisely against the words on the right and bottom.
 	text:SetText(textbody);
 	if (texttitle ~= nil) then
 		title:SetText(texttitle)
 	end
 	local height = text:GetHeight() + title:GetHeight() + paddingForAesthetics;
-	local newwidth = text:GetWidth();
+	local newwidth = text:GetWidth() + paddingForAesthetics;
 	local framewidth = frame:GetWidth();
 	if newwidth < framewidth then 
 		newwidth = framewidth
