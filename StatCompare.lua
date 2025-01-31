@@ -403,15 +403,7 @@ function StatCompare_OnEvent()
 	if ( (event == "UNIT_INVENTORY_CHANGED") and StatCompare_enable and StatCompare_isLoaded==1) then
 		if ((arg1 == "player") and StatCompareSelfFrame:IsVisible()) then
 			SCHideFrame(StatCompareSelfFrame);
-			StatScanner_ScanAll();
-			if(SC_BuffScanner_ScanAllInspect) then
-				-- Scan the buffers
-				SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "player");
-			end
-			if(StatCompare_CharStats_Scan) then
-				StatCompare_CharStats_Scan(StatScanner_bonuses, "player");
-			end
-			local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,1);
+			local tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,1);
 			if (StatCompareTargetFrame:IsVisible()) then
 				SCShowFrame(StatCompareSelfFrame,StatCompareTargetFrame,UnitName("player"),tiptext,0,0);
 			else
@@ -419,25 +411,10 @@ function StatCompare_OnEvent()
 			end
 		elseif ((arg1 == "target") and StatCompare_enable and StatCompare_isLoaded==1 and StatCompareTargetFrame:IsVisible()) then
 			SCHideFrame(StatCompareTargetFrame);
-			StatScanner_ScanAllInspect();
-			if(SC_BuffScanner_ScanAllInspect) then
-				-- Scan the buffers
-				SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "target");
-			end
-			if(StatCompare_CharStats_Scan) then
-				StatCompare_CharStats_Scan(StatScanner_bonuses);
-			end
-			local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,0);
+			local tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,0);
 			SCShowFrame(StatCompareTargetFrame,InspectFrame,UnitName("target"),tiptext,-5,-12);
-			StatScanner_ScanAll();
-			if(SC_BuffScanner_ScanAllInspect) then
-				-- Scan the buffers
-				SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "player");
-			end
-			if(StatCompare_CharStats_Scan) then
-				StatCompare_CharStats_Scan(StatScanner_bonuses, "player");
-			end
-			tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,1);
+
+			tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,1);
 			SCShowFrame(StatCompareSelfFrame,StatCompareTargetFrame,UnitName("player"),tiptext,0,0);
 		end
 	elseif ( event == "PLAYER_LOGOUT" ) then
@@ -459,29 +436,14 @@ function SCDressUpItemLink(link)
 end
 
 function SCPaperDollFrame_OnShow()
-	StatScanner_ScanAll();
-	if(SC_BuffScanner_ScanAllInspect) then
-		-- Scan the buffers
-		SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "player");
-	end
-	if(StatCompare_CharStats_Scan) then
-		StatCompare_CharStats_Scan(StatScanner_bonuses, "player");
-	end
-	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,1);
+	local tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,1);
 	SCShowFrame(StatCompareSelfFrame,PaperDollFrame,UnitName("player"),tiptext,-30,-12);
 
 	oldPaperDollFrame_OnShow();
 end
+
 function SCInspectorFrameShow()
-	StatScanner_ScanAllInspect();
-	if(SC_BuffScanner_ScanAllInspect) then
-		-- Scan the buffers
-		SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "target");
-	end
-	if(StatCompare_CharStats_Scan) then
-		StatCompare_CharStats_Scan(StatScanner_bonuses);
-	end
-	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,0);
+	local tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,0);
 	SCShowFrame(StatCompareTargetFrame,InspectorFrame,UnitName("target"),tiptext,-5,-12);
 
 	StatScanner_ScanAll();
@@ -500,25 +462,11 @@ end
 function SCGoodInspect_InspectFrame_Show(unit)
 	oldGoodInspect_InspectFrame_Show(unit);
 	if ( not UnitIsPlayer(unit)) then return; end
-	StatScanner_ScanAllInspect();
-	if(SC_BuffScanner_ScanAllInspect) then
-		-- Scan the buffers
-		SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "target");
-	end
-	if(StatCompare_CharStats_Scan) then
-		StatCompare_CharStats_Scan(StatScanner_bonuses);
-	end
-	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,0);
+
+	local tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,0);
 	SCShowFrame(StatCompareTargetFrame,InspectFrame,UnitName("target"),tiptext,-5,-12);
-	StatScanner_ScanAll();
-	if(SC_BuffScanner_ScanAllInspect) then
-		-- Scan the buffers
-		SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "player");
-	end
-	if(StatCompare_CharStats_Scan) then
-		StatCompare_CharStats_Scan(StatScanner_bonuses, "player");
-	end
-	tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,1);
+
+	tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,1);
 	SCShowFrame(StatCompareSelfFrame,StatCompareTargetFrame,UnitName("player"),tiptext,0,0);
 	
 end
@@ -531,25 +479,10 @@ function SCSuperInspect_InspectFrame_Show(unit)
 	SCHideFrame(StatCompareTargetFrame);
 	SCHideFrame(StatCompareSelfFrame);
 	if (UnitExists(unit) and UnitIsPlayer(unit) and UnitIsFriend(unit, "player")) then
-		StatScanner_ScanAllInspect();
-		if(SC_BuffScanner_ScanAllInspect) then
-			-- Scan the buffers
-			SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "target");
-		end
-		if(StatCompare_CharStats_Scan) then
-			StatCompare_CharStats_Scan(StatScanner_bonuses);
-		end
-		local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,0);
+		local tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,0);
 		SCShowFrame(StatCompareTargetFrame,SuperInspectFrame,UnitName("target"),tiptext,-5,-12);
-		StatScanner_ScanAll();
-		if(SC_BuffScanner_ScanAllInspect) then
-			-- Scan the buffers
-			SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "player");
-		end
-		if(StatCompare_CharStats_Scan) then
-			StatCompare_CharStats_Scan(StatScanner_bonuses, "player");
-		end
-		tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,1);
+
+		tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,1);
 		SCShowFrame(StatCompareSelfFrame,StatCompareTargetFrame,UnitName("player"),tiptext,0,0);
 
 		if IsAddOnLoaded("S_ItemTip") then
@@ -570,14 +503,14 @@ function SCClearInspectPlayer()
 	scoldClearInspectPlayer();
 end
 
-function StatCompare_GetTitlebarText()
-	return (tiptitle and tiptitle .. " / " or "")..GREEN_FONT_COLOR_CODE..STATCOMPARE_ADDON_NAME..FONT_COLOR_CODE_CLOSE.." "..STATCOMPARE_ADDON_VERSION
+function StatCompare_GetTitlebarText(prefix)
+	return (prefix and prefix .. " / " or "")..GREEN_FONT_COLOR_CODE..STATCOMPARE_ADDON_NAME..FONT_COLOR_CODE_CLOSE.." "..STATCOMPARE_ADDON_VERSION
 end
 
 function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
 	local unit = target:GetName() == "InspectFrame" and "target" or "player"
 
-	StatCompare_UpdateFrameContent(frame:GetName(), tiptext, unit)
+	StatCompare_UpdateFrameContent(frame:GetName(), tiptext, unit, tiptitle)
 
 	if IsAddOnLoaded("S_ItemTip") then
 		local score = ItemSocre:ScanUnit("player")
@@ -622,27 +555,10 @@ function SCInspectFrame_Show(unit)
 		InspectFrame.unit = unit;
 		ShowUIPanel(InspectFrame);
 	
-		StatScanner_ScanAllInspect();
-		if(SC_BuffScanner_ScanAllInspect) then
-			-- Scan the buffers
-			SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "target");
-		end
-		if(StatCompare_CharStats_Scan) then
-			StatCompare_CharStats_Scan(StatScanner_bonuses);
-		end
-		local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,0);
-
+		local tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,0);
 		SCShowFrame(StatCompareTargetFrame,InspectFrame,UnitName("target"),tiptext,-5,-12);
 
-		StatScanner_ScanAll();
-		if(SC_BuffScanner_ScanAllInspect) then
-			-- Scan the buffers
-			SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "player");
-		end
-		if(StatCompare_CharStats_Scan) then
-			StatCompare_CharStats_Scan(StatScanner_bonuses, "player");
-		end
-		tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,1);
+		tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,1);
 		SCShowFrame(StatCompareSelfFrame,StatCompareTargetFrame,UnitName("player"),tiptext,0,0);
 	end
 	--oldInspectFrame_Show();
@@ -834,6 +750,22 @@ function StatCompare_GetGearsetTooltipText(bonuses,bSelfStat)
 	return setstr
 end
 
+function StatCompare_UpdateAndGetTooltipText(bonuses, bSelfStat)
+	StatScanner_ScanAllInspect((bSelfStat == 1 and "player" or nil)) -- this weird function needs `nil` rather than "target". :\
+
+	if(SC_BuffScanner_ScanAllInspect) then
+		-- Scan the buffers
+		SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, (bSelfStat == 1 and "player" or "target"));
+	end
+	if(StatCompare_CharStats_Scan) then
+		StatCompare_CharStats_Scan(StatScanner_bonuses, (bSelfStat == 1 and "player" or "target"));
+	end
+	
+	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, bSelfStat);
+	return tiptext
+end
+
+
 function StatCompare_GetTooltipText(bonuses,bSelfStat)
 	local retstr=""
 	
@@ -846,8 +778,8 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 		retstr= retstr..StatCompare_GetTalentSpecToolTipText()
 	end
 	
-	if StatCompare_GetDisplayGroupSetting("SpellPowerStats") and bSelfStat == 1 and StatCompare_GetSpellsTooltipText then
-		retstr= retstr..StatCompare_GetSpellsTooltipText(StatScanner_bonuses,"player");
+	if StatCompare_GetDisplayGroupSetting("SpellPowerStats") and StatCompare_GetSpellsTooltipText then
+		retstr= retstr..StatCompare_GetSpellsTooltipText(StatScanner_bonuses, bSelfStat == 1 and "player" or "target");
 	end
 
 	if StatCompare_GetDisplayGroupSetting("EquippedItems") or StatCompare_GetDisplayGroupSetting("EquippedEnchants") == true and StatCompare_GetEquippedItemNamesAndEnchantsDisplayText then
@@ -1169,8 +1101,8 @@ function StatCompare_UpdateDisplayedAttributeGroups(attributesToToggle, buttonNa
 		end
 	end
 
-	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, (unit == "player" and 1 or 0))
-	StatCompare_UpdateFrameContent(frameName, tiptext, unit)
+	local tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses, (unit == "player" and 1 or 0))
+	StatCompare_UpdateFrameContent(frameName, tiptext, unit, UnitName(unit))
 end
 
 function StatCompareTargetFrameArmorButton_OnClick()
@@ -1199,8 +1131,8 @@ function StatCompareTargetFrameSpellsButton_OnClick()
 	StatCompare_UpdateDisplayedAttributeGroups({"SpellPowerStats"}, "StatCompareTargetFrameSpellsButton", "StatCompareTargetFrame", "target")
 end
 
-function StatCompare_UpdateFrameContent(frameName, textbody, unit)
-	local titletext = StatCompare_GetTitlebarText()
+function StatCompare_UpdateFrameContent(frameName, textbody, unit, tiptitle)
+	local titletext = StatCompare_GetTitlebarText(tiptitle)
 	StatCompare_UpdateFrameText(frameName, textbody, titletext)
 	StatBuffs_UpdateBuffs(frameName, unit)
 end
@@ -1242,13 +1174,7 @@ function StatCompareSelfFrameSpellsButton_OnClick_old() --TODO deleteme
 			return
 		end
 		StatCompareSelfFrameShowSpells = true;
-		StatScanner_ScanAll();
-		if(SC_BuffScanner_ScanAllInspect) then
-			-- Scan the buffers
-			SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "player");
-		end
-		StatCompare_CharStats_Scan(StatScanner_bonuses, "player");
-		tiptext = StatCompare_GetSpellsTooltipText(StatScanner_bonuses,"player");
+		tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,"player");
 		if(tiptext == "") then
 			return;
 		end
@@ -1257,13 +1183,7 @@ function StatCompareSelfFrameSpellsButton_OnClick_old() --TODO deleteme
 	else
 		-- show stats
 		StatCompareSelfFrameShowSpells = false;
-		StatScanner_ScanAll();
-		if(SC_BuffScanner_ScanAllInspect) then
-			-- Scan the buffers
-			SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "player");
-		end
-		StatCompare_CharStats_Scan(StatScanner_bonuses, "player");
-		tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,1);
+		tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,1);
 		if(tiptext == "") then
 			return;
 		end
@@ -1307,15 +1227,15 @@ function StatCompareTargetFrameSpellsButton_OnClick_old() -- TODO deleteme
 			return
 		end
 		StatCompareTargetFrameShowSpells = true;
-
-		StatScanner_ScanAllInspect();
+-- todo - ehh akshully ... i just ignore all of this. is that... ok? i don't scan stuff in the click events.
+		StatScanner_ScanAllInspect(); -- diff "all" vs "allinspect"
 		if(SC_BuffScanner_ScanAllInspect) then
 			-- Scan the buffers
-			SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "target");
+			SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "target"); -- diff "target" vs "player"
 		end
-		StatCompare_CharStats_Scan(StatScanner_bonuses);
+		StatCompare_CharStats_Scan(StatScanner_bonuses); -- diff - no second param vs "player". weird.
 
-		tiptext = StatCompare_GetSpellsTooltipText(StatScanner_bonuses);
+		tiptext = StatCompare_GetSpellsTooltipText(StatScanner_bonuses); -- diff - no second param vs "player". weird.
 
 		if(tiptext == "") then
 			return;
@@ -1324,14 +1244,7 @@ function StatCompareTargetFrameSpellsButton_OnClick_old() -- TODO deleteme
 	else
 		StatCompareTargetFrameShowSpells = false;
 
-		StatScanner_ScanAllInspect();
-		if(SC_BuffScanner_ScanAllInspect) then
-			-- Scan the buffers
-			SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "target");
-		end
-		StatCompare_CharStats_Scan(StatScanner_bonuses);
-
-		tiptext = StatCompare_GetTooltipText(StatScanner_bonuses,0);
+		tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,0);
 
 		if(tiptext == "") then
 			return;
