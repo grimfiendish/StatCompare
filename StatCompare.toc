@@ -13,11 +13,10 @@ Localization_enUS.lua
 Localization.lua
 SCOptions.lua
 StatScanner.lua
-StatEnchants.lua
-StatBuffs.lua
 StatCompare.lua
 StatCompare.xml
 
+init\StatCompareGearCheck.xml
 init\StatCompareBuff.xml
 init\StatCompareChar.xml
 init\StatCompareSpell.xml

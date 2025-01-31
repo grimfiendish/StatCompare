@@ -1,6 +1,5 @@
 -- Functions to add the target's buffs to the pane. 
 -- This is because usually people crop the screen and thus you can't see whether their stats are artificially improved.
-
 function StatBuffs_GetBuffs(unit)
 	local buffs = {}
     local i = 1
@@ -40,7 +39,7 @@ function StatBuffs_GetBuffs(unit)
 end
 --]]
 
-function StatCompare_ResetBuffIcons(tooltipFrame, unit)
+function StatCompare_ResetBuffIcons(tooltipFrame, unit) -- Silly to have an asymmetric contract with frame vs framename TODO
 
 	if tooltipFrame.buffTextures == nil then
 		tooltipFrame.buffTextures = {}
@@ -104,10 +103,9 @@ function StatBuffs_UpdateBuffs(frameName, unit)
 	-- Here we're after the buff list, which displays icons at the bottom of the dialog. Expected values are StatCompareTargetFrame or PaperDollFrame.
 	local buffFrame = getglobal(frame:GetName().."BuffList")
 	if buffFrame ~= nil then
-		if StatCompare_Display["Buffs"] == true then
+		if StatCompare_GetDisplayGroupSetting("ActiveBuffs") then
 			local frameWidth = frame:GetWidth()
 			buffFrame:SetWidth(frameWidth)
-			-- GerName here is PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
 			StatCompare_AddBuffIconsToTooltip(buffFrame, unit)
 			
 			local buffFrameTitle = getglobal(frame:GetName().."BuffListTitle")
