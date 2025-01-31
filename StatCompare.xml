@@ -159,6 +159,7 @@
         <Scripts>
             <OnHide>
                 StatCompareSelfFrameShowSpells = false;
+				StatCompare_SetSetting("SpellPowerStats", false)
             </OnHide>
         </Scripts>
     </Frame>
@@ -306,8 +307,9 @@
         <Scripts>
             <OnHide>
                 StatCompareSelfFrame:Hide();
-                StatCompareSelfFrameShowSpells = false;
-                StatCompareTargetFrameShowSpells = false;
+				StatCompare_SetSetting("SpellPowerStats", false)
+                StatCompareSelfFrameShowSpells = false; -- todo remove
+                StatCompareTargetFrameShowSpells = false; -- todo remove
             </OnHide>
         </Scripts>
     </Frame>

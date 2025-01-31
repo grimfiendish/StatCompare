@@ -76,11 +76,23 @@ StatCompare_OPTIONS = {
 	["MinimapButtonPosition"] = {
 		["default"] = STATCOMPARE_DEFAULT_MINIMAP_POSITION },
 	["ShowMinimapIcon"] = {
-		["default"] = 0 },
+		["default"] = 1 },
 	["ShowSelfFrame"] = {
 		["default"] = 1	},
 	["ShowBuffBonus"] = {
 		["default"] = 1	},
+	["ShowEquippedItems"] = {
+		["default"] = 1	},
+	["ShowEquippedEnchants"] = {
+		["default"] = 1	},
+	["ShowActiveBuffs"] = {
+		["default"] = 1	},
+	["ShowBasicStats"] = {
+		["default"] = 1	},
+	["ShowTalentSpec"] = {
+		["default"] = 1	},
+	["ShowSpellPowerStats"] = {
+		["default"] = 0	},
 }
 
 function StatCompare_Toggle()
@@ -108,19 +120,19 @@ function StatCompare_Toggle()
 				end
 			end
 		end
-		local value=StatCompare_GetSetting("ShowMinimapIcon", value);
+		local value=StatCompare_GetSetting("ShowMinimapIcon");
 		if(value == 0) then
 			getglobal("StatCompareShowMinimapOpt"):SetChecked(0);
 		else
 			getglobal("StatCompareShowMinimapOpt"):SetChecked(1);
 		end
-		local value=StatCompare_GetSetting("ShowSelfFrame", value);
+		local value=StatCompare_GetSetting("ShowSelfFrame");
 		if(value == 0) then
 			getglobal("StatCompareShowSelfFrameOpt"):SetChecked(0);
 		else
 			getglobal("StatCompareShowSelfFrameOpt"):SetChecked(1);
 		end
-		local value=StatCompare_GetSetting("ShowBuffBonus", value);
+		local value=StatCompare_GetSetting("ShowBuffBonus");
 		if(value == 0) then
 			getglobal("StatCompareShowBuffBonusOpt"):SetChecked(0);
 		else

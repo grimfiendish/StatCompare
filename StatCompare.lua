@@ -11,14 +11,6 @@ StatCompare_ItemCollection = {};
 StatCompare_ItemCache = {};
 StatCompare_bonuses_single = {};
 StatCompare_IsDebugMode = false;
-StatCompare_Display = { -- TODO move to the player prefs object
-	-- Ok currently Armor/Enchants/Buffs are all controlled by the Armor button. It felt weird naming it "ArmorAndEnchantsAndBuffs". So now it's separate and if anyone ever wants it separate it'll be a very easy change.
-	["Armor"] = true,
-	["Enchants"] = true,
-	["Buffs"] = true,
-	["Stats"] = true,
-	["Spells"] = false
-}
 
 --STATCOMPARE_SETNAME_PATTERN = "^(.*)%d/%d.*$";
 STATCOMPARE_SETNAME_PATTERN = "^(.*)%d/(%d).*$";
@@ -27,7 +19,9 @@ STATCOMPARE_PREFIX_PATTERN = "^%+(%d+)%%?(.*)$";
 STATCOMPARE_SUFFIX_PATTERN = "^(.*)%+(%d+)%%?$";
 
 STATCOMPARE_ITEMLINK_PATTERN = "|cff(%x+)|Hitem:(%d+:%d+:%d+:%d+)|h%[(.-)%]|h|r";
-
+StatCompare_DISPLAY_GROUPS = { "EquippedItems", "EquippedEnchants", "ActiveBuffs", "BasicStats", "TalentSpec", "SpellPowerStats" }
+STATCOMPARE_TEXT_INDENT1 = "    "
+STATCOMPARE_TEXT_INDENT2 = "        "
 StatCompre_ColorList = {
 	X = 'FFD200',  -- attributes
 	Y = '20FF20',  -- skills
@@ -115,6 +109,23 @@ STATCOMPARE_EFFECTS = {
 };
 
 STATCOMPARE_CATEGORIES = {'ATT', 'BON', 'SBON', 'RES', 'SKILL', 'OBON'};
+
+function StatCompare_GetDisplayGroupSetting(setting)
+	-- Display Group is the visual groups you see in the pane, like "Stats", "Equipped Items" etc. 
+	local valid = false
+	for _, grp in ipairs(StatCompare_DISPLAY_GROUPS) do if grp == setting then valid = true; end; end
+	if valid and StatCompare_GetSetting("Show"..setting) == 1 then return true; else return false; end
+end
+
+function StatCompare_SetDisplayGroupSetting(setting, val)
+	-- Display Group is the visual groups you see in the pane, like "Stats", "Equipped Items" etc. 
+	local valid = false
+	for _, grp in ipairs(StatCompare_DISPLAY_GROUPS) do if grp == setting then valid = true; end; end
+	if valid then
+		local ival = (val == true or val == 1) and 1 or 0 -- exisitng settings store 1/0...
+		StatCompare_SetSetting("Show"..setting, ival)
+	end
+end
 
 function StatCompare_OnLoad()
 	InspectFrame_LoadUI();
@@ -559,12 +570,14 @@ function SCClearInspectPlayer()
 	scoldClearInspectPlayer();
 end
 
+function StatCompare_GetTitlebarText()
+	return (tiptitle and tiptitle .. " / " or "")..GREEN_FONT_COLOR_CODE..STATCOMPARE_ADDON_NAME..FONT_COLOR_CODE_CLOSE.." "..STATCOMPARE_ADDON_VERSION
+end
+
 function SCShowFrame(frame,target,tiptitle,tiptext,anchorx,anchory)
-	local titletext = (tiptitle and tiptitle .. " / " or "")..GREEN_FONT_COLOR_CODE..STATCOMPARE_ADDON_NAME..FONT_COLOR_CODE_CLOSE.." "..STATCOMPARE_ADDON_VERSION
+	local unit = target:GetName() == "InspectFrame" and "target" or "player"
 
-	StatCompare_UpdateFrameText(frame:GetName(), tiptext, titletext)
-
-	StatBuffs_UpdateBuffs(frame:GetName(), target:GetName() == "InspectFrame" and "target" or "player")
+	StatCompare_UpdateFrameContent(frame:GetName(), tiptext, unit)
 
 	if IsAddOnLoaded("S_ItemTip") then
 		local score = ItemSocre:ScanUnit("player")
@@ -752,7 +765,8 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 			else
 				retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 			end
-			-- special hack for DRUID AP
+-- TODO - something weird is happening once i click the spell book. it starts showing this extra info like bear form crap even though i'm a mage.
+			-- special hack for DRUID AP -- TODO fix this it's printing too often actually huh its only happening on inspection pane...
 			if(e.effect == "ATTACKPOWER" and CharStats_fullvals and CharStats_fullvals["BEARAP"]) then
 				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
 				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
@@ -798,7 +812,7 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 					retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 				end				
 
-				-- special hack for DRUID AP
+				-- special hack for DRUID AP -- TODO fix this it's printing too often
 				if(e.effect == "ATTACKPOWER" and CharStats_fullvals["BEARAP"]) then
 					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
 					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
@@ -822,12 +836,21 @@ end
 
 function StatCompare_GetTooltipText(bonuses,bSelfStat)
 	local retstr=""
-	if StatCompare_Display["Stats"] == true then
+	
+	if StatCompare_GetDisplayGroupSetting("BasicStats") then
 		retstr= retstr..StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 		retstr= retstr..StatCompare_GetGearsetTooltipText(bonuses,bSelfStat)
 	end
+	
+	if StatCompare_GetDisplayGroupSetting("TalentSpec") and bSelfStat == 1 and StatCompare_GetTalentSpecToolTipText then
+		retstr= retstr..StatCompare_GetTalentSpecToolTipText()
+	end
+	
+	if StatCompare_GetDisplayGroupSetting("SpellPowerStats") and bSelfStat == 1 and StatCompare_GetSpellsTooltipText then
+		retstr= retstr..StatCompare_GetSpellsTooltipText(StatScanner_bonuses,"player");
+	end
 
-	if StatCompare_Display["Armor"] == true or StatCompare_Display["Enchants"] == true then
+	if StatCompare_GetDisplayGroupSetting("EquippedItems") or StatCompare_GetDisplayGroupSetting("EquippedEnchants") == true and StatCompare_GetEquippedItemNamesAndEnchantsDisplayText then
 		local itemsandenchants=StatCompare_GetEquippedItemNamesAndEnchantsDisplayText(bSelfStat==1 and "player" or "target")
 		retstr=retstr.."\n\n"..itemsandenchants
 	end
@@ -1119,16 +1142,17 @@ function StatCompare_BuildItemCache()
 	end
 end
 
-function StatCompare_ToggleAndUpdate(attributesToToggle, buttonName, frameName, unit)
-	for i, attributeToToggle in pairs(attributesToToggle) do 
-		if StatCompare_Display[attributeToToggle] == false then
-			StatCompare_Display[attributeToToggle] = true
+function StatCompare_UpdateDisplayedAttributeGroups(attributesToToggle, buttonName, frameName, unit)
+	for _, attributeToToggle in pairs(attributesToToggle) do 
+		if StatCompare_GetDisplayGroupSetting(attributeToToggle) == false then
+			StatCompare_SetDisplayGroupSetting(attributeToToggle, true)
 			getglobal(buttonName):UnlockHighlight();
 		else
 			local willHaveAtLeastOneAttributeVisible = false
-			for key, value in pairs(StatCompare_Display) do 
+			for _, key in ipairs(StatCompare_DISPLAY_GROUPS) do 
+				local value = StatCompare_GetDisplayGroupSetting(key)
 				ignore = false
-				for i, toggle in pairs(attributesToToggle) do
+				for _, toggle in ipairs(attributesToToggle) do
 					if key == toggle then ignore = true; break; end
 				end
 				if ignore == false and value == true then 
@@ -1137,43 +1161,59 @@ function StatCompare_ToggleAndUpdate(attributesToToggle, buttonName, frameName, 
 				end
 			end
 			if willHaveAtLeastOneAttributeVisible == true then
-				StatCompare_Display[attributeToToggle] = false
+			StatCompare_SetDisplayGroupSetting(attributeToToggle, false)
 				getglobal(buttonName):LockHighlight();
 			else
-				DEFAULT_CHAT_FRAME:AddMessage("StatCompare - "..GREEN_FONT_COLOR_CODE..ERROR_CANNOT_HIDE_ALL_FIELDS..FONT_COLOR_CODE_CLOSE);
+				DEFAULT_CHAT_FRAME:AddMessage("StatCompare - "..GREEN_FONT_COLOR_CODE..STATCOMPARE_ERROR_CANNOT_HIDE_ALL_FIELDS..FONT_COLOR_CODE_CLOSE);
 			end
 		end
 	end
+
 	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, (unit == "player" and 1 or 0))
-	StatCompare_UpdateFrameText(frameName, tiptext)
-	StatBuffs_UpdateBuffs(frameName, unit)
+	StatCompare_UpdateFrameContent(frameName, tiptext, unit)
 end
 
 function StatCompareTargetFrameArmorButton_OnClick()
-	StatCompare_ToggleAndUpdate({"Armor", "Enchants", "Buffs"},"StatCompareTargetFrameArmorButton", "StatCompareTargetFrame", "target")
+	StatCompare_UpdateDisplayedAttributeGroups({"EquippedItems", "EquippedEnchants", "ActiveBuffs"},"StatCompareTargetFrameArmorButton", "StatCompareTargetFrame", "target")
 end
 
 function StatCompareTargetFrameStatsButton_OnClick()
-	StatCompare_ToggleAndUpdate({"Stats"}, "StatCompareTargetFrameStatsButton", "StatCompareTargetFrame", "target")
+	StatCompare_UpdateDisplayedAttributeGroups({"TalentSpec", "BasicStats"}, "StatCompareTargetFrameStatsButton", "StatCompareTargetFrame", "target")
 end
 
 function StatCompareSelfFrameArmorButton_OnClick()
-	StatCompare_ToggleAndUpdate({"Armor", "Enchants", "Buffs"}, "StatCompareSelfFrameArmorButton", "StatCompareSelfFrame", "player")
+	StatCompare_UpdateDisplayedAttributeGroups({"EquippedItems", "EquippedEnchants", "ActiveBuffs"}, "StatCompareSelfFrameArmorButton", "StatCompareSelfFrame", "player")
 end
 
 function StatCompareSelfFrameStatsButton_OnClick()
-	StatCompare_ToggleAndUpdate({"Stats"}, "StatCompareSelfFrameStatsButton", "StatCompareSelfFrame", "player")
+	StatCompare_UpdateDisplayedAttributeGroups({"TalentSpec", "BasicStats"}, "StatCompareSelfFrameStatsButton", "StatCompareSelfFrame", "player")
 end
 
-function StatCompare_UpdateFrameText(frameName, textbody, texttitle) 
+-- TODO: change spellbook icon to this and i guess hide the button for targets. i think it doesnt work. but verify.
+function StatCompareSelfFrameSpellsButton_OnClick()
+	StatCompare_UpdateDisplayedAttributeGroups({"SpellPowerStats"}, "StatCompareSelfFrameStatsButton", "StatCompareSelfFrame", "player")
+end
+
+-- TODO: change spellbook icon to this and i guess hide the button for targets. i think it doesnt work. but verify.
+function StatCompareTargetFrameSpellsButton_OnClick()
+	StatCompare_UpdateDisplayedAttributeGroups({"SpellPowerStats"}, "StatCompareTargetFrameSpellsButton", "StatCompareTargetFrame", "target")
+end
+
+function StatCompare_UpdateFrameContent(frameName, textbody, unit)
+	local titletext = StatCompare_GetTitlebarText()
+	StatCompare_UpdateFrameText(frameName, textbody, titletext)
+	StatBuffs_UpdateBuffs(frameName, unit)
+end
+
+function StatCompare_UpdateFrameText(frameName, textbody, titletext)
 	local frame = getglobal(frameName);
 	local text = getglobal(frameName.."Text");
 	local title = getglobal(frameName.."Title");
 	local buffFrame = getglobal(frame:GetName().."BuffList")
 	local paddingForAesthetics = 20; -- Without this, the content stopped precisely against the words on the right and bottom.
 	text:SetText(textbody);
-	if (texttitle ~= nil) then
-		title:SetText(texttitle)
+	if (titletext ~= nil) then
+		title:SetText(titletext)
 	end
 	local height = text:GetHeight() + title:GetHeight() + paddingForAesthetics;
 	local newwidth = text:GetWidth() + paddingForAesthetics;
@@ -1190,7 +1230,7 @@ function StatCompare_UpdateFrameText(frameName, textbody, texttitle)
 	frame:SetWidth(newwidth);
 end
 
-function StatCompareSelfFrameSpellsButton_OnClick()
+function StatCompareSelfFrameSpellsButton_OnClick_old() --TODO deleteme
 	local text,title,tiptext;
 	if(not StatCompare_CharStats_Scan) then
 		return;
@@ -1250,10 +1290,12 @@ function StatCompareSelfFrameSpellsButton_OnClick()
 		StatCompareSelfFrame:SetHeight(height+30)
 	end
 	
-	StatCompareSelfFrame:SetWidth(width+30);
+	if StatCompareSelfFrame:GetWidth() < width + 30 then
+		StatCompareSelfFrame:SetWidth(width+30);
+	end
 end
 
-function StatCompareTargetFrameSpellsButton_OnClick()
+function StatCompareTargetFrameSpellsButton_OnClick_old() -- TODO deleteme
 	local text,title,tiptext;
 	if(not StatCompare_CharStats_Scan) then
 		return;

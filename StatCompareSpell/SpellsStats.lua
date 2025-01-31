@@ -1321,31 +1321,31 @@ function StatCompare_GetSpellsTooltipText(fullstats, unit)
 	if(StatCompare_SpellsVals) then
 		for i,e in pairs(StatCompare_SpellsVals) do
 			if(SC_SpellCollections[i].type == "h") then
-				healstr = healstr.."\n".. e.spellname .. ":\t" .. e.avg;
+				healstr = healstr.."\n" .. STATCOMPARE_TEXT_INDENT2.. e.spellname .. ": " .. e.avg;
 				if(e.avgcrit > 0) then
-					healstr = healstr .. "/" .. GREEN_FONT_COLOR_CODE .. e.avgcrit .. FONT_COLOR_CODE_CLOSE ;
+					healstr = healstr .. " / " .. GREEN_FONT_COLOR_CODE .. e.avgcrit .. FONT_COLOR_CODE_CLOSE ;
 				end
 				if(e.tick) then
-					healstr = healstr.."\n" ..STATCOMPARE_HOT_PREFIX..":\t".. e.tickval.. "/" ..e.tick.."s (".. e.ticktotal ..")";
+					healstr = healstr.."\n" .. STATCOMPARE_TEXT_INDENT2 ..STATCOMPARE_HOT_PREFIX..": ".. e.tickval.. " / " ..e.tick.."s (".. e.ticktotal ..")";
 				end
 			elseif(SC_SpellCollections[i].type == "a") then
-				attackstr = attackstr.."\n".. e.spellname .. ":\t" .. e.avg;
+				attackstr = attackstr.."\n" .. STATCOMPARE_TEXT_INDENT2.. e.spellname .. ": " .. e.avg;
 				if(e.avgcrit > 0) then
-					attackstr = attackstr.. "/" .. GREEN_FONT_COLOR_CODE .. e.avgcrit .. FONT_COLOR_CODE_CLOSE ;
+					attackstr = attackstr.. " / " .. GREEN_FONT_COLOR_CODE .. e.avgcrit .. FONT_COLOR_CODE_CLOSE ;
 				end
 				if(e.tick) then
-					attackstr = attackstr.."\n" ..STATCOMPARE_DOT_PREFIX..":\t".. e.tickval.. "/" ..e.tick.."s (".. e.ticktotal ..")";
+					attackstr = attackstr.."\n" .. STATCOMPARE_TEXT_INDENT2 ..STATCOMPARE_DOT_PREFIX..": ".. e.tickval.. " / " ..e.tick.."s (".. e.ticktotal ..")";
 				end
 			end
 		end
 
 		if(healstr~="") then
-			retstr = GREEN_FONT_COLOR_CODE ..STATCOMPARE_HEALSPELL_PREFIX ..FONT_COLOR_CODE_CLOSE.. ":\n" .. healstr .. "\n\n";
+			retstr = STATCOMPARE_TEXT_INDENT1 .. GREEN_FONT_COLOR_CODE ..STATCOMPARE_HEALSPELL_PREFIX .. FONT_COLOR_CODE_CLOSE.. ":" .. healstr .. "\n";
 		end
 		if(healstr~="" or attackstr~="") then
-			retstr = retstr .. GREEN_FONT_COLOR_CODE .. STATCOMPARE_ATTACKSPELL_PREFIX .. ":\n" ..FONT_COLOR_CODE_CLOSE.. attackstr;
+			retstr = retstr .. STATCOMPARE_TEXT_INDENT1 .. GREEN_FONT_COLOR_CODE .. STATCOMPARE_ATTACKSPELL_PREFIX .. ":" ..FONT_COLOR_CODE_CLOSE.. attackstr;
 		end
-		local settitle="\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SPELLSKILL_INFO..FONT_COLOR_CODE_CLOSE.."\n\n"
+		local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SPELLSKILL_INFO..FONT_COLOR_CODE_CLOSE.."\n"
 		if (retstr~="") then retstr=settitle..retstr; end
 	end
 	-- Throw it to GC

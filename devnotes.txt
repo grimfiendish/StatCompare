@@ -1,4 +1,12 @@
+Primary frames are PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
+			
 What are the 'itemsocre' references? i think they're supposed to be 'itemscore' but even so there's no ItemScore  either...
 what are the 'S_ItemTip' references? i only see checks for if it exists and no reference to it being created. I have, what, five? child addons to this addon and still finding orphaned code...
-does 'DressOn' / 'DressOff' work now?
-what does 'oSkin' and 'Skinner' addon refer to?
+does 'DressOn' / 'DressOff' work now? if not, sheesh, what is all this code for?
+what do the 'oSkin' and 'Skinner' addon refer to?
+
+TODO
+* spell book shrinks the window still
+* "spells" section is always blank. the lower portion that lists avg hit and avg crit works, though it's not obvious what its values are without either reading the code or being smarter than i am.
+* Add labels to equipped items? (e.g. "Shoulders: [Mantle of ...]") if so... it'll stop being vertically aligned... maybe... a single letter instead? H, N, S, W, B, G, P, F, R, R, T, T, ... weapon...? yuck. definitely a place where Chinese kanji has a marked benefit.
+

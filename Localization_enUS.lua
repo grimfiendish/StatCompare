@@ -55,6 +55,7 @@ function SC_Localization_enUS()
 	STATCOMPARE_EQUIPPED = "Equipped Items";
 	STATCOMPARE_ACTIVEBUFFS = "Active Buffs";
 	STATCOMPARE_ATTACKNAME = "Attack";
+	STATCOMPARE_TALENT_SPECIALIZATION="Talent Spec"
 		
 	-- bonus names --- for display usage
 	STATCOMPARE_STR = "Strength";
@@ -257,7 +258,7 @@ function SC_Localization_enUS()
 	-- Spells Related
 	STATCOMPARE_HEALSPELL_PREFIX	= "Healing Spells";
 	STATCOMPARE_ATTACKSPELL_PREFIX	= "Damage Spells";
-	STATCOMPARE_SPELLSKILL_INFO	= "Spells/Skills";
+	STATCOMPARE_SPELLSKILL_INFO	= "Spells/Skills  (avg / avgcrit)";
 	STATCOMPARE_DOT_PREFIX		= " DOT";
 	STATCOMPARE_HOT_PREFIX		= " HOT";
 	STATCOMPARE_HEALIN_TOUCH	= "Healing Touch";
