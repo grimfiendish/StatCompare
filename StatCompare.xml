@@ -156,12 +156,6 @@
                 </Anchors>
             </Frame>
         </Frames>
-        <Scripts>
-            <OnHide>
-                StatCompareSelfFrameShowSpells = false;
-				StatCompare_SetDisplayGroupSetting(1, "SpellPowerStats", false)
-            </OnHide>
-        </Scripts>
     </Frame>
     <Frame name="StatCompareTargetFrame" frameStrata="LOW" toplevel="true" enableMouse="true" movable="true" hidden="true"  parent="UIParent">
         <TitleRegion setAllPoints="true"/>
@@ -307,9 +301,6 @@
         <Scripts>
             <OnHide>
                 StatCompareSelfFrame:Hide();
-				StatCompare_SetDisplayGroupSetting(0, "SpellPowerStats", false)
-                StatCompareSelfFrameShowSpells = false; -- todo remove
-                StatCompareTargetFrameShowSpells = false; -- todo remove
             </OnHide>
         </Scripts>
     </Frame>
