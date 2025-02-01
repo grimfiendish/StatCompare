@@ -103,7 +103,8 @@ function StatBuffs_UpdateBuffs(frameName, unit)
 	-- Here we're after the buff list, which displays icons at the bottom of the dialog. Expected values are StatCompareTargetFrame or PaperDollFrame.
 	local buffFrame = getglobal(frame:GetName().."BuffList")
 	if buffFrame ~= nil then
-		if StatCompare_GetDisplayGroupSetting("ActiveBuffs") then
+		local bSelfStat = (unit == "player" and 1 or 0)
+		if StatCompare_GetDisplayGroupSetting(bSelfStat, "ActiveBuffs") then
 			local frameWidth = frame:GetWidth()
 			buffFrame:SetWidth(frameWidth)
 			StatCompare_AddBuffIconsToTooltip(buffFrame, unit)

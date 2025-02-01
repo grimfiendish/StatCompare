@@ -19,7 +19,7 @@ STATCOMPARE_PREFIX_PATTERN = "^%+(%d+)%%?(.*)$";
 STATCOMPARE_SUFFIX_PATTERN = "^(.*)%+(%d+)%%?$";
 
 STATCOMPARE_ITEMLINK_PATTERN = "|cff(%x+)|Hitem:(%d+:%d+:%d+:%d+)|h%[(.-)%]|h|r";
-StatCompare_DISPLAY_GROUPS = { "EquippedItems", "EquippedEnchants", "ActiveBuffs", "BasicStats", "TalentSpec", "SpellPowerStats" }
+STATCOMPARE_DISPLAY_GROUPS = { "EquippedItems", "EquippedEnchants", "ActiveBuffs", "BasicStats", "TalentSpec", "SpellPowerStats" }
 STATCOMPARE_TEXT_INDENT1 = "    "
 STATCOMPARE_TEXT_INDENT2 = "        "
 StatCompre_ColorList = {
@@ -110,20 +110,22 @@ STATCOMPARE_EFFECTS = {
 
 STATCOMPARE_CATEGORIES = {'ATT', 'BON', 'SBON', 'RES', 'SKILL', 'OBON'};
 
-function StatCompare_GetDisplayGroupSetting(setting)
+function StatCompare_GetDisplayGroupSetting(bSelfStat, setting)
 	-- Display Group is the visual groups you see in the pane, like "Stats", "Equipped Items" etc. 
 	local valid = false
-	for _, grp in ipairs(StatCompare_DISPLAY_GROUPS) do if grp == setting then valid = true; end; end
-	if valid and StatCompare_GetSetting("Show"..setting) == 1 then return true; else return false; end
+	for _, grp in ipairs(STATCOMPARE_DISPLAY_GROUPS) do if grp == setting then valid = true; end; end
+	local settingName = "Show"..(bSelfStat == 1 and "Player" or "Target")..setting
+	if valid and StatCompare_GetSetting(settingName) == 1 then return true; else return false; end
 end
 
-function StatCompare_SetDisplayGroupSetting(setting, val)
+function StatCompare_SetDisplayGroupSetting(bSelfStat, setting, val)
 	-- Display Group is the visual groups you see in the pane, like "Stats", "Equipped Items" etc. 
 	local valid = false
-	for _, grp in ipairs(StatCompare_DISPLAY_GROUPS) do if grp == setting then valid = true; end; end
+	for _, grp in ipairs(STATCOMPARE_DISPLAY_GROUPS) do if grp == setting then valid = true; end; end
 	if valid then
 		local ival = (val == true or val == 1) and 1 or 0 -- exisitng settings store 1/0...
-		StatCompare_SetSetting("Show"..setting, ival)
+	local settingName = "Show"..(bSelfStat == 1 and "Player" or "Target")..setting
+		StatCompare_SetSetting(settingName, ival)
 	end
 end
 
@@ -769,20 +771,20 @@ end
 function StatCompare_GetTooltipText(bonuses,bSelfStat)
 	local retstr=""
 	
-	if StatCompare_GetDisplayGroupSetting("BasicStats") then
+	if StatCompare_GetDisplayGroupSetting(bSelfStat, "BasicStats") then
 		retstr= retstr..StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 		retstr= retstr..StatCompare_GetGearsetTooltipText(bonuses,bSelfStat)
 	end
 	
-	if StatCompare_GetDisplayGroupSetting("TalentSpec") and bSelfStat == 1 and StatCompare_GetTalentSpecToolTipText then
+	if StatCompare_GetDisplayGroupSetting(bSelfStat, "TalentSpec") and bSelfStat == 1 and StatCompare_GetTalentSpecToolTipText then
 		retstr= retstr..StatCompare_GetTalentSpecToolTipText()
 	end
 	
-	if StatCompare_GetDisplayGroupSetting("SpellPowerStats") and StatCompare_GetSpellsTooltipText then
+	if StatCompare_GetDisplayGroupSetting(bSelfStat, "SpellPowerStats") and StatCompare_GetSpellsTooltipText then
 		retstr= retstr..StatCompare_GetSpellsTooltipText(StatScanner_bonuses, bSelfStat == 1 and "player" or "target");
 	end
 
-	if StatCompare_GetDisplayGroupSetting("EquippedItems") or StatCompare_GetDisplayGroupSetting("EquippedEnchants") == true and StatCompare_GetEquippedItemNamesAndEnchantsDisplayText then
+	if StatCompare_GetDisplayGroupSetting(bSelfStat, "EquippedItems") or StatCompare_GetDisplayGroupSetting(bSelfStat, "EquippedEnchants") == true and StatCompare_GetEquippedItemNamesAndEnchantsDisplayText then
 		local itemsandenchants=StatCompare_GetEquippedItemNamesAndEnchantsDisplayText(bSelfStat==1 and "player" or "target")
 		retstr=retstr.."\n\n"..itemsandenchants
 	end
@@ -1075,14 +1077,15 @@ function StatCompare_BuildItemCache()
 end
 
 function StatCompare_UpdateDisplayedAttributeGroups(attributesToToggle, buttonName, frameName, unit)
+	local bSelfStat = (unit == "player" and 1 or 0)
 	for _, attributeToToggle in pairs(attributesToToggle) do 
-		if StatCompare_GetDisplayGroupSetting(attributeToToggle) == false then
-			StatCompare_SetDisplayGroupSetting(attributeToToggle, true)
+		if StatCompare_GetDisplayGroupSetting(bSelfStat, attributeToToggle) == false then
+			StatCompare_SetDisplayGroupSetting(bSelfStat, attributeToToggle, true)
 			getglobal(buttonName):UnlockHighlight();
 		else
 			local willHaveAtLeastOneAttributeVisible = false
-			for _, key in ipairs(StatCompare_DISPLAY_GROUPS) do 
-				local value = StatCompare_GetDisplayGroupSetting(key)
+			for _, key in ipairs(STATCOMPARE_DISPLAY_GROUPS) do 
+				local value = StatCompare_GetDisplayGroupSetting(bSelfStat, key)
 				ignore = false
 				for _, toggle in ipairs(attributesToToggle) do
 					if key == toggle then ignore = true; break; end
@@ -1093,7 +1096,7 @@ function StatCompare_UpdateDisplayedAttributeGroups(attributesToToggle, buttonNa
 				end
 			end
 			if willHaveAtLeastOneAttributeVisible == true then
-			StatCompare_SetDisplayGroupSetting(attributeToToggle, false)
+			StatCompare_SetDisplayGroupSetting(bSelfStat, attributeToToggle, false)
 				getglobal(buttonName):LockHighlight();
 			else
 				DEFAULT_CHAT_FRAME:AddMessage("StatCompare - "..GREEN_FONT_COLOR_CODE..STATCOMPARE_ERROR_CANNOT_HIDE_ALL_FIELDS..FONT_COLOR_CODE_CLOSE);
