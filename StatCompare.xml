@@ -157,7 +157,7 @@
             </Frame>
         </Frames>
     </Frame>
-    <Frame name="StatCompareTargetFrame" frameStrata="LOW" toplevel="true" enableMouse="true" movable="true" hidden="true"  parent="UIParent">
+    <Frame name="StatCompareTargetFrame" frameStrata="MEDIUM" toplevel="true" enableMouse="true" movable="true" hidden="true"  parent="UIParent">
         <TitleRegion setAllPoints="true"/>
         <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
             <EdgeSize>
