@@ -3,7 +3,7 @@ StatCompare adds a stats panel next to your Character and Inspection Panes, maki
 
 This version has been updated to make gear checks easier by showing the list of equipped item names and their enchants, as well as all active buffs.
 
-<b>As of January 2025 the enchants and buff info is considered beta</b>
+<b>As of February 2025 it's stable, but I'm still tweaking it so keep updating your addon. Ping Provocateur in turtlewow or drop a note here if you have any issues.</b>
 
 ## Screenshot
 
@@ -38,3 +38,4 @@ View detailed stats on your inspection target
 ## Found a bug?
 
 If you find an issue with the enchants, turn on debugging with `/statc debug on` then send me the ID and the correct name of the enchant via a bug ticket on [the project's github page](https://github.com/grimfiendish/StatCompare). If you're on a custom server, note that.
+
