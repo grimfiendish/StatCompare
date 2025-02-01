@@ -683,9 +683,9 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 			else
 				retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 			end
--- TODO - something weird is happening once i click the spell book. it starts showing this extra info like bear form crap even though i'm a mage.
+
 			-- special hack for DRUID AP -- TODO fix this it's printing too often actually huh its only happening on inspection pane...
-			if(e.effect == "ATTACKPOWER" and CharStats_fullvals and CharStats_fullvals["BEARAP"]) then
+			if(e.effect == "ATTACKPOWER" and CharStats_fullvals and CharStats_fullvals["BEARAP"] and CharStats_fullvals["BEARAP"] > 0) then
 				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
 				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
 			end
@@ -731,7 +731,7 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 				end				
 
 				-- special hack for DRUID AP -- TODO fix this it's printing too often
-				if(e.effect == "ATTACKPOWER" and CharStats_fullvals["BEARAP"]) then
+				if(e.effect == "ATTACKPOWER" and CharStats_fullvals["BEARAP"] and CharStats_fullvals["BEARAP"] > 0) then
 					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
 					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
 				end
@@ -1096,7 +1096,7 @@ function StatCompare_UpdateDisplayedAttributeGroups(attributesToToggle, buttonNa
 				end
 			end
 			if willHaveAtLeastOneAttributeVisible == true then
-			StatCompare_SetDisplayGroupSetting(bSelfStat, attributeToToggle, false)
+				StatCompare_SetDisplayGroupSetting(bSelfStat, attributeToToggle, false)
 				getglobal(buttonName):LockHighlight();
 			else
 				DEFAULT_CHAT_FRAME:AddMessage("StatCompare - "..GREEN_FONT_COLOR_CODE..STATCOMPARE_ERROR_CANNOT_HIDE_ALL_FIELDS..FONT_COLOR_CODE_CLOSE);
@@ -1124,12 +1124,10 @@ function StatCompareSelfFrameStatsButton_OnClick()
 	StatCompare_UpdateDisplayedAttributeGroups({"TalentSpec", "BasicStats"}, "StatCompareSelfFrameStatsButton", "StatCompareSelfFrame", "player")
 end
 
--- TODO: change spellbook icon to this and i guess hide the button for targets. i think it doesnt work. but verify.
 function StatCompareSelfFrameSpellsButton_OnClick()
 	StatCompare_UpdateDisplayedAttributeGroups({"SpellPowerStats"}, "StatCompareSelfFrameStatsButton", "StatCompareSelfFrame", "player")
 end
 
--- TODO: change spellbook icon to this and i guess hide the button for targets. i think it doesnt work. but verify.
 function StatCompareTargetFrameSpellsButton_OnClick()
 	StatCompare_UpdateDisplayedAttributeGroups({"SpellPowerStats"}, "StatCompareTargetFrameSpellsButton", "StatCompareTargetFrame", "target")
 end
@@ -1163,116 +1161,4 @@ function StatCompare_UpdateFrameText(frameName, textbody, titletext)
 	end
 	frame:SetHeight(height);
 	frame:SetWidth(newwidth);
-end
-
-function StatCompareSelfFrameSpellsButton_OnClick_old() --TODO deleteme
-	local text,title,tiptext;
-	if(not StatCompare_CharStats_Scan) then
-		return;
-	end
-
-	if(StatCompareSelfFrameShowSpells == false) then
-		-- Show spells
-		if(not StatCompare_GetSpellsTooltipText) then
-			return
-		end
-		StatCompareSelfFrameShowSpells = true;
-		tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,"player");
-		if(tiptext == "") then
-			return;
-		end
-
-		StatCompareSelfFrameSpellsButton:LockHighlight();
-	else
-		-- show stats
-		StatCompareSelfFrameShowSpells = false;
-		tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,1);
-		if(tiptext == "") then
-			return;
-		end
-		StatCompareSelfFrameSpellsButton:UnlockHighlight();
-	end
-
-	text = getglobal(StatCompareSelfFrame:GetName().."Text");
-	title = getglobal(StatCompareSelfFrame:GetName().."Title");
-	text:SetText(tiptext);
-	height = text:GetHeight();
-	width = text:GetWidth();
-	if(width < title:GetWidth()) then
-		width = title:GetWidth();
-	end
-	
-	if IsAddOnLoaded("S_ItemTip") then
-		local score = ItemSocre:ScanUnit("player")
-		if score and score > 0 then
-			StatCompareSelfFrame:SetHeight(height+60)
-		else
-			StatCompareSelfFrame:SetHeight(height+30)
-		end
-	else
-		StatCompareSelfFrame:SetHeight(height+30)
-	end
-	
-	if StatCompareSelfFrame:GetWidth() < width + 30 then
-		StatCompareSelfFrame:SetWidth(width+30);
-	end
-end
-
-function StatCompareTargetFrameSpellsButton_OnClick_old() -- TODO deleteme
-	local text,title,tiptext;
-	if(not StatCompare_CharStats_Scan) then
-		return;
-	end
-
-	if(StatCompareTargetFrameShowSpells == false) then
-		-- show spells
-		if(not StatCompare_GetSpellsTooltipText) then
-			return
-		end
-		StatCompareTargetFrameShowSpells = true;
--- todo - ehh akshully ... i just ignore all of this. is that... ok? i don't scan stuff in the click events.
-		StatScanner_ScanAllInspect(); -- diff "all" vs "allinspect"
-		if(SC_BuffScanner_ScanAllInspect) then
-			-- Scan the buffers
-			SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "target"); -- diff "target" vs "player"
-		end
-		StatCompare_CharStats_Scan(StatScanner_bonuses); -- diff - no second param vs "player". weird.
-
-		tiptext = StatCompare_GetSpellsTooltipText(StatScanner_bonuses); -- diff - no second param vs "player". weird.
-
-		if(tiptext == "") then
-			return;
-		end
-		StatCompareTargetFrameSpellsButton:LockHighlight();
-	else
-		StatCompareTargetFrameShowSpells = false;
-
-		tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,0);
-
-		if(tiptext == "") then
-			return;
-		end
-		StatCompareTargetFrameSpellsButton:UnlockHighlight();
-	end
-
-	text = getglobal(StatCompareTargetFrame:GetName().."Text");
-	title = getglobal(StatCompareTargetFrame:GetName().."Title");
-	text:SetText(tiptext);
-	height = text:GetHeight();
-	width = text:GetWidth();
-	if(width < title:GetWidth()) then
-		width = title:GetWidth();
-	end
-	
-	if IsAddOnLoaded("S_ItemTip") then
-		local score = ItemSocre:ScanUnit("target")
-		if score and score > 0 then
-			StatCompareTargetFrame:SetHeight(height+60)
-		else
-			StatCompareTargetFrame:SetHeight(height+30)
-		end
-	else
-		StatCompareTargetFrame:SetHeight(height+30)
-	end
-	StatCompareTargetFrame:SetWidth(width+30);
 end
