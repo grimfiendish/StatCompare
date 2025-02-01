@@ -13,9 +13,9 @@ _This version comes bundled with "StatCompareBuff", "StatCompareChar", "StatComp
 ### View  your own stats (e.g. for Gear Checks)
 
 This screenshot shows all stats showing 
-Character's **Spell info** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/inv/inv_misc_book_08.jpg" alt="Spellbook" height="12px"/>),
- **Stats** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/inv/inv_misc_note_01.jpg" alt="Note Icon" height="12px"/>,
- and **Armor/Enchants** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/inv/inv_helmet_10.jpg" alt="Armor" height="12px"/>)
+Character's **Spell info** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/media/inv_misc_book_08.jpg" alt="Spellbook" height="12px"/>),
+ **Stats** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/media/inv_misc_note_01.jpg" alt="Note Icon" height="12px"/>,
+ and **Armor/Enchants** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/media/inv_helmet_10.jpg" alt="Armor" height="12px"/>)
 
 ![Use StatCompare to view your own stats](https://raw.githubusercontent.com/grimfiendish/StatCompare/129ac15b6b7b0308f0a14a214fcf9b0d3e9a2092/media/Character%20-%20Show%20Armor%20-%20Show%20Spells%20-%20Show%20Stats.jpg)
 
