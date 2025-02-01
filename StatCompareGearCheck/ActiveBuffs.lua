@@ -39,7 +39,7 @@ function StatBuffs_GetBuffs(unit)
 end
 --]]
 
-function StatCompare_ResetBuffIcons(tooltipFrame, unit) -- Silly to have an asymmetric contract with frame vs framename TODO
+function StatCompare_ResetBuffIcons(tooltipFrame, unit)
 
 	if tooltipFrame.buffTextures == nil then
 		tooltipFrame.buffTextures = {}

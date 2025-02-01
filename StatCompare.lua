@@ -684,7 +684,7 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 				retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 			end
 
-			-- special hack for DRUID AP -- TODO fix this it's printing too often actually huh its only happening on inspection pane...
+			-- special hack for DRUID AP
 			if(e.effect == "ATTACKPOWER" and CharStats_fullvals and CharStats_fullvals["BEARAP"] and CharStats_fullvals["BEARAP"] > 0) then
 				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
 				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
@@ -730,7 +730,7 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 					retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 				end				
 
-				-- special hack for DRUID AP -- TODO fix this it's printing too often
+				-- special hack for DRUID AP
 				if(e.effect == "ATTACKPOWER" and CharStats_fullvals["BEARAP"] and CharStats_fullvals["BEARAP"] > 0) then
 					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
 					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
@@ -1125,7 +1125,7 @@ function StatCompareSelfFrameStatsButton_OnClick()
 end
 
 function StatCompareSelfFrameSpellsButton_OnClick()
-	StatCompare_UpdateDisplayedAttributeGroups({"SpellPowerStats"}, "StatCompareSelfFrameStatsButton", "StatCompareSelfFrame", "player")
+	StatCompare_UpdateDisplayedAttributeGroups({"SpellPowerStats"}, "StatCompareSelfFrameSpellsButton", "StatCompareSelfFrame", "player")
 end
 
 function StatCompareTargetFrameSpellsButton_OnClick()
