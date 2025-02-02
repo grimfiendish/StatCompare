@@ -551,6 +551,7 @@ end
 
 function SCInspectFrame_Show(unit)
 	HideUIPanel(InspectFrame);
+	oldInspectFrame_Show(unit);
 	if (not UnitIsVisible(unit)) then return; end
 	if(UnitExists(unit) and UnitIsPlayer(unit)) then
 		NotifyInspect(unit);
@@ -563,7 +564,6 @@ function SCInspectFrame_Show(unit)
 		tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,1);
 		SCShowFrame(StatCompareSelfFrame,StatCompareTargetFrame,UnitName("player"),tiptext,0,0);
 	end
-	--oldInspectFrame_Show();
 end
 
 function SCInspectFrame_OnHide()
