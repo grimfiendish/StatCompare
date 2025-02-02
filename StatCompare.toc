@@ -1,7 +1,7 @@
 ﻿## Interface: 11200
 ## Title: StatCompare
 ## Notes: View your character's stats; compare to others. Useful for gear checks and quick comparisons.
-## Version: v1.8.0 beta 20250201
+## Version: v1.8.0 beta 20250202
 ## Title-zhCN: |CFFDD66DD[界面]|R装备属性统计
 ## Notes-zhCN: |CFFDD66DDStatCompare|R|N显示角色装备提供的属性，并可以与其他玩家对比。|N左键点击小地图图标打开配置主窗口。|N右键点击小地图图标打开装备集窗口。|N命令：/statc
 ## Author: slashboy @ 九藜方舟 Dreamland  yyslash@gmail.com / lasthime @ 幻物梵天 艾森纳. Modified by 狗血编剧男20201120 and Provocateur@turtlewow 20250125
