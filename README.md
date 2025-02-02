@@ -13,9 +13,9 @@ _This version comes bundled with "StatCompareBuff", "StatCompareChar", "StatComp
 ### View  your own stats (e.g. for Gear Checks)
 
 This screenshot shows all stats showing 
-Character's **Spell info** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/media/inv_misc_book_08.jpg" alt="Spellbook" height="12px"/>),
- **Stats** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/media/inv_misc_note_01.jpg" alt="Note Icon" height="12px"/>,
- and **Armor/Enchants** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/media/inv_helmet_10.jpg" alt="Armor" height="12px"/>)
+Character's **Spell info** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/media/inv_misc_book_08.jpg" alt="Spellbook" height="16px"/>),
+ **Stats** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/media/inv_misc_note_01.jpg" alt="Note Icon" height="16px"/>,
+ and **Armor/Enchants** (toggle with <img src="https://raw.githubusercontent.com/grimfiendish/StatCompare/9ce8af148fcce7a9273114824a7d90ce8f1ebb33/media/inv_helmet_10.jpg" alt="Armor" height="16px"/>)
 
 ![Use StatCompare to view your own stats](https://raw.githubusercontent.com/grimfiendish/StatCompare/129ac15b6b7b0308f0a14a214fcf9b0d3e9a2092/media/Character%20-%20Show%20Armor%20-%20Show%20Spells%20-%20Show%20Stats.jpg)
 
@@ -31,6 +31,7 @@ View detailed stats on your inspection target
 
 ![Use StatCompare to view your own stats](https://raw.githubusercontent.com/grimfiendish/StatCompare/129ac15b6b7b0308f0a14a214fcf9b0d3e9a2092/media/Inspect%20-%20Show%20Armor%20-%20Show%20Spells%20-%20Show%20Stats.jpg)
 
+**Again - If this is too much information, just click the icons at the top-right to hide what you're not interested in.**
 
 ### 1.7 Screenshots
 
@@ -43,11 +44,11 @@ For comparison, here's the previous version (1.7)'s UI:
 
 * This addon was originally written in 2006 for what appears to be a primarily Chinese audience.
 * ([The Linae-Kronos version](https://github.com/Linae-Kronos/StatCompare) is a slightly updated one from 2007.) 
-* Several dependent-addons were created to augment StatCompare and were floating separately (and also seemed to be totally gone from the internet)
+* Several dependent-addons were created to augment StatCompare and were floating separately (and, frankly, I thought were totally gone from the internet)
 * I moved off of the Linae-Kronos version after finding a [slightly-newer version of the addon](https://gitee.com/shines77/TurtleWoW_AddOns) from 2020 that has been modified to bundle a couple of the dependent addons, such as StatCompareBuffs.
-* In 2025 I added the "StatCompareGearCheck" info, cleaned up the code overall a bit, and fixed several internationalization issues (mainly that several references are only in Chinese). I may have broken things that weren't in the bundle. if you find any issues, please let me know via github.
-* This version ,1.8+,  adds my "Raid Gear check" info which displays talent tree, active buffs (to know how your stats are affected), equipped item list (especially useful on vanilla servers that allow transmogrificatoin), and equipped item's enchants.
-* Folder name was "StatCompare" and in-game name was "Character Status Compare", which was awkward and made it hard to find online, so I got rid of the "Character Status Compare" name.
+* In 2025 I added the "StatCompareGearCheck" dependent-addon, cleaned up the code overall a bit, and fixed several internationalization issues (mainly that several references were only in Chinese). I may have broken things that weren't in the bundle. if you find any issues, please let me know via github.
+* This version ,1.8+,  adds my "Raid Gear Check" info, which displays talent tree, active buffs (to know how your stats are affected), equipped-items list (especially useful on vanilla servers that allow transmogrificatoin), and equipped-item's enchants.
+* Folder name was "StatCompare" and in-game name was "Character Status Compare", which was awkward and made it hard to find online, so I got rid of the "Character Status Compare" name in the English name of the addon.
 
 
 ## Installation
