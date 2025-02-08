@@ -1545,13 +1545,15 @@ StatCompare_EnchantsById = {
 }
 
 
--- Any given Vanilla server will be running on a particular codebase.
--- Some codebases have implemented custom enchants.
--- Here we look up the player's realm name, then map that back to a known codebase's custom spells.
-StatCompare_Private_Server_Supported_Custom_Codebase_By_Realm = {
-	["Nordanaar"] = "TURTLE_WOW",
-	["Tel'Abim"] = "TURTLE_WOW"
-}
+-- From https://github.com/refaim/SortBags/blob/master/SortBags.lua#L6
+local function IsPlayingOnTurtleWoW()
+	-- https://github.com/refaim/Turtle-WoW-UI-Source/blob/d6137c2ebd291f10ce284e586a5733dd5141bef2/Interface/FrameXML/TargetFrame.xml#L183
+	return TargetHPText ~= nil and TargetHPPercText ~= nil
+end
+
+function StatCompare_GetCodebaseFlavor()
+	return IsPlayingOnTurtleWoW() and "TURTLE_WOW" or nil
+end
 
 StatBuffs_Private_Server_Custom_EnchantsById = {
 	["TURTLE_WOW"] = {
@@ -1620,7 +1622,7 @@ function StatCompare_GetEnchantName(id)
 	id = tonumber(id)
 	local enchantName
 	local realmName = GetRealmName()
-	local codebase = StatCompare_Private_Server_Supported_Custom_Codebase_By_Realm[realmName]
+	local codebase = StatCompare_GetCodebaseFlavor()
 	if codebase ~= nil and StatBuffs_Private_Server_Custom_EnchantsById[codebase] ~= nil and StatBuffs_Private_Server_Custom_EnchantsById[codebase][id] ~= nil then
 		enchantName = StatBuffs_Private_Server_Custom_EnchantsById[codebase][id]["effect"]
 	end
