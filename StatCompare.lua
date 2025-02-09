@@ -600,7 +600,7 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 		baseval["DODGE"] = GetDodgeChance();
 		baseval["TOBLOCK"] = GetBlockChance();
 		if(baseval["TOBLOCK"] == 0) then
-			baseval["PARRY"] = nil;
+			baseval["TOBLOCK"] = nil;
 		end
 		if IsAddOnLoaded("BetterCharacterStats") then -- XXX OMG! Awesome
 			baseval["CRIT"] = BCS:GetCritChance()
