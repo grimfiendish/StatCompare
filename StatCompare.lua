@@ -111,7 +111,7 @@ STATCOMPARE_EFFECTS = {
 STATCOMPARE_CATEGORIES = {'ATT', 'BON', 'SBON', 'RES', 'SKILL', 'OBON'};
 
 function StatCompare_GetDisplayGroupSetting(bSelfStat, setting)
-	-- Display Group is the visual groups you see in the pane, like "Stats", "Equipped Items" etc. 
+	-- Display Group is the visual groups you see in the pane, like "Stats", "Equipped Items" etc.
 	local valid = false
 	for _, grp in ipairs(STATCOMPARE_DISPLAY_GROUPS) do if grp == setting then valid = true; end; end
 	local settingName = "Show"..(bSelfStat == 1 and "Player" or "Target")..setting
@@ -119,7 +119,7 @@ function StatCompare_GetDisplayGroupSetting(bSelfStat, setting)
 end
 
 function StatCompare_SetDisplayGroupSetting(bSelfStat, setting, val)
-	-- Display Group is the visual groups you see in the pane, like "Stats", "Equipped Items" etc. 
+	-- Display Group is the visual groups you see in the pane, like "Stats", "Equipped Items" etc.
 	local valid = false
 	for _, grp in ipairs(STATCOMPARE_DISPLAY_GROUPS) do if grp == setting then valid = true; end; end
 	if valid then
@@ -252,7 +252,7 @@ function StatCompare_SetupHook(enable)
 			end
 		end
 	end
-	
+
 end
 
 function StatCompare_SetupDressHook()
@@ -285,7 +285,7 @@ function StatCompare_Register(register)
 		this:RegisterEvent("PLAYER_LOGOUT");
 		this:RegisterEvent("PLAYER_ENTERING_WORLD");
 		this:RegisterEvent("UNIT_NAME_UPDATE");
-	else	
+	else
 		this:UnregisterEvent("PLAYER_ENTERING_WORLD");
 		this:UnregisterEvent("UNIT_INVENTORY_CHANGED");
 		this:UnregisterEvent("PLAYER_LOGOUT");
@@ -386,9 +386,9 @@ function StatCompare_OnEvent()
 			StatCompare_InitConfig();
 		end
 		if (not StatCompare_CharStats_Scan) then
-			-- in 2006 i think dude made a separate addon but changed the base addon to make it work. 
+			-- in 2006 i think dude made a separate addon but changed the base addon to make it work.
 			-- So there's this spell book that does nothing but is always visible.
-			-- I can't find the addon online but it surely exists somewhere, 
+			-- I can't find the addon online but it surely exists somewhere,
 			-- so I haven't removed the code but.. now it'll only show when it's abble to be useful.
 			StatCompareSelfFrameSpellsButton:Hide()
 			StatCompareTargetFrameSpellsButton:Hide()
@@ -470,7 +470,7 @@ function SCGoodInspect_InspectFrame_Show(unit)
 
 	tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,1);
 	SCShowFrame(StatCompareSelfFrame,StatCompareTargetFrame,UnitName("player"),tiptext,0,0);
-	
+
 end
 function SCInspectorFrameHide()
 	SCHideFrame(StatCompareTargetFrame);
@@ -557,7 +557,7 @@ function SCInspectFrame_Show(unit)
 		NotifyInspect(unit);
 		InspectFrame.unit = unit;
 		ShowUIPanel(InspectFrame);
-	
+
 		local tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,0);
 		SCShowFrame(StatCompareTargetFrame,InspectFrame,UnitName("target"),tiptext,-5,-12);
 
@@ -637,9 +637,9 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 					retstr = retstr .. "\n"
 				end
 				retstr = retstr .. "\n" ..GREEN_FONT_COLOR_CODE.. getglobal('STATCOMPARE_CAT_'..cat)..":"..FONT_COLOR_CODE_CLOSE;
-				
+
 			end
-			
+
 			if (bSelfStat==1) then
 				if(baseval[e.effect]) then
 					if(e.lformat) then
@@ -707,9 +707,9 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 						retstr = retstr .. "\n"
 					end
 					retstr = retstr .. "\n" ..GREEN_FONT_COLOR_CODE.. getglobal('STATCOMPARE_CAT_'..cat)..":"..FONT_COLOR_CODE_CLOSE;
-					
+
 				end
-				
+
 				if (bSelfStat==1 and baseval[e.effect]) then
 					if(e.lformat) then
 						lval = format(e.lformat, baseval[e.effect]);
@@ -728,7 +728,7 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 					retstr = retstr.. GREEN_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 				else
 					retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
-				end				
+				end
 
 				-- special hack for DRUID AP
 				if(e.effect == "ATTACKPOWER" and CharStats_fullvals["BEARAP"] and CharStats_fullvals["BEARAP"] > 0) then
@@ -743,7 +743,7 @@ end
 
 function StatCompare_GetGearsetTooltipText(bonuses,bSelfStat)
 	local setstr=""
-	
+
 	local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SET_PREFIX..FONT_COLOR_CODE_CLOSE
 	for i,v in pairs(StatScanner_setcount) do
 		setstr=setstr.."\n"..'|cff'..v.color..i..v.count.."/"..v.total.."）"..FONT_COLOR_CODE_CLOSE;
@@ -762,7 +762,7 @@ function StatCompare_UpdateAndGetTooltipText(bonuses, bSelfStat)
 	if(StatCompare_CharStats_Scan) then
 		StatCompare_CharStats_Scan(StatScanner_bonuses, (bSelfStat == 1 and "player" or "target"));
 	end
-	
+
 	local tiptext = StatCompare_GetTooltipText(StatScanner_bonuses, bSelfStat);
 	return tiptext
 end
@@ -770,16 +770,16 @@ end
 
 function StatCompare_GetTooltipText(bonuses,bSelfStat)
 	local retstr=""
-	
+
 	if StatCompare_GetDisplayGroupSetting(bSelfStat, "BasicStats") then
 		retstr= retstr..StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 		retstr= retstr..StatCompare_GetGearsetTooltipText(bonuses,bSelfStat)
 	end
-	
+
 	if StatCompare_GetDisplayGroupSetting(bSelfStat, "TalentSpec") and bSelfStat == 1 and StatCompare_GetTalentSpecToolTipText then
 		retstr= retstr..StatCompare_GetTalentSpecToolTipText()
 	end
-	
+
 	if StatCompare_GetDisplayGroupSetting(bSelfStat, "SpellPowerStats") and StatCompare_GetSpellsTooltipText then
 		retstr= retstr..StatCompare_GetSpellsTooltipText(StatScanner_bonuses, bSelfStat == 1 and "player" or "target");
 	end
@@ -801,7 +801,7 @@ function StatComparePaintText(short,val)
 	end;
 	if(val) then
 		return '|cff'.. color .. val .. FONT_COLOR_CODE_CLOSE
-	else 
+	else
 		return '|cff'.. color .. text .. FONT_COLOR_CODE_CLOSE
 	end;
 end
@@ -818,17 +818,17 @@ end
 -- 2006.01.27 edit --
 function StatCompare_SetupItemLinkHook()
 	if(StatCompare_enable==1) then
-		if ((ChatFrame_OnHyperlinkShow ~= StatCompare_ChatFrame_OnHyperlinkShow) and (scoldChatFrame_OnHyperlinkShow == nil)) then			
+		if ((ChatFrame_OnHyperlinkShow ~= StatCompare_ChatFrame_OnHyperlinkShow) and (scoldChatFrame_OnHyperlinkShow == nil)) then
 			scoldChatFrame_OnHyperlinkShow = ChatFrame_OnHyperlinkShow;
-			ChatFrame_OnHyperlinkShow = StatCompare_ChatFrame_OnHyperlinkShow;		
+			ChatFrame_OnHyperlinkShow = StatCompare_ChatFrame_OnHyperlinkShow;
 		end
-		if ((PaperDollItemSlotButton_OnClick ~= StatCompare_PaperDollItemSlotButton_OnClick) and (scoldPaperDollItemSlotButton_OnClick == nil)) then			
+		if ((PaperDollItemSlotButton_OnClick ~= StatCompare_PaperDollItemSlotButton_OnClick) and (scoldPaperDollItemSlotButton_OnClick == nil)) then
 			scoldPaperDollItemSlotButton_OnClick = PaperDollItemSlotButton_OnClick;
-			PaperDollItemSlotButton_OnClick = StatCompare_PaperDollItemSlotButton_OnClick;		
+			PaperDollItemSlotButton_OnClick = StatCompare_PaperDollItemSlotButton_OnClick;
 		end
-		if ((InspectPaperDollItemSlotButton_OnClick ~= StatCompare_InspectPaperDollItemSlotButton_OnClick) and (scoldInspectPaperDollItemSlotButton_OnClick == nil)) then			
+		if ((InspectPaperDollItemSlotButton_OnClick ~= StatCompare_InspectPaperDollItemSlotButton_OnClick) and (scoldInspectPaperDollItemSlotButton_OnClick == nil)) then
 			scoldInspectPaperDollItemSlotButton_OnClick = InspectPaperDollItemSlotButton_OnClick;
-			InspectPaperDollItemSlotButton_OnClick = StatCompare_InspectPaperDollItemSlotButton_OnClick;		
+			InspectPaperDollItemSlotButton_OnClick = StatCompare_InspectPaperDollItemSlotButton_OnClick;
 		end
 
 	else -- unhook
@@ -929,7 +929,7 @@ function StatCompare_DeleteItem(sItem)
 	end
 end
 function StatCompare_ItemCol_Onclick()
-	local id=this:GetID();	
+	local id=this:GetID();
 	local button = getglobal("StatCompareItem"..id.."_Name");
 	local s=button:GetText();
 	if (s ==nil or s=="") then return; end
@@ -1078,19 +1078,19 @@ end
 
 function StatCompare_UpdateDisplayedAttributeGroups(attributesToToggle, buttonName, frameName, unit)
 	local bSelfStat = (unit == "player" and 1 or 0)
-	for _, attributeToToggle in pairs(attributesToToggle) do 
+	for _, attributeToToggle in pairs(attributesToToggle) do
 		if StatCompare_GetDisplayGroupSetting(bSelfStat, attributeToToggle) == false then
 			StatCompare_SetDisplayGroupSetting(bSelfStat, attributeToToggle, true)
 			getglobal(buttonName):UnlockHighlight();
 		else
 			local willHaveAtLeastOneAttributeVisible = false
-			for _, key in ipairs(STATCOMPARE_DISPLAY_GROUPS) do 
+			for _, key in ipairs(STATCOMPARE_DISPLAY_GROUPS) do
 				local value = StatCompare_GetDisplayGroupSetting(bSelfStat, key)
 				ignore = false
 				for _, toggle in ipairs(attributesToToggle) do
 					if key == toggle then ignore = true; break; end
 				end
-				if ignore == false and value == true then 
+				if ignore == false and value == true then
 					willHaveAtLeastOneAttributeVisible = true
 					break
 				end
@@ -1151,7 +1151,7 @@ function StatCompare_UpdateFrameText(frameName, textbody, titletext)
 	local height = text:GetHeight() + title:GetHeight() + paddingForAesthetics;
 	local newwidth = text:GetWidth() + paddingForAesthetics;
 	local framewidth = frame:GetWidth();
-	if newwidth < framewidth then 
+	if newwidth < framewidth then
 		newwidth = framewidth
 	end
 	local iconwidth = 20*4;
