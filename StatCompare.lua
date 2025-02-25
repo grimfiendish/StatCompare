@@ -693,8 +693,7 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 		elseif(CharStats_fullvals and CharStats_fullvals[e.effect]) then
 			if(e.effect == "SPELLHIT" or e.effect == "TOHIT") then
 			elseif(CharStats_fullvals[e.effect] == 0) then
-			elseif(not e.show) then
-			elseif(e.show == 0) then
+			elseif(e.show and e.show == 0) then
 			else
 				if(e.lformat) then
 					val = format(e.lformat, CharStats_fullvals[e.effect]);
