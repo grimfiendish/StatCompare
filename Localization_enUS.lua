@@ -75,6 +75,13 @@ function SC_Localization_enUS()
 	STATCOMPARE_DETARRES	= "Spell Penetration";
 	STATCOMPARE_ALLRES	= "All resistance";
 
+	STATCOMPARE_ARCANE_SHORT = "Ar"
+	STATCOMPARE_FIRE_SHORT = "Fi"
+	STATCOMPARE_NATURE_SHORT = "Na"
+	STATCOMPARE_FROST_SHORT = "Fr"
+	STATCOMPARE_SHADOW_SHORT = "Sh"
+	STATCOMPARE_HOLY_SHORT = "Ho"
+
 	STATCOMPARE_FISHING	= "Fishing";
 	STATCOMPARE_MINING	= "Mining";
 	STATCOMPARE_HERBALISM	= "Herbalism";
@@ -101,7 +108,7 @@ function SC_Localization_enUS()
 	STATCOMPARE_NATUREDMG	= "Nature Damage";
 	STATCOMPARE_SHADOWDMG	= "Shadow Damage";
 	STATCOMPARE_SPELLCRIT	= "Crit. Spell";
-	STATCOMPARE_SPELLTOHIT	= "Chance to Hit with spells";
+	STATCOMPARE_SPELLTOHIT	= "Spell Hit Chance";
 	STATCOMPARE_HEAL	= "Healing";
 	STATCOMPARE_HOLYCRIT	= "Crit. Holy Spell";
 	STATCOMPARE_NATURECRIT	= "Crit. Nature Spell";
@@ -173,6 +180,8 @@ function SC_Localization_enUS()
 		{ pattern = "Increases damage done by Earth Shock, Flame Shock, and Frost Shock by up to (%d+)%.", effect = {"EARTHSHOCK","FLAMESHOCK","FROSTSHOCK"}}, 
 		{ pattern = "Increases your effective stealth level by 1%.", effect = "STEALTH", value = 5},
 		{ pattern = "Increases your effective stealth level%.", effect = "STEALTH", value = 8},
+--		{ pattern = "Increases spell damage and healing by up to (%d+)%% of your total Spirit.", effect = "HEAL" } -- spiritual guidance ... but... it's a percent of total spirit. works needs done.
+--		{ pattern = "Increases healing done by magical spells and effects of all party members within 30 yards by up to (%d+).", effect = "HEAL"}, -- TODO verify. https://www.wowhead.com/classic/search?q=Atiesh%2C+Greatstaff+of+the+Guardian
 
 	};
 

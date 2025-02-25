@@ -77,6 +77,7 @@ STATCOMPARE_EFFECTS = {
 	{ effect = "TOHIT", 		name = STATCOMPARE_TOHIT, 		format = "+%d%%",	lformat = "%.2f%%",	short = "MH",	cat = "BON",	opt="ShowToHit" },
 	{ effect = "RANGEDATTACKPOWER", name = STATCOMPARE_RANGEDATTACKPOWER,	format = "+%d",	lformat = "%d",		show = 1,	short = "RA",	cat = "BON",	opt="ShowRAP" },
 	{ effect = "RANGEDCRIT",	name = STATCOMPARE_RANGEDCRIT,		format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "RC",	cat = "BON",	opt="ShowRCrit" },
+--TODO	{ effect = "RANGEDHIT",	name = STATCOMPARE_RANGEDHIT,		format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "RH",	cat = "BON",	opt="ShowRHit" },
 
 	{ effect = "DMG",		name = STATCOMPARE_DMG, 			format = "+%d",		short = "CD",	cat = "SBON" },
 	{ effect = "DMGUNDEAD",		name = STATCOMPARE_DMGUNDEAD, 			format = "+%d",		short = "CD",	cat = "SBON" },
@@ -598,16 +599,12 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 		_, baseval["SHADOWRES"], _, _ = UnitResistance("player",5);
 
 		baseval["DODGE"] = GetDodgeChance();
+		baseval["CRIT"] = StatCompare_CharStats_GetCritChance()
 		baseval["TOBLOCK"] = GetBlockChance();
+		baseval["PARRY"] = GetParryChance();
 		if(baseval["TOBLOCK"] == 0) then
 			baseval["TOBLOCK"] = nil;
 		end
-		if IsAddOnLoaded("BetterCharacterStats") then -- XXX OMG! Awesome
-			baseval["CRIT"] = BCS:GetCritChance()
-		else
-			baseval["CRIT"] = StatCompare_CharStats_GetCritChance()
-		end
-		baseval["PARRY"] = GetParryChance();
 		if(baseval["PARRY"] == 0) then
 			baseval["PARRY"] = nil;
 		end
@@ -637,7 +634,6 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 					retstr = retstr .. "\n"
 				end
 				retstr = retstr .. "\n" ..GREEN_FONT_COLOR_CODE.. getglobal('STATCOMPARE_CAT_'..cat)..":"..FONT_COLOR_CODE_CLOSE;
-
 			end
 
 			if (bSelfStat==1) then
@@ -676,6 +672,24 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 			if(e.effect == "MANAREG") then
 				val = val.." MP/5s"
 			end
+
+
+			-- XXX [[ TEMPORARY / TESTING
+			-- instead of all these random addons doing their own thing in the base addon,
+			-- it'd be cool to do registered callbacks like `StatCompare:LibCallback("GetStatsDisplayText", { ["unit"] = "player", ... })`
+			-- You'd also have StatCompare:LibRegisterCallback(fnstr, func) so like `StatCompareLibRegisterCallback("GetStatsDisplayText", BCSLib:GetStat)`. maybe we always send a 'context' object that's a table?
+			local b = BCSLib ~= nil and BCSLib.StatHasCallback and 1 or 0
+			local a = BCSLib ~= nil and BCSLib.StatHasCallback ~= nil and BCSLib:StatHasCallback(e.effect) ~= nil
+			local bcs_stat = BCSLib and BCSLib.StatHasCallback and BCSLib:StatHasCallback(e.effect) == true and BCSLib:GetStat(e.effect, (bSelfStat == 1 and "player" or "target")) or nil
+			if bcs_stat ~= nil then val = bcs_stat.." *" end -- TODO
+
+
+			-- XXX ]]
+
+
+
+
+
 
 			retstr = retstr.. "\n".. StatComparePaintText(e.short,e.name)..":\t";
 			if(SC_BuffScanner_bonuses and SC_BuffScanner_bonuses[e.effect]) then

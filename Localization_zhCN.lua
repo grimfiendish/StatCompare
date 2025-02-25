@@ -75,6 +75,14 @@ function SC_Localization_zhCN()
 	STATCOMPARE_DETARRES	= "降低目标抗性";
 	STATCOMPARE_ALLRES	= "所有抗性";
 
+	-- Stole these from the "_S1" table below. Hopefully they're right. :)
+	STATCOMPARE_ARCANE_SHORT = "奥术"
+	STATCOMPARE_FIRE_SHORT = "火焰"
+	STATCOMPARE_NATURE_SHORT = "自然"
+	STATCOMPARE_FROST_SHORT = "冰霜"
+	STATCOMPARE_SHADOW_SHORT = "暗影"
+	STATCOMPARE_HOLY_SHORT = "神圣"
+
 	STATCOMPARE_FISHING	= "钓鱼";
 	STATCOMPARE_MINING	= "挖矿";
 	STATCOMPARE_HERBALISM	= "草药";

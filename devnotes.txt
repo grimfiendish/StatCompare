@@ -1,2 +1,11 @@
 Primary frames are PaperDollFrame (for self view) or InspectFrame (other player) and StatCompareTargetFrame (self view next to inspection view)
 
+Ideas on a "raid gear check for screenshotting" section...
+* I am signing up for [AQ40] and lower
+* I am bringing THIS spec to raid: 12 / 34 / 56
+* [x] If I change specs, I will send another screenshot with its spec and gear
+* I am signing up as [x] Main tank [x] offtank [x] melee dps [ ] range dps [ ] caster dps [ ] heals
+* I [ KNOW INTIMATELY / AM RUSTY ON / AM NEW BUT HAVE WATCHED VIDEOS ON / WOULD LIKE A CLASSLEADER'S OVERSIGHT ON ] the mechanics of each fight, including trash and my class's role here.
+* [x] [ I have / I do not have / this is my ] dungeon-appropriate Resistance set at least as high as raid's minimum
+* [x] [AQ40] I have a frost weapon: [Frostbolt | Coldrage Dagger | ...] for slimebossguy
+* [x] [AQ40] I have the Barov trinket for Huhuron

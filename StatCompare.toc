@@ -16,6 +16,7 @@ StatScanner.lua
 StatCompare.lua
 StatCompare.xml
 
+init\StatCompareBetterCharacterStats.xml
 init\StatCompareGearCheck.xml
 init\StatCompareBuff.xml
 init\StatCompareChar.xml
