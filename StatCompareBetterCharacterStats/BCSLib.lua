@@ -16,6 +16,7 @@
 BCSLib = BCSLib or {}
 BCS = BCS or {}
 
+BCS_MIN_VERSION = "1.13.0"
 
 local function nvl(value, default)
     return value ~= nil and value or default
@@ -79,7 +80,7 @@ local function GetUnitSpellHitRating(unit)
 	fmt="%s: %d%%"
 	
 	if base_spell_hit ~= total_hit then 
-		retval = retval .. " ("
+		retval = retval .. StatComparePaintText("X","( ")
 	end
 	if nvld(spell_hit_arcane) > 0 then
 		retval = retval.." "..StatComparePaintText("A",format(fmt, STATCOMPARE_ARCANE_SHORT, base_spell_hit + spell_hit_arcane))
@@ -97,7 +98,7 @@ local function GetUnitSpellHitRating(unit)
 		retval = retval.." "..StatComparePaintText("S",format(fmt, STATCOMPARE_SHADOW_SHORT, base_spell_hit + spell_hit_shadow))
 	end
 	if base_spell_hit ~= total_hit then
-		retval = retval .. " )"
+		retval = retval .. StatComparePaintText("X"," )")
 	end
 	return retval
 end
