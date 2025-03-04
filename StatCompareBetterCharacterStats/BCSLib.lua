@@ -53,7 +53,11 @@ local function GetUnitBlockValue(unit)
 	return BCS:GetUnitBlockValue(unit)
 end
 local function GetUnitRangedCritChance(unit)
-	return BCS:GetUnitRangedCritChance(unit)
+	local chance = BCS:GetUnitRangedCritChance(unit)
+	if chance ~= nil then
+		chance = string.format("%.2f%%", chance)
+	end
+	return chance
 end
 local function GetUnitRangedHitRating(unit)
 	return BCS:GetUnitRangedHitRating(unit)
@@ -64,13 +68,21 @@ local function GetUnitHealingPower(unit)
 	return spellpower + healingpower
 end
 local function GetUnitSpellCritChance(unit)
-	return BCS:GetUnitSpellCritChance(unit)
+	local chance =BCS:GetUnitSpellCritChance(unit)
+	if chance ~= nil then
+		chance = string.format("%.2f%%", chance)
+	end
+	return chance
 end
 local function GetUnitCritChance(unit)
 	if unit == "player" then
-		return BCS:GetCritChance() -- This is super weird. Why doesn't it look at gear? For now this only looks at spellbook so useless for targets...
+		local chance = BCS:GetCritChance()
+		if chance ~= nil then
+			chance = string.format("%.2f%%", chance)
+		end
+		return chance
 	end
-	return "TODO?"
+	return nil
 end
 local function GetUnitSpellHitRating(unit)
 	local base_spell_hit, spell_hit_fire, spell_hit_frost, spell_hit_arcane, spell_hit_shadow, spell_hit_holy = BCS:GetUnitSpellHitRating(unit)
