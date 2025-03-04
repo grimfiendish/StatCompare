@@ -111,6 +111,16 @@ STATCOMPARE_EFFECTS = {
 
 STATCOMPARE_CATEGORIES = {'ATT', 'BON', 'SBON', 'RES', 'SKILL', 'OBON'};
 
+local function nvl(value, default)
+    return value ~= nil and value or default
+end
+local function nvls(value, default)
+    return value ~= nil and tostring(value) or default or ""
+end
+local function nvld(value, default)
+    return value ~= nil and tonumber(value) or default or 0
+end
+
 function StatCompare_GetDisplayGroupSetting(bSelfStat, setting)
 	-- Display Group is the visual groups you see in the pane, like "Stats", "Equipped Items" etc.
 	local valid = false
@@ -759,7 +769,7 @@ function StatCompare_GetGearsetTooltipText(bonuses,bSelfStat)
 
 	local settitle="\n\n"..GREEN_FONT_COLOR_CODE..STATCOMPARE_SET_PREFIX..FONT_COLOR_CODE_CLOSE
 	for i,v in pairs(StatScanner_setcount) do
-		setstr=setstr.."\n"..'|cff'..v.color..i..v.count.."/"..v.total.."）"..FONT_COLOR_CODE_CLOSE;
+		setstr=setstr.."\n"..'|cff'..v.color..i..v.count.."/"..v.total..") "..FONT_COLOR_CODE_CLOSE;
 	end
 	if (setstr~="") then setstr=settitle..setstr; end
 	return setstr
@@ -800,6 +810,11 @@ function StatCompare_GetTooltipText(bonuses,bSelfStat)
 	if StatCompare_GetDisplayGroupSetting(bSelfStat, "EquippedItems") or StatCompare_GetDisplayGroupSetting(bSelfStat, "EquippedEnchants") == true and StatCompare_GetEquippedItemNamesAndEnchantsDisplayText then
 		local itemsandenchants=StatCompare_GetEquippedItemNamesAndEnchantsDisplayText(bSelfStat==1 and "player" or "target")
 		retstr=retstr.."\n\n"..itemsandenchants
+	end
+	
+	if StatCompare_IsAllHidden(bSelfStat) and nvl(StatCompare_IsTutorialInstalled,false) == true then
+		local tutorialtext = StatCompare_GetTutorialText()
+		retstr = retstr .. tutorialtext
 	end
 
 	return retstr;
@@ -1089,6 +1104,17 @@ function StatCompare_BuildItemCache()
 	end
 end
 
+function StatCompare_IsAllHidden(bSelfStat)
+	local allHidden = true
+	for _, key in ipairs(STATCOMPARE_DISPLAY_GROUPS) do
+		if StatCompare_GetDisplayGroupSetting(bSelfStat, key) == true then
+			allHidden = false
+			break
+		end
+	end
+	return allHidden
+end
+
 function StatCompare_UpdateDisplayedAttributeGroups(attributesToToggle, buttonName, frameName, unit)
 	local bSelfStat = (unit == "player" and 1 or 0)
 	for _, attributeToToggle in pairs(attributesToToggle) do
@@ -1108,7 +1134,7 @@ function StatCompare_UpdateDisplayedAttributeGroups(attributesToToggle, buttonNa
 					break
 				end
 			end
-			if willHaveAtLeastOneAttributeVisible == true then
+			if willHaveAtLeastOneAttributeVisible == true or nvl(StatCompare_IsTutorialInstalled,false) == true then
 				StatCompare_SetDisplayGroupSetting(bSelfStat, attributeToToggle, false)
 				getglobal(buttonName):LockHighlight();
 			else
