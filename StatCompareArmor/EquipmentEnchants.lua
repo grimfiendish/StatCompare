@@ -1646,19 +1646,22 @@ function StatCompare_GetEquippedItemNamesAndEnchantsDisplayText(unit)
 	end
 	
  	retstr=GREEN_FONT_COLOR_CODE..STATCOMPARE_EQUIPPED..":\n"..FONT_COLOR_CODE_CLOSE
-	
-	for i=1, 19 ,1 do
-		local link = GetInventoryItemLink(sunit, i)
-		local a, itemId, enchantId, d, e = StatCompare_splitlink(link)
-		local enchantName = StatCompare_GetEnchantName(enchantId)
-		local enchantstr = enchantName and " > " ..enchantName or (enchantId and tonumber(enchantId) > 0 and " > Unknown Enchant - "..GREEN_FONT_COLOR_CODE..enchantId..FONT_COLOR_CODE_CLOSE or "")
-		
-		if StatCompare_IsDebugMode then
-			enchantstr = enchantstr .. (enchantId and tonumber(enchantId)>0 and " (ID:"..GREEN_FONT_COLOR_CODE..enchantId..FONT_COLOR_CODE_CLOSE..")" or "")
-		end
-		
-		if link then
-			retstr = retstr..link..enchantstr.."\n"
+	local DISPLAYORDER={1, 2, 3, 5, 15, 9, 10, 6, 7, 8, 11, 12, 13, 14, 18, 16, 17}
+	for _,i in ipairs(DISPLAYORDER) do
+		if i ~= 99 --[[15 is the Shirt--]] then
+			local slotname = STATCOMPARE_UNITSLOT[i]
+			local link = GetInventoryItemLink(sunit, i)
+			local a, itemId, enchantId, d, e = StatCompare_splitlink(link)
+			local enchantName = StatCompare_GetEnchantName(enchantId)
+			local enchantstr = enchantName and " > " ..enchantName or (enchantId and tonumber(enchantId) > 0 and " > Unknown Enchant - "..GREEN_FONT_COLOR_CODE..enchantId..FONT_COLOR_CODE_CLOSE or "")
+			
+			if StatCompare_IsDebugMode then
+				enchantstr = enchantstr .. (enchantId and tonumber(enchantId)>0 and " (ID:"..GREEN_FONT_COLOR_CODE..enchantId..FONT_COLOR_CODE_CLOSE..")" or "")
+			end
+			
+			if link then
+				retstr = retstr.."  "..StatComparePaintText("X",(slotname and slotname or "?")..": ")..link..enchantstr.."\n"
+			end
 		end
 	end
 	return retstr
