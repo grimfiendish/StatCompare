@@ -1,5 +1,0 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">
-    <Include file="..\StatCompareGearCheck\TalentSpec.lua"/>
-    <Include file="..\StatCompareGearCheck\ActiveBuffs.lua"/>
-    <Include file="..\StatCompareGearCheck\EquipmentEnchants.lua"/>
-</Ui>

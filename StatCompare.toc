@@ -11,13 +11,16 @@
 Localization_zhCN.lua
 Localization_enUS.lua
 Localization.lua
+
+init\StatCompareTutorial.xml
+
 SCOptions.lua
 StatScanner.lua
 StatCompare.lua
 StatCompare.xml
 
 init\StatCompareBetterCharacterStats.xml
-init\StatCompareGearCheck.xml
+init\StatCompareArmor.xml
 init\StatCompareBuff.xml
 init\StatCompareChar.xml
 init\StatCompareSpell.xml

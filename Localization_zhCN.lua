@@ -56,6 +56,8 @@ function SC_Localization_zhCN()
 	STATCOMPARE_ACTIVEBUFFS = "主动增益";
 
 	STATCOMPARE_ATTACKNAME = "攻击";
+	STATCOMPARE_TALENT_SPECIALIZATION="Talent Spec"
+	STATCOMPARE_TUTORIAL_NOTE_ICON=[["Note" icon shows stats/resists/crit chance, etc.]]
 		
 	-- bonus names --- 显示菜单用
 	STATCOMPARE_STR = "力量";

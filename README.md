@@ -5,7 +5,7 @@ This version has been updated to make gear checks easier by showing the list of 
 
 <b>As of February 2025 it's stable, but I'm still tweaking it so keep updating your addon. Ping Provocateur in turtlewow or drop a note on [the project's github page](https://github.com/grimfiendish/StatCompare) if you have any issues.</b>
 
-_This version comes bundled with "StatCompareBuff", "StatCompareChar", "StatCompareSpell", "StatCompareGearCheck", and "StatCompareUI"._
+_This version comes bundled with "StatCompareBuff", "StatCompareChar", "StatCompareSpell", "StatCompareArmor", and "StatCompareUI"._
 
 
 ## 1.8 Screenshots
@@ -46,7 +46,7 @@ For comparison, here's the previous version (1.7)'s UI:
 * ([The Linae-Kronos version](https://github.com/Linae-Kronos/StatCompare) is a slightly updated one from 2007.) 
 * Several dependent-addons were created to augment StatCompare and were floating separately (and, frankly, I thought were totally gone from the internet)
 * I moved off of the Linae-Kronos version after finding a [slightly-newer version of the addon](https://gitee.com/shines77/TurtleWoW_AddOns) from 2020 that has been modified to bundle a couple of the dependent addons, such as StatCompareBuffs.
-* In 2025 I added the "StatCompareGearCheck" dependent-addon, cleaned up the code overall a bit, and fixed several internationalization issues (mainly that several references were only in Chinese). I may have broken things that weren't in the bundle. if you find any issues, please let me know via github.
+* In 2025 I added the "StatCompareArmor" dependent-addon, cleaned up the code overall a bit, and fixed several internationalization issues (mainly that several references were only in Chinese). I may have broken things that weren't in the bundle. if you find any issues, please let me know via github.
 * This version ,1.8+,  adds my "Raid Gear Check" info, which displays talent tree, active buffs (to know how your stats are affected), equipped-items list (especially useful on vanilla servers that allow transmogrificatoin), and equipped-item's enchants.
 * Folder name was "StatCompare" and in-game name was "Character Status Compare", which was awkward and made it hard to find online, so I got rid of the "Character Status Compare" name in the English name of the addon.
 

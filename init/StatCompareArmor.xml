@@ -1,0 +1,6 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Include file="..\StatCompareArmor\Localization.lua"/>
+    <Include file="..\StatCompareArmor\TalentSpec.lua"/>
+    <Include file="..\StatCompareArmor\ActiveBuffs.lua"/>
+    <Include file="..\StatCompareArmor\EquipmentEnchants.lua"/>
+</Ui>

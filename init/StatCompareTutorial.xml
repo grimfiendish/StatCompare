@@ -1,0 +1,4 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Include file="..\StatCompareTutorial\Localization.lua"/>
+    <Include file="..\StatCompareTutorial\TutorialUI.lua"/>
+</Ui>

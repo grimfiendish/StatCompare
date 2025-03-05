@@ -111,6 +111,10 @@ STATCOMPARE_EFFECTS = {
 
 STATCOMPARE_CATEGORIES = {'ATT', 'BON', 'SBON', 'RES', 'SKILL', 'OBON'};
 
+if StatCompare_TutorialIconExplanation then
+	StatCompare_TutorialIconExplanation["Interface\\Icons\\INV_Misc_Note_01"] = STATCOMPARE_TUTORIAL_NOTE_ICON
+end
+
 local function nvl(value, default)
     return value ~= nil and value or default
 end

@@ -3,6 +3,10 @@
     Spells 
 ]]
 
+if StatCompare_TutorialIconExplanation then
+	StatCompare_TutorialIconExplanation["Interface\\Icons\\INV_Misc_Book_08"] = STATCOMPARE_TUTORIAL_SPELLBOOK_ICON
+end
+
 -- Global var
 StatCompare_SpellsVals = {};
 

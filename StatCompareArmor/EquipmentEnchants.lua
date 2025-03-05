@@ -1,4 +1,9 @@
 -- Adding this to make the addon useful for gear checks. Putting as much of my changes into this file to keep the diff clean.
+
+if StatCompare_TutorialIconExplanation then
+	StatCompare_TutorialIconExplanation["Interface\\Icons\\INV_Helmet_10"] = STATCOMPARE_TUTORIAL_ARMOR_ICON
+end
+
 StatCompare_EnchantsById = {
 -- https://wowpedia.fandom.com/wiki/EnchantId
 -- Note - The below object is fluffy so it can support attributes like the enchantment spell's name and spell id in the future should it be deemed useful.

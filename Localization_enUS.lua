@@ -56,7 +56,9 @@ function SC_Localization_enUS()
 	STATCOMPARE_ACTIVEBUFFS = "Active Buffs";
 	STATCOMPARE_ATTACKNAME = "Attack";
 	STATCOMPARE_TALENT_SPECIALIZATION="Talent Spec"
-		
+
+	STATCOMPARE_TUTORIAL_NOTE_ICON=[["Note" icon shows stats/resists/crit chance, etc.]]
+
 	-- bonus names --- for display usage
 	STATCOMPARE_STR = "Strength";
 	STATCOMPARE_AGI = "Agility";
