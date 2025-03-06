@@ -1,3 +1,4 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Include file="..\StatCompareBetterCharacterStats\BCSLib.lua"/>
+    <Include file="..\StatCompareBetterCharacterStats\helper.lua"/>
 </Ui>
