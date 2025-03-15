@@ -688,16 +688,11 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 			end
 
 
-			-- XXX [[ TEMPORARY / TESTING
-			-- instead of all these random addons doing their own thing in the base addon,
-			-- it'd be cool to do registered callbacks like `StatCompare:LibCallback("GetStatsDisplayText", { ["unit"] = "player", ... })`
-			-- You'd also have StatCompare:LibRegisterCallback(fnstr, func) so like `StatCompareLibRegisterCallback("GetStatsDisplayText", BCSLib:GetStat)`. maybe we always send a 'context' object that's a table?
+			-- XXX [[ TEMPORARY / TESTING. Adds an asterisk (*) to lines affected by bcslib.
 			local b = BCSLib ~= nil and BCSLib.StatHasCallback and 1 or 0
 			local a = BCSLib ~= nil and BCSLib.StatHasCallback ~= nil and BCSLib:StatHasCallback(e.effect) ~= nil
 			local bcs_stat = BCSLib and BCSLib.StatHasCallback and BCSLib:StatHasCallback(e.effect) == true and BCSLib:GetStat(e.effect, (bSelfStat == 1 and "player" or "target")) or nil
-			if bcs_stat ~= nil then val = bcs_stat.." *" end -- TODO
-
-
+			if bcs_stat ~= nil then val = bcs_stat.." *" end -- TODO remove
 			-- XXX ]]
 
 
