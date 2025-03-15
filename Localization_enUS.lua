@@ -48,6 +48,7 @@ function SC_Localization_enUS()
 
 	STATCOMPARE_CAT_ATT = "Stats";
 	STATCOMPARE_CAT_RES = "Resistance";
+	STATCOMPARE_CAT_MISC = "Misc";
 	STATCOMPARE_CAT_SKILL = "Skills";
 	STATCOMPARE_CAT_BON = "Melee & Ranged Attack";
 	STATCOMPARE_CAT_SBON = "Spells";
@@ -69,6 +70,9 @@ function SC_Localization_enUS()
 	STATCOMPARE_ENARMOR = "Reinforced Armor";
 	STATCOMPARE_DAMAGEREDUCE = "Damage Reduce";
 
+	STATCOMPARE_SPEED	= "Attack and Casting Speed";
+	STATCOMPARE_VAMPIRISM	= "Vampirism";
+	STATCOMPARE_ARMORPEN	= "Armor Penetration";
 	STATCOMPARE_ARCANERES	= "Arcane Resistance";	
 	STATCOMPARE_FIRERES	= "Fire Resistance";
 	STATCOMPARE_NATURERES	= "Nature Resistance";
@@ -90,6 +94,7 @@ function SC_Localization_enUS()
 	STATCOMPARE_SKINNING	= "Skinning";
 	STATCOMPARE_DEFENSE	= "Defense";
 	STATCOMPARE_STEALTH	= "Stealth";
+	STATCOMPARE_SWIMMING	= "Swim Speed";
 		
 	STATCOMPARE_BLOCK	= "Block";
 	STATCOMPARE_TOBLOCK	= "Chance to block";
@@ -121,6 +126,7 @@ function SC_Localization_enUS()
 	STATCOMPARE_MANA	= "Mana";
 	STATCOMPARE_DRUID_BEAR	= "Bear Form";
 	STATCOMPARE_DRUID_CAT	= "Cat Form";
+	STATCOMPARE_MEDITATION	= "Meditation";
 
 	STATCOMPARE_FLASHHOLYLIGHT_HEAL	=	"Flash of Holy Light";
 	STATCOMPARE_LESSER_HEALING_WAVE_HEAL = "Lesser Healing Wave";
@@ -175,6 +181,7 @@ function SC_Localization_enUS()
 		{ pattern = "Improves your chance to get a critical strike with Holy spells by (%d+)%%%.", effect = "HOLYCRIT" },
 		{ pattern = "Skinning +(%d+)%.", effect = "SKINNING" },
 		{ pattern = "Increased Fishing +(%d+)%.", effect = "FISHING"},
+		{ pattern = "Increases swim speed by (%d+)%%%.", effect = "SWIMMING"},
 		{ pattern = "Decreases the magical resistances of your spell targets by (%d+)%.", effect = "DETARRES" },
 		{ pattern = "Improves your chance to get a critical strike with Nature spells by (%d+)%%%.", effect = "NATURECRIT" },
 		{ pattern = "Increases healing done by Lesser Healing Wave by up to (%d+)%.", effect = "LESSERHEALWAVE"},
@@ -182,6 +189,10 @@ function SC_Localization_enUS()
 		{ pattern = "Increases damage done by Earth Shock, Flame Shock, and Frost Shock by up to (%d+)%.", effect = {"EARTHSHOCK","FLAMESHOCK","FROSTSHOCK"}}, 
 		{ pattern = "Increases your effective stealth level by 1%.", effect = "STEALTH", value = 5},
 		{ pattern = "Increases your effective stealth level%.", effect = "STEALTH", value = 8},
+		{ pattern = "(%d+)%%% of damage dealt is returned as healing.", effect = "VAMPIRISM" },
+		{ pattern = "Increases your attack and casting speed by (%d+)%%%.", effect = "HASTE" },
+		{ pattern = "Your attacks ignore (%d+) of the target's armor.", effect = "ARMORPEN" },
+		{ pattern = "Allows (%d+)%%% of your Mana regeneration to continue while casting.", effect = "MEDITATION" },
 --		{ pattern = "Increases spell damage and healing by up to (%d+)%% of your total Spirit.", effect = "HEAL" } -- spiritual guidance ... but... it's a percent of total spirit. works needs done.
 --		{ pattern = "Increases healing done by magical spells and effects of all party members within 30 yards by up to (%d+).", effect = "HEAL"}, -- TODO verify. https://www.wowhead.com/classic/search?q=Atiesh%2C+Greatstaff+of+the+Guardian
 
@@ -246,6 +257,10 @@ function SC_Localization_enUS()
 		["Reinforced Armor"]			= "ENARMOR",
 		["Defense"]			= "DEFENSE",
 		["Increased Defense"]		= "DEFENSE",
+		["returned as healing"]		= "VAMPIRISM",
+		["Vampirism"]			= "VAMPIRISM",
+		["Haste"]			= "HASTE",
+		["Armor Penetration"]		= "ARMORPEN",
 	};
 
 	STATCOMPARE_OTHER_PATTERNS = {

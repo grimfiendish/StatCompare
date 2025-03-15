@@ -50,6 +50,10 @@ STATCOMPARE_EFFECTS = {
 	{ effect = "ENARMOR",		name = STATCOMPARE_ENARMOR,	 		format = "+%d",	lformat = "%d",	show = 0,		short = "EARM",	cat = "ATT",	opt="ShowEnArmor" },
 	{ effect = "DAMAGEREDUCE",	name = STATCOMPARE_DAMAGEREDUCE,	format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "DR",	cat = "ATT",	opt="ShowDR" },
 
+	{ effect = "VAMPIRISM",		name = STATCOMPARE_VAMPIRISM,		format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "",	cat = "MISC",	opt="ShowVampirism" },
+	{ effect = "HASTE",			name = STATCOMPARE_SPEED,			format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "",	cat = "MISC",	opt="ShowHaste" },
+	{ effect = "ARMORPEN",		name = STATCOMPARE_ARMORPEN,		format = "+%d",		lformat = "%d",		show = 1,	short = "",	cat = "MISC",	opt="ShowArmorPen" },
+	
 	{ effect = "ARCANERES",		name = STATCOMPARE_ARCANERES,		format = "+%d",	lformat = "%d",		short = "AR",	cat = "RES",	opt="ShowArcaneRes" },
 	{ effect = "FIRERES",		name = STATCOMPARE_FIRERES, 		format = "+%d",	lformat = "%d",		short = "IR",	cat = "RES",	opt="ShowFireRes" },
 	{ effect = "NATURERES", 	name = STATCOMPARE_NATURERES, 		format = "+%d",	lformat = "%d",		short = "NR",	cat = "RES",	opt="ShowNatureRes" },
@@ -64,6 +68,7 @@ STATCOMPARE_EFFECTS = {
 	{ effect = "HERBALISM",		name = STATCOMPARE_HERBALISM, 		format = "+%d",		short = "YHER",	cat = "SKILL",	opt="ShowHerbalism" },
 	{ effect = "SKINNING", 		name = STATCOMPARE_SKINNING, 		format = "+%d",		short = "YSKI",	cat = "SKILL",	opt="ShowSkinning" },
 	{ effect = "FISHING",		name = STATCOMPARE_FISHING,		format = "+%d",		short = "YFIS",	cat = "SKILL",	opt="ShowFishing" },
+	{ effect = "SWIMMING",		name = STATCOMPARE_SWIMMING,		format = "+%d%%",	short = "SWI",	cat = "SKILL",	opt="ShowSwimming" },
 
 	{ effect = "ATTACKPOWER",	name = STATCOMPARE_ATTACKPOWER, 		format = "+%d",	lformat = "%d",		show = 1,	short = "MA",	cat = "BON",	opt="ShowAP" },
 	{ effect = "BEARAP",		name = STATCOMPARE_DRUID_BEAR,		format = "+%d", lformat = "%d",		short = "MA",	cat = "BON",	opt="ShowAP" },
@@ -109,7 +114,7 @@ STATCOMPARE_EFFECTS = {
 	{ effect = "MANAREGCOMBAT",	name = STATCOMPARE_MANAREG,		format = "+%d%%",	show = 0, short = "PR", cat = "OBON"},
 };
 
-STATCOMPARE_CATEGORIES = {'ATT', 'BON', 'SBON', 'RES', 'SKILL', 'OBON'};
+STATCOMPARE_CATEGORIES = {'ATT', 'MISC', 'BON', 'SBON', 'RES', 'SKILL', 'OBON'};
 
 if StatCompare_TutorialIconExplanation then
 	StatCompare_TutorialIconExplanation["Interface\\Icons\\INV_Misc_Note_01"] = STATCOMPARE_TUTORIAL_NOTE_ICON
