@@ -1,4 +1,4 @@
-# StatCompare v1.8 for Vanilla World of Warcraft v 1.12.1
+# StatCompare v2.0 for Vanilla World of Warcraft v 1.12.1
 StatCompare adds a stats panel next to your Character and Inspection Panes, making it easy to screenshot your stats for gear checks or compare your gear to your target.
 
 This version has been updated to make gear checks easier by showing the list of equipped item names and their enchants, as well as all active buffs.
