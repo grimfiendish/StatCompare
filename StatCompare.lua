@@ -71,8 +71,8 @@ STATCOMPARE_EFFECTS = {
 	{ effect = "SWIMMING",		name = STATCOMPARE_SWIMMING,		format = "+%d%%",	short = "SWI",	cat = "SKILL",	opt="ShowSwimming" },
 
 	{ effect = "ATTACKPOWER",	name = STATCOMPARE_ATTACKPOWER, 		format = "+%d",	lformat = "%d",		show = 1,	short = "MA",	cat = "BON",	opt="ShowAP" },
-	{ effect = "BEARAP",		name = STATCOMPARE_DRUID_BEAR,		format = "+%d", lformat = "%d",		short = "MA",	cat = "BON",	opt="ShowAP" },
-	{ effect = "CATAP",		name = STATCOMPARE_DRUID_CAT,		format = "+%d", lformat = "%d",		short = "MA",	cat = "BON",	opt="ShowAP" },
+	{ effect = "BEARAP",		name = STATCOMPARE_DRUID_BEAR,		format = "+%d", lformat = "%d",		show = 1,	short = "MA",	cat = "BON",	opt="ShowAP" },
+	{ effect = "CATAP",		name = STATCOMPARE_DRUID_CAT,		format = "+%d", lformat = "%d",		show = 1,	short = "MA",	cat = "BON",	opt="ShowAP" },
 	{ effect = "ATTACKPOWERUNDEAD",	name = STATCOMPARE_ATTACKPOWERUNDEAD, 		format = "+%d",	lformat = "%d",		show = 1,	short = "MA",	cat = "BON",	opt="ShowAP" },
 	{ effect = "CRIT",		name = STATCOMPARE_CRIT, 			format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "MC",	cat = "BON",	opt="ShowCrit" },
 	{ effect = "BLOCK",		name = STATCOMPARE_BLOCK, 		format = "+%d",	lformat = "%d",	short = "MB",	show = 1,	cat = "BON",	opt="ShowBlock" },
@@ -640,7 +640,7 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 	--DEFAULT_CHAT_FRAME:AddMessage("Entering GetTooltipText");
 	for i,e in pairs(STATCOMPARE_EFFECTS) do
 		if(e.opt and StatCompare_GetSetting(e.opt) and StatCompare_GetSetting(e.opt) ~= 1) then
-		elseif(e.show and e.show == 0) then
+		elseif(not e.show or e.show == 0) then
 		elseif(bonuses[e.effect]) then
 			if(e.format) then
 		   		val = format(e.format,bonuses[e.effect]);
@@ -665,7 +665,6 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 					val=val.." / "..lval;
 				elseif(CharStats_fullvals and CharStats_fullvals[e.effect]) then
 					if(CharStats_fullvals[e.effect] == 0) then
-					elseif(e.show and e.show == 0) then
 					else
 						if(e.lformat) then
 							lval = format(e.lformat, CharStats_fullvals[e.effect]);
@@ -712,16 +711,10 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 				retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 			end
 
-			-- special hack for DRUID AP
-			if(e.effect == "ATTACKPOWER" and CharStats_fullvals and CharStats_fullvals["BEARAP"] and CharStats_fullvals["BEARAP"] > 0) then
-				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
-				retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
-			end
-
 		elseif(CharStats_fullvals and CharStats_fullvals[e.effect]) then
 			if(e.effect == "SPELLHIT" or e.effect == "TOHIT") then
 			elseif(CharStats_fullvals[e.effect] == 0) then
-			elseif(e.show and e.show == 0) then
+			elseif(not e.show or e.show == 0) then
 			else
 				if(e.lformat) then
 					val = format(e.lformat, CharStats_fullvals[e.effect]);
@@ -755,12 +748,6 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 					retstr = retstr.. GREEN_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 				else
 					retstr = retstr.. NORMAL_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
-				end
-
-				-- special hack for DRUID AP
-				if(e.effect == "ATTACKPOWER" and CharStats_fullvals["BEARAP"] and CharStats_fullvals["BEARAP"] > 0) then
-					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_BEAR..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["BEARAP"]..FONT_COLOR_CODE_CLOSE;
-					retstr = retstr .. "\n" ..STATCOMPARE_DRUID_CAT..":\t"..NORMAL_FONT_COLOR_CODE..CharStats_fullvals["CATAP"]..FONT_COLOR_CODE_CLOSE;
 				end
 			end
 		end
