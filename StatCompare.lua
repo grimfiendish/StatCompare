@@ -41,77 +41,77 @@ StatCompre_ColorList = {
 STATCOMPARE_SELFSTAT = {};
 
 STATCOMPARE_EFFECTS = {
-	{ effect = "STR",		name = STATCOMPARE_STR,	 		format = "+%d",	lformat = "%d",		short = "XSTR",	cat = "ATT",	opt="ShowSTR" },
-	{ effect = "AGI",		name = STATCOMPARE_AGI, 			format = "+%d",	lformat = "%d",		short = "XAGI",	cat = "ATT",	opt="ShowAGI" },
-	{ effect = "STA",		name = STATCOMPARE_STA, 			format = "+%d",	lformat = "%d",		short = "XSTA",	cat = "ATT",	opt="ShowSTA" },
-	{ effect = "INT",		name = STATCOMPARE_INT, 			format = "+%d",	lformat = "%d",		short = "XINT",	cat = "ATT",	opt="ShowINT" },
-	{ effect = "SPI",		name = STATCOMPARE_SPI,	 		format = "+%d",	lformat = "%d",		short = "XSPI",	cat = "ATT",	opt="ShowSPI" },
-	{ effect = "ARMOR",		name = STATCOMPARE_ARMOR,	 		format = "+%d",	lformat = "%d",		show = 1,	short = "XARM",	cat = "ATT",	opt="ShowArmor" },
-	{ effect = "ENARMOR",		name = STATCOMPARE_ENARMOR,	 		format = "+%d",	lformat = "%d",	show = 0,		short = "EARM",	cat = "ATT",	opt="ShowEnArmor" },
-	{ effect = "DAMAGEREDUCE",	name = STATCOMPARE_DAMAGEREDUCE,	format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "DR",	cat = "ATT",	opt="ShowDR" },
+	{ effect = "STR",               name = STATCOMPARE_STR,                         format = "+%d",         lformat = "%d",         short = "XSTR", cat = "ATT",    opt="ShowSTR",         show = 1 },
+	{ effect = "AGI",               name = STATCOMPARE_AGI,                         format = "+%d",         lformat = "%d",         short = "XAGI", cat = "ATT",    opt="ShowAGI",         show = 1 },
+	{ effect = "STA",               name = STATCOMPARE_STA,                         format = "+%d",         lformat = "%d",         short = "XSTA", cat = "ATT",    opt="ShowSTA",         show = 1 },
+	{ effect = "INT",               name = STATCOMPARE_INT,                         format = "+%d",         lformat = "%d",         short = "XINT", cat = "ATT",    opt="ShowINT",         show = 1 },
+	{ effect = "SPI",               name = STATCOMPARE_SPI,                         format = "+%d",         lformat = "%d",         short = "XSPI", cat = "ATT",    opt="ShowSPI",         show = 1 },
+	{ effect = "ARMOR",             name = STATCOMPARE_ARMOR,                       format = "+%d",         lformat = "%d",         short = "XARM", cat = "ATT",    opt="ShowArmor",       show = 1 },
+	{ effect = "ENARMOR",           name = STATCOMPARE_ENARMOR,                     format = "+%d",         lformat = "%d",         short = "EARM", cat = "ATT",    opt="ShowEnArmor",     show = 0 },
+	{ effect = "DAMAGEREDUCE",      name = STATCOMPARE_DAMAGEREDUCE,                format = "+%d%%",       lformat = "%.2f%%",     short = "DR",   cat = "ATT",    opt="ShowDR",          show = 1 },
 
-	{ effect = "VAMPIRISM",		name = STATCOMPARE_VAMPIRISM,		format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "",	cat = "MISC",	opt="ShowVampirism" },
-	{ effect = "HASTE",			name = STATCOMPARE_SPEED,			format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "",	cat = "MISC",	opt="ShowHaste" },
-	{ effect = "ARMORPEN",		name = STATCOMPARE_ARMORPEN,		format = "+%d",		lformat = "%d",		show = 1,	short = "",	cat = "MISC",	opt="ShowArmorPen" },
+	{ effect = "VAMPIRISM",         name = STATCOMPARE_VAMPIRISM,                   format = "+%d%%",       lformat = "%.2f%%",     short = "",     cat = "MISC",   opt="ShowVampirism",   show = 1 },
+	{ effect = "HASTE",             name = STATCOMPARE_SPEED,                       format = "+%d%%",       lformat = "%.2f%%",     short = "",     cat = "MISC",   opt="ShowHaste",       show = 1 },
+	{ effect = "ARMORPEN",          name = STATCOMPARE_ARMORPEN,                    format = "+%d",         lformat = "%d",         short = "",     cat = "MISC",   opt="ShowArmorPen",    show = 1 },
 	
-	{ effect = "ARCANERES",		name = STATCOMPARE_ARCANERES,		format = "+%d",	lformat = "%d",		short = "AR",	cat = "RES",	opt="ShowArcaneRes" },
-	{ effect = "FIRERES",		name = STATCOMPARE_FIRERES, 		format = "+%d",	lformat = "%d",		short = "IR",	cat = "RES",	opt="ShowFireRes" },
-	{ effect = "NATURERES", 	name = STATCOMPARE_NATURERES, 		format = "+%d",	lformat = "%d",		short = "NR",	cat = "RES",	opt="ShowNatureRes" },
-	{ effect = "FROSTRES",		name = STATCOMPARE_FROSTRES, 		format = "+%d",	lformat = "%d",		short = "FR",	cat = "RES",	opt="ShowFrostRes" },
-	{ effect = "SHADOWRES",		name = STATCOMPARE_SHADOWRES,		format = "+%d",	lformat = "%d",		short = "SR",	cat = "RES",	opt="ShowShadowRes" },
-	{ effect = "DETARRES",		name = STATCOMPARE_DETARRES,		format = "-%d",	lformat = "%d",		short = "XR",	cat = "RES",	opt="ShowDetarRes" },
-	{ effect = "ALLRES",		name = STATCOMPARE_ALLRES,		format = "+%d",	short="AR",		cat = "RES",	show = 0},
+	{ effect = "ARCANERES",         name = STATCOMPARE_ARCANERES,                   format = "+%d",         lformat = "%d",         short = "AR",   cat = "RES",    opt="ShowArcaneRes",   show = 1,   newline = 1,   showbonus = 0 },
+	{ effect = "FIRERES",           name = STATCOMPARE_FIRERES,                     format = "+%d",         lformat = "%d",         short = "IR",   cat = "RES",    opt="ShowFireRes",     show = 1,   newline = 0,   showbonus = 0 },
+	{ effect = "NATURERES",         name = STATCOMPARE_NATURERES,                   format = "+%d",         lformat = "%d",         short = "NR",   cat = "RES",    opt="ShowNatureRes",   show = 1,   newline = 0,   showbonus = 0 },
+	{ effect = "FROSTRES",          name = STATCOMPARE_FROSTRES,                    format = "+%d",         lformat = "%d",         short = "FR",   cat = "RES",    opt="ShowFrostRes",    show = 1,   newline = 0,   showbonus = 0 },
+	{ effect = "SHADOWRES",         name = STATCOMPARE_SHADOWRES,                   format = "+%d",         lformat = "%d",         short = "SR",   cat = "RES",    opt="ShowShadowRes",   show = 1,   newline = 0,   showbonus = 0 },
+	{ effect = "DETARRES",          name = STATCOMPARE_DETARRES,                    format = "-%d",         lformat = "%d",         short = "XR",   cat = "RES",    opt="ShowDetarRes",    show = 1,   newline = 0,   showbonus = 0 },
+	{ effect = "ALLRES",            name = STATCOMPARE_ALLRES,                      format = "+%d",                                 short="AR",     cat = "RES",                           show = 0,   newline = 0,   showbonus = 0 },
 
-	{ effect = "DEFENSE",		name = STATCOMPARE_DEFENSE, 		format = "+%d",	lformat = "%d",		short = "YDEF",	cat = "SKILL",	opt="ShowDefense" },
-	{ effect = "STEALTH",		name = STATCOMPARE_STEALTH,		format = "+%d", lformat = "%d",		short = "YDEF", cat = "SKILL"},
-	{ effect = "MINING",		name = STATCOMPARE_MINING,		format = "+%d",		short = "YMIN",	cat = "SKILL",	opt="ShowMining" },
-	{ effect = "HERBALISM",		name = STATCOMPARE_HERBALISM, 		format = "+%d",		short = "YHER",	cat = "SKILL",	opt="ShowHerbalism" },
-	{ effect = "SKINNING", 		name = STATCOMPARE_SKINNING, 		format = "+%d",		short = "YSKI",	cat = "SKILL",	opt="ShowSkinning" },
-	{ effect = "FISHING",		name = STATCOMPARE_FISHING,		format = "+%d",		short = "YFIS",	cat = "SKILL",	opt="ShowFishing" },
-	{ effect = "SWIMMING",		name = STATCOMPARE_SWIMMING,		format = "+%d%%",	short = "SWI",	cat = "SKILL",	opt="ShowSwimming" },
+	{ effect = "DEFENSE",           name = STATCOMPARE_DEFENSE,                     format = "+%d",         lformat = "%d",         short = "YDEF", cat = "SKILL",  opt="ShowDefense"               },
+	{ effect = "STEALTH",           name = STATCOMPARE_STEALTH,                     format = "+%d",         lformat = "%d",         short = "YDEF", cat = "SKILL"                                   },
+	{ effect = "MINING",            name = STATCOMPARE_MINING,                      format = "+%d",                                 short = "YMIN", cat = "SKILL",  opt="ShowMining"                },
+	{ effect = "HERBALISM",         name = STATCOMPARE_HERBALISM,                   format = "+%d",                                 short = "YHER", cat = "SKILL",  opt="ShowHerbalism"             },
+	{ effect = "SKINNING",          name = STATCOMPARE_SKINNING,                    format = "+%d",                                 short = "YSKI", cat = "SKILL",  opt="ShowSkinning"              },
+	{ effect = "FISHING",           name = STATCOMPARE_FISHING,                     format = "+%d",                                 short = "YFIS", cat = "SKILL",  opt="ShowFishing"               },
+	{ effect = "SWIMMING",          name = STATCOMPARE_SWIMMING,                    format = "+%d%%",                               short = "SWI",  cat = "SKILL",  opt="ShowSwimming"              },
 
-	{ effect = "ATTACKPOWER",	name = STATCOMPARE_ATTACKPOWER, 		format = "+%d",	lformat = "%d",		show = 1,	short = "MA",	cat = "BON",	opt="ShowAP" },
-	{ effect = "BEARAP",		name = STATCOMPARE_DRUID_BEAR,		format = "+%d", lformat = "%d",		show = 1,	short = "MA",	cat = "BON",	opt="ShowAP" },
-	{ effect = "CATAP",		name = STATCOMPARE_DRUID_CAT,		format = "+%d", lformat = "%d",		show = 1,	short = "MA",	cat = "BON",	opt="ShowAP" },
-	{ effect = "ATTACKPOWERUNDEAD",	name = STATCOMPARE_ATTACKPOWERUNDEAD, 		format = "+%d",	lformat = "%d",		show = 1,	short = "MA",	cat = "BON",	opt="ShowAP" },
-	{ effect = "CRIT",		name = STATCOMPARE_CRIT, 			format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "MC",	cat = "BON",	opt="ShowCrit" },
-	{ effect = "BLOCK",		name = STATCOMPARE_BLOCK, 		format = "+%d",	lformat = "%d",	short = "MB",	show = 1,	cat = "BON",	opt="ShowBlock" },
-	{ effect = "TOBLOCK",		name = STATCOMPARE_TOBLOCK, 		format = "+%d%%",	lformat = "%.2f%%",	short = "MB",	cat = "BON",	opt="ShowToBlock" },
-	{ effect = "DODGE",		name = STATCOMPARE_DODGE, 		format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "MD",	cat = "BON",	opt="ShowDodge" },
-	{ effect = "PARRY", 		name = STATCOMPARE_PARRY, 		format = "+%d%%",	lformat = "%.2f%%",	short = "MP",	cat = "BON",	opt="ShowParry" },
-	{ effect = "TOHIT", 		name = STATCOMPARE_TOHIT, 		format = "+%d%%",	lformat = "%.2f%%",	short = "MH",	cat = "BON",	opt="ShowToHit" },
-	{ effect = "RANGEDATTACKPOWER", name = STATCOMPARE_RANGEDATTACKPOWER,	format = "+%d",	lformat = "%d",		show = 1,	short = "RA",	cat = "BON",	opt="ShowRAP" },
-	{ effect = "RANGEDCRIT",	name = STATCOMPARE_RANGEDCRIT,		format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "RC",	cat = "BON",	opt="ShowRCrit" },
---TODO	{ effect = "RANGEDHIT",	name = STATCOMPARE_RANGEDHIT,		format = "+%d%%",	lformat = "%.2f%%",	show = 1,	short = "RH",	cat = "BON",	opt="ShowRHit" },
+	{ effect = "ATTACKPOWER",       name = STATCOMPARE_ATTACKPOWER,                 format = "+%d",         lformat = "%d",         short = "MA",   cat = "BON",    opt="ShowAP",          show = 1 },
+	{ effect = "BEARAP",            name = STATCOMPARE_DRUID_BEAR,                  format = "+%d",         lformat = "%d",         short = "MA",   cat = "BON",    opt="ShowAP",          show = 1 },
+	{ effect = "CATAP",             name = STATCOMPARE_DRUID_CAT,                   format = "+%d",         lformat = "%d",         short = "MA",   cat = "BON",    opt="ShowAP",          show = 1 },
+	{ effect = "ATTACKPOWERUNDEAD", name = STATCOMPARE_ATTACKPOWERUNDEAD,           format = "+%d",         lformat = "%d",         short = "MA",   cat = "BON",    opt="ShowAP",          show = 1 },
+	{ effect = "CRIT",              name = STATCOMPARE_CRIT,                        format = "+%d%%",       lformat = "%.2f%%",     short = "MC",   cat = "BON",    opt="ShowCrit",        show = 1 },
+	{ effect = "BLOCK",             name = STATCOMPARE_BLOCK,                       format = "+%d",         lformat = "%d",         short = "MB",   cat = "BON",    opt="ShowBlock",       show = 1 },
+	{ effect = "TOBLOCK",           name = STATCOMPARE_TOBLOCK,                     format = "+%d%%",       lformat = "%.2f%%",     short = "MB",   cat = "BON",    opt="ShowToBlock"               },
+	{ effect = "DODGE",             name = STATCOMPARE_DODGE,                       format = "+%d%%",       lformat = "%.2f%%",     short = "MD",   cat = "BON",    opt="ShowDodge",       show = 1 },
+	{ effect = "PARRY",             name = STATCOMPARE_PARRY,                       format = "+%d%%",       lformat = "%.2f%%",     short = "MP",   cat = "BON",    opt="ShowParry"                 },
+	{ effect = "TOHIT",             name = STATCOMPARE_TOHIT,                       format = "+%d%%",       lformat = "%.2f%%",     short = "MH",   cat = "BON",    opt="ShowToHit"                 },
+	{ effect = "RANGEDATTACKPOWER", name = STATCOMPARE_RANGEDATTACKPOWER,           format = "+%d",         lformat = "%d"    ,     short = "RA",   cat = "BON",    opt="ShowRAP",         show = 1 },
+	{ effect = "RANGEDCRIT",        name = STATCOMPARE_RANGEDCRIT,                  format = "+%d%%",       lformat = "%.2f%%",     short = "RC",   cat = "BON",    opt="ShowRCrit",       show = 1 },
+--TODO	{ effect = "RANGEDHIT",         name = STATCOMPARE_RANGEDHIT,                   format = "+%d%%",       lformat = "%.2f%%",     short = "RH",   cat = "BON",    opt="ShowRHit",        show = 1 },
 
-	{ effect = "DMG",		name = STATCOMPARE_DMG, 			format = "+%d",		short = "CD",	cat = "SBON" },
-	{ effect = "DMGUNDEAD",		name = STATCOMPARE_DMGUNDEAD, 			format = "+%d",		short = "CD",	cat = "SBON" },
-	{ effect = "HEAL",		name = STATCOMPARE_HEAL, 			format = "+%d",		short = "CH",	cat = "SBON"},
-	{ effect = "FLASHHOLYLIGHTHEAL",		name = STATCOMPARE_FLASHHOLYLIGHT_HEAL, 			format = "+%d",		short = "CH",	cat = "SBON"},
-	{ effect = "LESSERHEALWAVE",	name = STATCOMPARE_LESSER_HEALING_WAVE_HEAL, 			format = "+%d",		short = "CH",	cat = "SBON"},
-	{ effect = "CHAINLIGHTNING",	name = STATCOMPARE_CHAIN_LIGHTNING_DAM, 			format = "+%d",		short = "ND",	cat = "SBON"},
-	{ effect = "EARTHSHOCK",	name = STATCOMPARE_EARTH_SHOCK_DAM, 			format = "+%d",		short = "ND",	cat = "SBON"},
-	{ effect = "FLAMESHOCK",	name = STATCOMPARE_FLAME_SHOCK_DAM, 			format = "+%d",		short = "ID",	cat = "SBON"},
-	{ effect = "FROSTSHOCK",	name = STATCOMPARE_FROST_SHOCK_DAM, 			format = "+%d",		short = "FD",	cat = "SBON"},
-	{ effect = "LIGHTNINGBOLT",	name = STATCOMPARE_LIGHTNING_BOLT_DAM, 			format = "+%d",		short = "ND",	cat = "SBON"},
-	{ effect = "NATURECRIT", 		name = STATCOMPARE_NATURECRIT,		format = "+%d%%",	lformat = "%.2f%%",	short = "CNC",	cat = "SBON" },
-	{ effect = "HOLYCRIT", 		name = STATCOMPARE_HOLYCRIT,		format = "+%d%%",	lformat = "%.2f%%",	short = "CHC",	cat = "SBON" },
-	{ effect = "SPELLCRIT", 	name = STATCOMPARE_SPELLCRIT,		format = "+%d%%",	lformat = "%.2f%%",	short = "CSC",	cat = "SBON" },
-	{ effect = "SPELLTOHIT", 	name = STATCOMPARE_SPELLTOHIT,		format = "+%d%%",	lformat = "%.2f%%",	short = "CSH",	cat = "SBON" },
-	{ effect = "ARCANEDMG", 	name = STATCOMPARE_ARCANEDMG, 		format = "+%d",		short = "AD",	cat = "SBON" },
-	{ effect = "FIREDMG", 		name = STATCOMPARE_FIREDMG, 		format = "+%d",		short = "ID",	cat = "SBON" },
-	{ effect = "FROSTDMG",		name = STATCOMPARE_FROSTDMG, 		format = "+%d",		short = "FD",	cat = "SBON" },
-	{ effect = "HOLYDMG",		name = STATCOMPARE_HOLYDMG, 		format = "+%d",		short = "HD",	cat = "SBON" },
-	{ effect = "NATUREDMG",		name = STATCOMPARE_NATUREDMG, 		format = "+%d",		short = "ND",	cat = "SBON" },
-	{ effect = "SHADOWDMG",		name = STATCOMPARE_SHADOWDMG, 		format = "+%d",		short = "SD",	cat = "SBON" },
+	{ effect = "DMG",               name = STATCOMPARE_DMG,                         format = "+%d",                                 short = "CD",   cat = "SBON"                                    },
+	{ effect = "DMGUNDEAD",         name = STATCOMPARE_DMGUNDEAD,                   format = "+%d",                                 short = "CD",   cat = "SBON"                                    },
+	{ effect = "HEAL",              name = STATCOMPARE_HEAL,                        format = "+%d",                                 short = "CH",   cat = "SBON"                                    },
+	{ effect = "FLASHHOLYLIGHTHEAL",name = STATCOMPARE_FLASHHOLYLIGHT_HEAL,         format = "+%d",                                 short = "CH",   cat = "SBON"                                    },
+	{ effect = "LESSERHEALWAVE",    name = STATCOMPARE_LESSER_HEALING_WAVE_HEAL,    format = "+%d",                                 short = "CH",   cat = "SBON"                                    },
+	{ effect = "CHAINLIGHTNING",    name = STATCOMPARE_CHAIN_LIGHTNING_DAM,         format = "+%d",                                 short = "ND",   cat = "SBON"                                    },
+	{ effect = "EARTHSHOCK",        name = STATCOMPARE_EARTH_SHOCK_DAM,             format = "+%d",                                 short = "ND",   cat = "SBON"                                    },
+	{ effect = "FLAMESHOCK",        name = STATCOMPARE_FLAME_SHOCK_DAM,             format = "+%d",                                 short = "ID",   cat = "SBON"                                    },
+	{ effect = "FROSTSHOCK",        name = STATCOMPARE_FROST_SHOCK_DAM,             format = "+%d",                                 short = "FD",   cat = "SBON"                                    },
+	{ effect = "LIGHTNINGBOLT",     name = STATCOMPARE_LIGHTNING_BOLT_DAM,          format = "+%d",                                 short = "ND",   cat = "SBON"                                    },
+	{ effect = "NATURECRIT",        name = STATCOMPARE_NATURECRIT,                  format = "+%d%%",       lformat = "%.2f%%",     short = "CNC",  cat = "SBON"                                    },
+	{ effect = "HOLYCRIT",          name = STATCOMPARE_HOLYCRIT,                    format = "+%d%%",       lformat = "%.2f%%",     short = "CHC",  cat = "SBON"                                    },
+	{ effect = "SPELLCRIT",         name = STATCOMPARE_SPELLCRIT,                   format = "+%d%%",       lformat = "%.2f%%",     short = "CSC",  cat = "SBON"                                    },
+	{ effect = "SPELLTOHIT",        name = STATCOMPARE_SPELLTOHIT,                  format = "+%d%%",       lformat = "%.2f%%",     short = "CSH",  cat = "SBON"                                    },
+	{ effect = "ARCANEDMG",         name = STATCOMPARE_ARCANEDMG,                   format = "+%d",                                 short = "AD",   cat = "SBON"                                    },
+	{ effect = "FIREDMG",           name = STATCOMPARE_FIREDMG,                     format = "+%d",                                 short = "ID",   cat = "SBON"                                    },
+	{ effect = "FROSTDMG",          name = STATCOMPARE_FROSTDMG,                    format = "+%d",                                 short = "FD",   cat = "SBON"                                    },
+	{ effect = "HOLYDMG",           name = STATCOMPARE_HOLYDMG,                     format = "+%d",                                 short = "HD",   cat = "SBON"                                    },
+	{ effect = "NATUREDMG",         name = STATCOMPARE_NATUREDMG,                   format = "+%d",                                 short = "ND",   cat = "SBON"                                    },
+	{ effect = "SHADOWDMG",         name = STATCOMPARE_SHADOWDMG,                   format = "+%d",                                 short = "SD",   cat = "SBON"                                    },
 
-	{ effect = "HEALTH",		name = STATCOMPARE_HEALTH,		format = "+%d",	lformat = "%d",		show = 1,	short = "LP",	cat = "OBON",	opt="ShowHealth" },
-	{ effect = "HEALTHREG",		name = STATCOMPARE_HEALTHREG,		format = "%d HP/5s",	short = "LR",	cat = "OBON",	opt="ShowHealthRegen" },
-	{ effect = "MANA",		name = STATCOMPARE_MANA, 			format = "+%d",	lformat = "%d",	show = 1,	short = "PP",	cat = "OBON",	opt="ShowMana" },
-	{ effect = "MANAREG",		name = STATCOMPARE_MANAREG, 		format = "%d",	lformat = "%d", short = "PR",	cat = "OBON",	opt="ShowManaRegen" },
-	{ effect = "MANAREGSPI",	name = STATCOMPARE_MANAREGSPI, 		format = "%d MP/2s",	lformat = "%d MP/2s",	show = 1,	short = "PR",	cat = "OBON",	opt="ShowManaRegenSPI" },
+	{ effect = "HEALTH",            name = STATCOMPARE_HEALTH,                      format = "+%d",         lformat = "%d",         short = "LP",   cat = "OBON",   opt="ShowHealth",      show = 1 },
+	{ effect = "HEALTHREG",         name = STATCOMPARE_HEALTHREG,                   format = "%d HP/5s",                            short = "LR",   cat = "OBON",   opt="ShowHealthRegen"           },
+	{ effect = "MANA",              name = STATCOMPARE_MANA,                        format = "+%d",         lformat = "%d",         short = "PP",   cat = "OBON",   opt="ShowMana",        show = 1 },
+	{ effect = "MANAREG",           name = STATCOMPARE_MANAREG,                     format = "%d",          lformat = "%d",         short = "PR",   cat = "OBON",   opt="ShowManaRegen"             },
+	{ effect = "MANAREGSPI",        name = STATCOMPARE_MANAREGSPI,                  format = "%d MP/2s",    lformat = "%d MP/2s",   short = "PR",   cat = "OBON",   opt="ShowManaRegenSPI",show = 1 },
 
-	{ effect = "MANAREGCOMBAT",	name = STATCOMPARE_MANAREG,		format = "+%d%%",	show = 0, short = "PR", cat = "OBON"},
+	{ effect = "MANAREGCOMBAT",     name = STATCOMPARE_MANAREG,                     format = "+%d%%",                               short = "PR",   cat = "OBON",                          show = 0 },
 };
 
 STATCOMPARE_CATEGORIES = {'ATT', 'MISC', 'BON', 'SBON', 'RES', 'SKILL', 'OBON'};
@@ -119,6 +119,11 @@ STATCOMPARE_CATEGORIES = {'ATT', 'MISC', 'BON', 'SBON', 'RES', 'SKILL', 'OBON'};
 if StatCompare_TutorialIconExplanation then
 	StatCompare_TutorialIconExplanation["Interface\\Icons\\INV_Misc_Note_01"] = STATCOMPARE_TUTORIAL_NOTE_ICON
 end
+
+
+-- -- -- -- -- -- -- -- -- -- -- --
+-- L O C A L   F U N C T I O N S --
+-- -- -- -- -- -- -- -- -- -- -- --
 
 local function nvl(value, default)
     return value ~= nil and value or default
@@ -129,6 +134,22 @@ end
 local function nvld(value, default)
     return value ~= nil and tonumber(value) or default or 0
 end
+
+local function endsWith(str, suffix)
+    if not str or not suffix then
+        return false
+    end
+    local strLen = string.len(str)
+    local suffixLen = string.len(suffix)
+    
+    if suffixLen > strLen then
+        return false
+    end
+    
+    return string.sub(str, strLen - suffixLen + 1, strLen) == suffix
+end
+-- -- -- -- -- -- -- -- -- -- -- --
+
 
 function StatCompare_GetDisplayGroupSetting(bSelfStat, setting)
 	-- Display Group is the visual groups you see in the pane, like "Stats", "Equipped Items" etc.
@@ -639,6 +660,7 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 	end
 	--DEFAULT_CHAT_FRAME:AddMessage("Entering GetTooltipText");
 	for i,e in pairs(STATCOMPARE_EFFECTS) do
+		val = nil; lval = nil
 		if(e.opt and StatCompare_GetSetting(e.opt) and StatCompare_GetSetting(e.opt) ~= 1) then
 		elseif(not e.show or e.show == 0) then
 		elseif(bonuses[e.effect]) then
@@ -657,33 +679,36 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 
 			if (bSelfStat==1) then
 				if(baseval[e.effect]) then
-					if(e.lformat) then
-						lval = format(e.lformat, baseval[e.effect]);
-					else
-						lval = baseval[e.effect];
-					end
-					val=val.." / "..lval;
+					lval = baseval[e.effect];
 				elseif(CharStats_fullvals and CharStats_fullvals[e.effect]) then
 					if(CharStats_fullvals[e.effect] == 0) then
 					else
-						if(e.lformat) then
-							lval = format(e.lformat, CharStats_fullvals[e.effect]);
-						else
-							lval = CharStats_fullvals[e.effect];
-						end
-						val = val.." / "..lval;
+						lval = CharStats_fullvals[e.effect];
 					end
 				end
 			elseif(bSelfStat==0 and CharStats_fullvals and CharStats_fullvals[e.effect]) then
 				if(e.effect == "SPELLHIT" or e.effect == "TOHIT") then
 				elseif(CharStats_fullvals[e.effect] == 0) then
 				else
-					if(e.lformat) then
-						lval = format(e.lformat, CharStats_fullvals[e.effect]);
-					else
-						lval = CharStats_fullvals[e.effect];
-					end
-					val = val.." / "..lval;
+					lval = CharStats_fullvals[e.effect];
+				end
+			end
+
+			if lval then
+				if(e.lformat) then
+					flval = format(e.lformat, lval);
+				end
+				if endsWith(e.effect,"RES") and tonumber(lval) > 100 then
+					-- Ideally each effect would have included a full format function not just formatting the number
+					-- since that's not the case currently, I'm marking high resists (>100) with white to make the number jump out a bit.
+					-- If their resistance is high change the value's color for nice contrast.
+					-- "M" is "melee" which is both white and simply not a color resistance can ever have so contrasts well.
+					flval = StatComparePaintText("M", ">>" .. flval .. "<<")
+				end
+				if not e.showbonus or e.showbonus == 1 then
+					val=val.." / "..flval;
+				else
+					val = flval;
 				end
 			end
 
@@ -700,11 +725,12 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 			-- XXX ]]
 
 
-
-
-
-
-			retstr = retstr.. "\n".. StatComparePaintText(e.short,e.name)..":\t";
+			if not e.newline or e.newline == 1 then
+				retstr = retstr.. "\n" .. STATCOMPARE_TEXT_INDENT1
+			else
+				retstr = retstr.. " "
+			end
+			retstr = retstr .. StatComparePaintText(e.short,e.name)..": \t";
 			if(SC_BuffScanner_bonuses and SC_BuffScanner_bonuses[e.effect]) then
 				retstr = retstr.. GREEN_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 			else
@@ -743,7 +769,12 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 					val = val.." MP/5s"
 				end
 
-				retstr = retstr.. "\n".. StatComparePaintText(e.short,e.name)..":\t";
+				if not e.newline or e.newline == 1 then
+					retstr = retstr.. "\n" .. STATCOMPARE_TEXT_INDENT1
+				else
+					retstr = retstr.. " "
+				end
+				retstr = retstr .. StatComparePaintText(e.short,e.name)..":\t";
 				if(SC_BuffScanner_bonuses and SC_BuffScanner_bonuses[e.effect]) then
 					retstr = retstr.. GREEN_FONT_COLOR_CODE..val..FONT_COLOR_CODE_CLOSE;
 				else

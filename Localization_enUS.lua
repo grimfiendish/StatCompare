@@ -46,7 +46,7 @@ function SC_Localization_enUS()
 	STATCOMPARE_ITEMTYPE_ARMOR_SHIELD="Shield"
 	STATCOMPARE_ITEMTYPE_ARMOR_OTHER="Other"
 
-	STATCOMPARE_CAT_ATT = "Stats";
+	STATCOMPARE_CAT_ATT = "Base Stats";
 	STATCOMPARE_CAT_RES = "Resistance";
 	STATCOMPARE_CAT_MISC = "Misc";
 	STATCOMPARE_CAT_SKILL = "Skills";
@@ -73,13 +73,13 @@ function SC_Localization_enUS()
 	STATCOMPARE_SPEED	= "Attack and Casting Speed";
 	STATCOMPARE_VAMPIRISM	= "Vampirism";
 	STATCOMPARE_ARMORPEN	= "Armor Penetration";
-	STATCOMPARE_ARCANERES	= "Arcane Resistance";	
-	STATCOMPARE_FIRERES	= "Fire Resistance";
-	STATCOMPARE_NATURERES	= "Nature Resistance";
-	STATCOMPARE_FROSTRES	= "Frost Resistance";
-	STATCOMPARE_SHADOWRES	= "Shadow Resistance";
-	STATCOMPARE_DETARRES	= "Spell Penetration";
-	STATCOMPARE_ALLRES	= "All resistance";
+	STATCOMPARE_ARCANERES	= "Arcane";	
+	STATCOMPARE_FIRERES	= "Fire";
+	STATCOMPARE_NATURERES	= "Nature";
+	STATCOMPARE_FROSTRES	= "Frost";
+	STATCOMPARE_SHADOWRES	= "Shadow";
+	STATCOMPARE_DETARRES	= "Spell Pen";
+	STATCOMPARE_ALLRES	= "All";
 
 	STATCOMPARE_ARCANE_SHORT = "Ar"
 	STATCOMPARE_FIRE_SHORT = "Fi"
@@ -354,3 +354,4 @@ function SC_Localization_enUS()
 	STATCOMPARE_SHADOWBURN		= "Shadow Burn";
 	STATCOMPARE_SOUL_FIRE		= "Soul Fire";
 end
+
