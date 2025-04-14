@@ -26,5 +26,5 @@ function StatCompare_GetTalentSynopsis()
 end
 
 function StatCompare_GetTalentSpecToolTipText()
-	return GREEN_FONT_COLOR_CODE.."\n\n"..STATCOMPARE_TALENT_SPECIALIZATION..":"..FONT_COLOR_CODE_CLOSE.."\n"..StatCompare_GetTalentSynopsis();
+	return GREEN_FONT_COLOR_CODE.."\n\n"..STATCOMPARE_TALENT_SPECIALIZATION..":"..FONT_COLOR_CODE_CLOSE.."\n" .. STATCOMPARE_TEXT_INDENT1 ..StatCompare_GetTalentSynopsis();
 end

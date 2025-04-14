@@ -1,3 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Include file="..\StatCompareBetterCharacterStats\Localization_enUS.lua"/>
+    <Include file="..\StatCompareBetterCharacterStats\Localization.lua"/>
     <Include file="..\StatCompareBetterCharacterStats\BCSLib.lua"/>
 </Ui>

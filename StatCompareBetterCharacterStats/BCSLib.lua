@@ -19,57 +19,59 @@ BCS = BCS or {}
 BCS_MIN_VERSION = "1.13.0"
 
 local function nvl(value, default)
-    return value ~= nil and value or default
+	return value ~= nil and value or default
 end
 local function nvls(value, default)
-    return value ~= nil and tostring(value) or default or ""
+	return value ~= nil and tostring(value) or (default ~= nil and default or "")
 end
 local function nvld(value, default)
-    return value ~= nil and tonumber(value) or default or 0
+	return value ~= nil and tonumber(value) or (default ~= nil and default or 0)
 end
 
 local function GetUnitSpellPower(unit)
-	return BCS:GetUnitSpellPower(unit)
+	return nvld(BCS:GetUnitSpellPower(unit))
 end
 local function GetUnitSpellPowerArcane(unit)
-	return BCS:GetUnitSpellPower(unit, "Arcane")
+	return nvld(BCS:GetUnitSpellPower(unit, "Arcane"))
 end
 local function GetUnitSpellPowerFire(unit)
-	return BCS:GetUnitSpellPower(unit, "Fire")
+	return nvld(BCS:GetUnitSpellPower(unit, "Fire"))
 end
 local function GetUnitSpellPowerFrost(unit)
-	return BCS:GetUnitSpellPower(unit, "Frost")
+	return nvld(BCS:GetUnitSpellPower(unit, "Frost"))
 end
 local function GetUnitSpellPowerHoly(unit)
-	return BCS:GetUnitSpellPower(unit, "Holy")
+	return nvld(BCS:GetUnitSpellPower(unit, "Holy"))
 end
 local function GetUnitSpellPowerNature(unit)
-	return BCS:GetUnitSpellPower(unit, "Nature")
+	return nvld(BCS:GetUnitSpellPower(unit, "Nature"))
 end
 local function GetUnitSpellPowerShadow(unit)
-	return BCS:GetUnitSpellPower(unit, "Shadow")
+	return nvld(BCS:GetUnitSpellPower(unit, "Shadow"))
 end
 local function GetUnitBlockValue(unit)
-	return BCS:GetUnitBlockValue(unit)
+	return nvld(BCS:GetUnitBlockValue(unit))
 end
 local function GetUnitRangedCritChance(unit)
 	local chance = BCS:GetUnitRangedCritChance(unit)
-	if chance ~= nil then
+	if chance ~= nil and chance > 0 then
 		chance = string.format("%.2f%%", chance)
 	end
 	return chance
 end
 local function GetUnitRangedHitRating(unit)
-	return BCS:GetUnitRangedHitRating(unit)
+	local rating = BCS:GetUnitRangedHitRating(unit)
+	if rating > 0 then return rating; end
 end
 local function GetUnitHealingPower(unit)
 	local spellpower = BCS:GetUnitSpellPower(unit)
 	local healingpower = BCS:GetUnitHealingPower(unit)
-	return spellpower + healingpower
+	local total = spellpower + healingpower
+	if total > 0 then return total; end
 end
 local function GetUnitSpellCritChance(unit)
 	local chance =BCS:GetUnitSpellCritChance(unit)
-	if chance ~= nil then
+	if chance ~= nil and chance > 0 then
 		chance = string.format("%.2f%%", chance)
 	end
 	return chance
@@ -77,7 +79,7 @@ end
 local function GetUnitCritChance(unit)
 	if unit == "player" then
 		local chance = BCS:GetCritChance()
-		if chance ~= nil then
+		if chance ~= nil and chance > 0 then
 			chance = string.format("%.2f%%", chance)
 		end
 		return chance
@@ -87,8 +89,11 @@ end
 local function GetUnitSpellHitRating(unit)
 	local base_spell_hit, spell_hit_fire, spell_hit_frost, spell_hit_arcane, spell_hit_shadow, spell_hit_holy = BCS:GetUnitSpellHitRating(unit)
 	local total_hit = nvld(base_spell_hit) + nvld(spell_hit_fire) + nvld(spell_hit_frost) + nvld(spell_hit_arcane) + nvld(spell_hit_shadow) + nvld(spell_hit_holy)
-	local retval = format("%d%%", nvld(base_spell_hit))
-	
+	local retval = ""
+	if base_spell_hit ~= nil and base_spell_hit > 0 then 
+		retval = format("%d%%", nvld(base_spell_hit))
+	end
+
 	fmt="%s: %d%%"
 	
 	if base_spell_hit ~= total_hit then 
@@ -112,99 +117,104 @@ local function GetUnitSpellHitRating(unit)
 	if base_spell_hit ~= total_hit then
 		retval = retval .. StatComparePaintText("X"," )")
 	end
-	return retval
+	return retval and retval or nil
 end
 local function GetUnitManaRegen(unit)
-	return BCS:GetUnitManaRegen(unit)
+	local baseManaRegen, castingManaRegen, mp5 = BCS:GetUnitManaRegen(unit)
+	return nvld(mp5).. " MP/5" .. (castingManaRegen ~= nil and castingManaRegen > 0 and (" (" .. STATCOMPARE_WHILE_CASTING .." "..nvld(castingManaRegen) .. "%)") or "")
 end
 local function GetUnitRegenMPPerSpirit(unit)
-	return BCS:GetUnitRegenMPPerSpirit(unit)
+	local baseManaRegen, castingManaRegen, mp5 = BCS:GetUnitManaRegen(unit)
+	local mp2 = mp5 * 0.4
+	if baseManaRegen then return format("%d MP/2",baseManaRegen + mp2) end
 end
 
 local STATCOMPARE_EFFECTS = {
-	{ effect = "STR"							},
-	{ effect = "AGI"							},
-	{ effect = "STA"							},
-	{ effect = "INT"							},
-	{ effect = "SPI"							},
-	{ effect = "ARMOR"							},
-	{ effect = "ENARMOR"						},
-	{ effect = "DAMAGEREDUCE"					},
+	{ effect = "STR"                                                                                        },
+	{ effect = "AGI"                                                                                        },
+	{ effect = "STA"                                                                                        },
+	{ effect = "INT"                                                                                        },
+	{ effect = "SPI"                                                                                        },
+	{ effect = "ARMOR"                                                                                      },
+	{ effect = "ENARMOR"                                                                                    },
+	{ effect = "DAMAGEREDUCE"                                                                               },
 
-	{ effect = "ARCANERES"						},
-	{ effect = "FIRERES"						},
-	{ effect = "NATURERES"						},
-	{ effect = "FROSTRES"						},
-	{ effect = "SHADOWRES"						},
-	{ effect = "DETARRES"						},
-	{ effect = "ALLRES"							},
+	{ effect = "ARCANERES"                                                                                  },
+	{ effect = "FIRERES"                                                                                    },
+	{ effect = "NATURERES"                                                                                  },
+	{ effect = "FROSTRES"                                                                                   },
+	{ effect = "SHADOWRES"                                                                                  },
+	{ effect = "DETARRES"                                                                                   },
+	{ effect = "ALLRES"                                                                                     },
 
-	{ effect = "DEFENSE"						},
-	{ effect = "STEALTH"						},
-	{ effect = "MINING"							},
-	{ effect = "HERBALISM"						},
-	{ effect = "SKINNING"						},
-	{ effect = "FISHING"						},
+	{ effect = "DEFENSE"                                                                                    },
+	{ effect = "STEALTH"                                                                                    },
+	{ effect = "MINING"                                                                                     },
+	{ effect = "HERBALISM"                                                                                  },
+	{ effect = "SKINNING"                                                                                   },
+	{ effect = "FISHING"                                                                                    },
 
-	{ effect = "ATTACKPOWER"					},
-	{ effect = "BEARAP"							},
-	{ effect = "CATAP"							},
-	{ effect = "ATTACKPOWERUNDEAD"				},
-	{ effect = "CRIT",					callback = GetUnitCritChance		},
-	{ effect = "BLOCK",					callback = GetUnitBlockValue				},
-	{ effect = "TOBLOCK"						},
-	{ effect = "DODGE"							},
-	{ effect = "PARRY"							},
-	{ effect = "TOHIT"							},
-	{ effect = "RANGEDATTACKPOWER"				},
-	{ effect = "RANGEDCRIT",			callback = GetUnitRangedCritChance			},
-	{ effect = "RANGEDHIT",				callback = GetUnitRangedHitRating			},
+	{ effect = "ATTACKPOWER"                                                                                },
+	{ effect = "BEARAP"                                                                                     },
+	{ effect = "CATAP"                                                                                      },
+	{ effect = "ATTACKPOWERUNDEAD"                                                                          },
+	{ effect = "CRIT",                              callback = GetUnitCritChance                            },
+	{ effect = "BLOCK",                             callback = GetUnitBlockValue                            },
+	{ effect = "TOBLOCK"                                                                                    },
+	{ effect = "DODGE"                                                                                      },
+	{ effect = "PARRY"                                                                                      },
+	{ effect = "TOHIT"                                                                                      },
+	{ effect = "RANGEDATTACKPOWER"                                                                          },
+	{ effect = "RANGEDCRIT",                        callback = GetUnitRangedCritChance                      },
+	{ effect = "RANGEDHIT",                         callback = GetUnitRangedHitRating                       },
 
-	{ effect = "DMG",					callback = GetUnitSpellPower --[[ really? "DMG" is... SPELL dmg? or is it reused? --]]		},
-	{ effect = "DMGUNDEAD"						},
-	{ effect = "HEAL",					callback = GetUnitHealingPower				},
-	{ effect = "FLASHHOLYLIGHTHEAL"				},
-	{ effect = "LESSERHEALWAVE"					},
-	{ effect = "CHAINLIGHTNING"					},
-	{ effect = "EARTHSHOCK"						},
-	{ effect = "FLAMESHOCK"						},
-	{ effect = "FROSTSHOCK"						},
-	{ effect = "LIGHTNINGBOLT"					},
-	{ effect = "NATURECRIT"						},
-	{ effect = "HOLYCRIT"						},
-	{ effect = "SPELLCRIT",				callback = GetUnitSpellCritChance			},
-	{ effect = "SPELLTOHIT",			callback = GetUnitSpellHitRating			},
-	{ effect = "ARCANEDMG",				callback = GetUnitSpellPowerArcane			},
-	{ effect = "FIREDMG",				callback = GetUnitSpellPowerFire			},
-	{ effect = "FROSTDMG",				callback = GetUnitSpellPowerFrost			},
-	{ effect = "HOLYDMG",				callback = GetUnitSpellPowerHoly			},
-	{ effect = "NATUREDMG",				callback = GetUnitSpellPowerNature			},
-	{ effect = "SHADOWDMG",				callback = GetUnitSpellPowerShadow			},
+	{ effect = "DMG",                               callback = GetUnitSpellPower                            },
+	{ effect = "DMGUNDEAD"                                                                                  },
+	{ effect = "HEAL",                              callback = GetUnitHealingPower                          },
+	{ effect = "FLASHHOLYLIGHTHEAL"                                                                         },
+	{ effect = "LESSERHEALWAVE"                                                                             },
+	{ effect = "CHAINLIGHTNING"                                                                             },
+	{ effect = "EARTHSHOCK"                                                                                 },
+	{ effect = "FLAMESHOCK"                                                                                 },
+	{ effect = "FROSTSHOCK"                                                                                 },
+	{ effect = "LIGHTNINGBOLT"                                                                              },
+	{ effect = "NATURECRIT"                                                                                 },
+	{ effect = "HOLYCRIT"                                                                                   },
+	{ effect = "SPELLCRIT",                         callback = GetUnitSpellCritChance                       },
+	{ effect = "SPELLTOHIT",                        callback = GetUnitSpellHitRating                        },
+	{ effect = "ARCANEDMG",                         callback = GetUnitSpellPowerArcane                      },
+	{ effect = "FIREDMG",                           callback = GetUnitSpellPowerFire                        },
+	{ effect = "FROSTDMG",                          callback = GetUnitSpellPowerFrost                       },
+	{ effect = "HOLYDMG",                           callback = GetUnitSpellPowerHoly                        },
+	{ effect = "NATUREDMG",                         callback = GetUnitSpellPowerNature                      },
+	{ effect = "SHADOWDMG",                         callback = GetUnitSpellPowerShadow                      },
 
-	{ effect = "HEALTH"							},
-	{ effect = "HEALTHREG"						},
-	{ effect = "MANA"							},
-	{ effect = "MANAREG",				callback = GetUnitManaRegen					},
-	{ effect = "MANAREGSPI",			callback = GetUnitRegenMPPerSpirit			},
+	{ effect = "HEALTH"                                                                                     },
+	{ effect = "HEALTHREG"                                                                                  },
+	{ effect = "MANA"                                                                                       },
+	{ effect = "MANAREG",                           callback = GetUnitManaRegen                             },
+	{ effect = "MANAREGSPI",                        callback = GetUnitRegenMPPerSpirit                      },
 
-	{ effect = "MANAREGCOMBAT"					}
+	{ effect = "MANAREGCOMBAT"                                                                              }
 };
 
 function BCSLib:StatHasCallback(stat)
-	if BCS and BCS.BCS_SUPPORTS_TARGET and STATCOMPARE_EFFECTS then return true else return false end
+	return BCS and BCS.BCS_SUPPORTS_TARGET and BCSLib:GetCallback(stat) ~= nil
 end
 
-function BCSLib:GetStat(stat, unit)
+function BCSLib:GetCallback(stat)
 	if BCS and BCS.BCS_SUPPORTS_TARGET and STATCOMPARE_EFFECTS then 
 		for i,e in pairs(STATCOMPARE_EFFECTS) do
 			if e.effect == stat and e["callback"] ~= nil then
-				return e.callback(unit)
+				return e.callback
 			end
 		end
 	end
 	return nil
 end
 
--- /script print(BCS:GetUnitSpellPower("target","Arcane"))
--- /script print(BCS:GetUnitSpellPower("target"))
--- /script print(BCS:GetUnitManaRegen("target"))
+function BCSLib:GetStat(stat, unit)
+	local callback = BCSLib:GetCallback(stat)
+	if callback then return callback(unit); end
+	return nil
+end
