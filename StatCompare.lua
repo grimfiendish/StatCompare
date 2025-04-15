@@ -1188,13 +1188,14 @@ function StatCompare_UpdateFrameText(frameName, textbody, titletext)
 	local text = getglobal(frameName.."Text");
 	local title = getglobal(frameName.."Title");
 	local buffFrame = getglobal(frame:GetName().."BuffList")
-	local paddingForAesthetics = 20; -- Without this, the content stopped precisely against the words on the right and bottom.
+	local paddingHeightForAesthetics = 20; -- Without this, the content stopped precisely against the words on the bottom.
+	local paddingWidthForAesthetics = 40;  -- Without this, the content stopped precisely against the words on the right.
 	text:SetText(textbody);
 	if (titletext ~= nil) then
 		title:SetText(titletext)
 	end
-	local height = text:GetHeight() + title:GetHeight() + paddingForAesthetics;
-	local newwidth = text:GetWidth() + paddingForAesthetics;
+	local height = text:GetHeight() + title:GetHeight() + paddingHeightForAesthetics;
+	local newwidth = text:GetWidth() + paddingWidthForAesthetics;
 	local framewidth = frame:GetWidth();
 	if newwidth < framewidth then
 		newwidth = framewidth
