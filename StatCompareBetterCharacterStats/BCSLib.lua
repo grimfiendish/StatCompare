@@ -29,25 +29,65 @@ local function nvld(value, default)
 end
 
 local function GetUnitSpellPower(unit)
-	return nvld(BCS:GetUnitSpellPower(unit))
+	local base_spell_power = nvld(BCS:GetUnitSpellPower(unit))
+	local spell_power_arcane = nvld(BCS:GetUnitSpellPower(unit, "Arcane"))
+	local spell_power_fire   = nvld(BCS:GetUnitSpellPower(unit, "Fire"))
+	local spell_power_frost  = nvld(BCS:GetUnitSpellPower(unit, "Frost"))
+	local spell_power_holy   = nvld(BCS:GetUnitSpellPower(unit, "Holy"))
+	local spell_power_nature = nvld(BCS:GetUnitSpellPower(unit, "Nature"))
+	local spell_power_shadow = nvld(BCS:GetUnitSpellPower(unit, "Shadow"))
+	
+	local has_school_power = (spell_power_arcane>0 or spell_power_fire>0 or spell_power_frost>0 or spell_power_holy>0 or spell_power_nature>0 or spell_power_shadow>0) and true or false
+	
+	local retval = base_spell_power
+
+	fmt="%s: %d"
+
+	if has_school_power then
+		retval = retval .. StatComparePaintText("X"," ( ")
+	end
+	if nvld(spell_power_arcane) > 0 then
+		retval = retval.." "..StatComparePaintText("A",format(fmt, STATCOMPARE_ARCANE_SHORT, base_spell_power + spell_power_arcane))
+	end
+	if nvld(spell_power_fire) > 0 then
+		retval = retval.." "..StatComparePaintText("I",format(fmt, STATCOMPARE_FIRE_SHORT, base_spell_power + spell_power_fire))
+	end
+	if nvld(spell_power_frost) > 0 then
+		retval = retval.." "..StatComparePaintText("F",format(fmt, STATCOMPARE_FROST_SHORT, base_spell_power + spell_power_frost))
+	end
+	if nvld(spell_power_holy) > 0 then
+		retval = retval.." "..StatComparePaintText("H",format(fmt, STATCOMPARE_HOLY_SHORT, base_spell_power + spell_power_holy))
+	end
+	if nvld(spell_power_nature) > 0 then
+		retval = retval.." "..StatComparePaintText("N",format(fmt, STATCOMPARE_NATURE_SHORT, base_spell_power + spell_power_nature))
+	end
+	if nvld(spell_power_shadow) > 0 then
+		retval = retval.." "..StatComparePaintText("S",format(fmt, STATCOMPARE_SHADOW_SHORT, base_spell_power + spell_power_shadow))
+	end
+	if has_school_power then
+		retval = retval .. StatComparePaintText("X"," )")
+	end
+	return retval and retval or nil
+	
+	
 end
 local function GetUnitSpellPowerArcane(unit)
-	return nvld(BCS:GetUnitSpellPower(unit, "Arcane"))
+	return nil -- Moved this to one line of output via GetUnitSpellPower()
 end
 local function GetUnitSpellPowerFire(unit)
-	return nvld(BCS:GetUnitSpellPower(unit, "Fire"))
+	return nil -- Moved this to one line of output via GetUnitSpellPower()
 end
 local function GetUnitSpellPowerFrost(unit)
-	return nvld(BCS:GetUnitSpellPower(unit, "Frost"))
+	return nil -- Moved this to one line of output via GetUnitSpellPower()
 end
 local function GetUnitSpellPowerHoly(unit)
-	return nvld(BCS:GetUnitSpellPower(unit, "Holy"))
+	return nil -- Moved this to one line of output via GetUnitSpellPower()
 end
 local function GetUnitSpellPowerNature(unit)
-	return nvld(BCS:GetUnitSpellPower(unit, "Nature"))
+	return nil -- Moved this to one line of output via GetUnitSpellPower()
 end
 local function GetUnitSpellPowerShadow(unit)
-	return nvld(BCS:GetUnitSpellPower(unit, "Shadow"))
+	return nil -- Moved this to one line of output via GetUnitSpellPower()
 end
 local function GetUnitBlockValue(unit)
 	return nvld(BCS:GetUnitBlockValue(unit))
@@ -87,7 +127,7 @@ local function GetUnitCritChance(unit)
 	return nil
 end
 local function GetUnitSpellHitRating(unit)
-	local base_spell_hit, spell_hit_fire, spell_hit_frost, spell_hit_arcane, spell_hit_shadow, spell_hit_holy = BCS:GetUnitSpellHitRating(unit)
+	local base_spell_hit, spell_hit_fire, spell_hit_frost, spell_hit_arcane, spell_hit_shadow, spell_hit_holy, spell_hit_nature = BCS:GetUnitSpellHitRating(unit)
 	local total_hit = nvld(base_spell_hit) + nvld(spell_hit_fire) + nvld(spell_hit_frost) + nvld(spell_hit_arcane) + nvld(spell_hit_shadow) + nvld(spell_hit_holy)
 	local retval = ""
 	if base_spell_hit ~= nil and base_spell_hit > 0 then 
@@ -110,6 +150,9 @@ local function GetUnitSpellHitRating(unit)
 	end
 	if nvld(spell_hit_holy) > 0 then
 		retval = retval.." "..StatComparePaintText("H",format(fmt, STATCOMPARE_HOLY_SHORT, base_spell_hit + spell_hit_holy))
+	end
+	if nvld(spell_hit_nature) > 0 then
+		retval = retval.." "..StatComparePaintText("H",format(fmt, STATCOMPARE_NATURE_SHORT, base_spell_hit + spell_hit_nature))
 	end
 	if nvld(spell_hit_shadow) > 0 then
 		retval = retval.." "..StatComparePaintText("S",format(fmt, STATCOMPARE_SHADOW_SHORT, base_spell_hit + spell_hit_shadow))
