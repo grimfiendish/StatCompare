@@ -44,7 +44,7 @@ local function GetUnitSpellPower(unit)
 	fmt="%s: %d"
 
 	if has_school_power then
-		retval = retval .. StatComparePaintText("X"," ( ")
+		retval = retval .. StatComparePaintText("X"," (")
 	end
 	if nvld(spell_power_arcane) > 0 then
 		retval = retval.." "..StatComparePaintText("A",format(fmt, STATCOMPARE_ARCANE_SHORT, base_spell_power + spell_power_arcane))
@@ -137,7 +137,7 @@ local function GetUnitSpellHitRating(unit)
 	fmt="%s: %d%%"
 	
 	if base_spell_hit ~= total_hit then 
-		retval = retval .. StatComparePaintText("X","( ")
+		retval = retval .. StatComparePaintText("X"," (")
 	end
 	if nvld(spell_hit_arcane) > 0 then
 		retval = retval.." "..StatComparePaintText("A",format(fmt, STATCOMPARE_ARCANE_SHORT, base_spell_hit + spell_hit_arcane))
