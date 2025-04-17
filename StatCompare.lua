@@ -711,7 +711,7 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 					val = flval;
 				end
 			end
-			if(e.effect == "MANAREG") then
+			if(e.effect == "MANAREG" and val ~= nil) then
 				val = val.." MP/5s"
 			end
 
@@ -738,7 +738,7 @@ function StatScanner_GetStatsDisplayText(bonuses,bSelfStat)
 					val = lval;
 				end
 			end
-			if(e.effect == "MANAREG") then
+			if(e.effect == "MANAREG" and val ~= nil) then
 				val = val.." MP/5s"
 			end
 
