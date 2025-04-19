@@ -193,6 +193,7 @@ function SC_Localization_enUS()
 		{ pattern = "Increases your attack and casting speed by (%d+)%%%.", effect = "HASTE" },
 		{ pattern = "Your attacks ignore (%d+) of the target's armor.", effect = "ARMORPEN" },
 		{ pattern = "Allows (%d+)%%% of your Mana regeneration to continue while casting.", effect = "MEDITATION" },
+		{ pattern = "Increases healing done by Flash of Light by (%d+)", effect = "FLASHHOLYLIGHTHEAL" }, -- Libram of Light / Libram of Divinity
 --		{ pattern = "Increases spell damage and healing by up to (%d+)%% of your total Spirit.", effect = "HEAL" } -- spiritual guidance ... but... it's a percent of total spirit. works needs done.
 --		{ pattern = "Increases healing done by magical spells and effects of all party members within 30 yards by up to (%d+).", effect = "HEAL"}, -- TODO verify. https://www.wowhead.com/classic/search?q=Atiesh%2C+Greatstaff+of+the+Guardian
 
