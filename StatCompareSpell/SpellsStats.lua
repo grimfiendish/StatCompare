@@ -191,6 +191,8 @@ SC_SPELL_HAMMER_OF_WRATH = 75;
 SC_SPELL_HOLY_SHOCK_DMG = 76;
 SC_SPELL_HOLY_SHOCK_HEALS = 77;
 SC_SPELL_HOLY_WRATH = 78;
+SC_SPELL_HOLY_STRIKE_DMG = 79; -- Turtle WoW Only.
+SC_SPELL_HOLY_STRIKE_HEALS = 80; -- Turtle WoW Only.
   -- Group
   -- Channel
   -- Other
@@ -1063,7 +1065,7 @@ if IsPlayingOnTurtleWoW() then
 	-- As of Turtle WoW 1.17.3 they've removed the damage element of Holy Shock and have instead buffed the healing aspect as well as given a 4th rank.
 	SC_SpellCollections[SC_SPELL_HOLY_SHOCK_DMG] = nil
 	SC_SpellCollections[SC_SPELL_HOLY_SHOCK_HEALS] = {
-		name = STATCOMPARE_HOLY_SHOCK,
+		name = STATCOMPARE_HOLY_SHOCK .. GREEN_FONT_COLOR_CODE .. STATCOMPARE_TWOW_MOD .. FONT_COLOR_CODE_CLOSE,
 		effect = { "HEAL" },
 		type = "h",
 		l_rank = 4,
@@ -1076,6 +1078,53 @@ if IsPlayingOnTurtleWoW() then
 		[2] = { base=365, castratio=0.429, levelratio=1.0 },
 		[3] = { base=500, castratio=0.429, levelratio=1.0 },
 		[4] = { base=650, castratio=0.429, levelratio=1.0 },
+	}
+	
+	-- Turtle WoW has a custom spell named Holy Strike. Does damage and heals all nearby party members.
+	--[[
+		Rank 1 (Level 4): 20-22 Holy Damage, 10 Health and 5 Mana restored, 5 Mana Cost
+		Rank 2 (Level 12): 41-45 Holy Damage, 24 Health and 12 Mana restored, 12 Mana Cost
+		Rank 3 (Level 22 -> 20): 64-67 Holy Damage, 50 Health and 25 Mana restored, 25 Mana Cost
+		Rank 4 (Level 34 -> 28): 94-101 Holy Damage, 76 Health and 38 Mana restored, 38 Mana Cost
+		Rank 5 (Level 42 -> 36): 152-171 Holy Damage, 102 Health and 51 Mana restored, 51 Mana Cost
+		Rank 6 (Level 48 -> 44): 193-214 Holy Damage, 128 Health and 64 Mana restored, 64 Mana Cost
+		Rank 7 (Level 54 -> 52): 242-267 Holy Damage, 150 Health and 75 Mana restored, 75 Mana Cost
+		Rank 8 (Level 58 -> 60): 293-325 Holy Damage, 180 Health and 90 Mana and Health restored, 90 Mana Cost
+	--]]
+	SC_SpellCollections[SC_SPELL_HOLY_STRIKE_DMG] = {
+		name = STATCOMPARE_HOLY_STRIKE .. GREEN_FONT_COLOR_CODE .. STATCOMPARE_TWOW_MOD .. FONT_COLOR_CODE_CLOSE,
+		effect = { "DMG", "HOLYDMG" },
+		type = "a",
+		l_rank = 8,
+		h_rank = 8,
+	}
+	SC_SpellRanks[SC_SPELL_HOLY_STRIKE_DMG] = {
+		[1] = { base=21, castratio=0.429, levelratio=1.0 },
+		[2] = { base=43, castratio=0.429, levelratio=1.0 },
+		[3] = { base=65, castratio=0.429, levelratio=1.0 },
+		[4] = { base=96, castratio=0.429, levelratio=1.0 },
+		[5] = { base=161, castratio=0.429, levelratio=1.0 },
+		[6] = { base=200, castratio=0.429, levelratio=1.0 },
+		[7] = { base=255, castratio=0.429, levelratio=1.0 },
+		[8] = { base=305, castratio=0.429, levelratio=1.0 },
+	}
+	
+	SC_SpellCollections[SC_SPELL_HOLY_STRIKE_HEALS] = {
+		name = STATCOMPARE_HOLY_STRIKE .. GREEN_FONT_COLOR_CODE .. STATCOMPARE_TWOW_MOD .. FONT_COLOR_CODE_CLOSE,
+		effect = { "HEAL" },
+		type = "h",
+		l_rank = 8,
+		h_rank = 8,
+	}
+	SC_SpellRanks[SC_SPELL_HOLY_STRIKE_HEALS] = {
+		[1] = { base=10, castratio=0.429, levelratio=1.0 },
+		[2] = { base=24, castratio=0.429, levelratio=1.0 },
+		[3] = { base=50, castratio=0.429, levelratio=1.0 },
+		[4] = { base=76, castratio=0.429, levelratio=1.0 },
+		[5] = { base=102, castratio=0.429, levelratio=1.0 },
+		[6] = { base=128, castratio=0.429, levelratio=1.0 },
+		[7] = { base=150, castratio=0.429, levelratio=1.0 },
+		[8] = { base=180, castratio=0.429, levelratio=1.0 },
 	}
 end
 

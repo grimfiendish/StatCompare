@@ -318,6 +318,7 @@ function SC_Localization_enUS()
 	STATCOMPARE_LIGHTNING_BOLT	= "Lightning Bolt";
 	STATCOMPARE_HOLY_LIGHT		= "Holy Light";
 	STATCOMPARE_HOLY_SHOCK		= "Holy Shock";
+	STATCOMPARE_HOLY_STRIKE		= "Holy Strike"; -- TWoW Only
 	STATCOMPARE_HOLY_WRATH		= "Holy Wrath";
 	STATCOMPARE_FLASH_OF_LIGHT	= "Flash of Light";
 	STATCOMPARE_CONSECRATION	= "Consecration";
