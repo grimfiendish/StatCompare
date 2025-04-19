@@ -182,8 +182,9 @@ SC_SPELL_CONSECRATION = 73;
 SC_SPELL_EXORCISM = 74;
 SC_SPELL_HAMMER_OF_WRATH = 75;
   -- Instant
-SC_SPELL_HOLY_SHOCK = 76;
-SC_SPELL_HOLY_WRATH = 77;
+SC_SPELL_HOLY_SHOCK_DMG = 76;
+SC_SPELL_HOLY_SHOCK_HEALS = 77;
+SC_SPELL_HOLY_WRATH = 78;
   -- Group
   -- Channel
   -- Other
@@ -484,10 +485,17 @@ SC_SpellCollections = {
 		l_rank = 3,
 		h_rank = 3,
 	},
-	[SC_SPELL_HOLY_SHOCK] = {
+	[SC_SPELL_HOLY_SHOCK_DMG] = {
 		name = STATCOMPARE_HOLY_SHOCK,
 		effect = { "DMG", "HOLYDMG" },
 		type = "a",
+		l_rank = 3,
+		h_rank = 3,
+	},
+	[SC_SPELL_HOLY_SHOCK_HEALS] = {
+		name = STATCOMPARE_HOLY_SHOCK,
+		effect = { "HEAL" },
+		type = "h",
 		l_rank = 3,
 		h_rank = 3,
 	},
@@ -708,6 +716,7 @@ SC_SpellCollections = {
 	},
 }
 
+
 SC_SpellRanks = {
 -- Druid
   -- Casted
@@ -922,7 +931,12 @@ SC_SpellRanks = {
     [6] = { base=368, castratio=0.429, levelratio=1.0 },
   },
   -- Instant
-  [SC_SPELL_HOLY_SHOCK] = {
+  [SC_SPELL_HOLY_SHOCK_DMG] = {
+    [1] = { base=212, castratio=0.429, levelratio=1.0 },
+    [2] = { base=290, castratio=0.429, levelratio=1.0 },
+    [3] = { base=380, castratio=0.429, levelratio=1.0 },
+  },
+  [SC_SPELL_HOLY_SHOCK_HEALS] = {
     [1] = { base=212, castratio=0.429, levelratio=1.0 },
     [2] = { base=290, castratio=0.429, levelratio=1.0 },
     [3] = { base=380, castratio=0.429, levelratio=1.0 },
@@ -1096,6 +1110,34 @@ SC_POWER_INFUSION_TEXTURE = "spell_holy_powerinfusion";
 SC_DIVINE_FAVOR_TEXTURE = "spell_holy_heal";
 SC_HEALING_OF_THE_AGES_TEXTURE = "spell_nature_healingwavegreater";
 SC_UNSTABLE_POWER_TEXTURE = "spell_lightning_lightningbolt01";
+
+
+-- From https://github.com/refaim/SortBags/blob/master/SortBags.lua#L6
+local function IsPlayingOnTurtleWoW()
+	-- https://github.com/refaim/Turtle-WoW-UI-Source/blob/d6137c2ebd291f10ce284e586a5733dd5141bef2/Interface/FrameXML/TargetFrame.xml#L183
+	return TargetHPText ~= nil and TargetHPPercText ~= nil
+end
+
+
+if IsPlayingOnTurtleWoW() then
+	-- As of Turtle WoW 1.17.3 they've removed the damage element of Holy Shock and have instead buffed the healing aspect as well as given a 4th rank.
+	SC_SpellCollections[SC_SPELL_HOLY_SHOCK_DMG] = nil
+	SC_SpellCollections[SC_SPELL_HOLY_SHOCK_HEALS] = {
+		name = STATCOMPARE_HOLY_SHOCK,
+		effect = { "HEAL" },
+		type = "h",
+		l_rank = 4,
+		h_rank = 4,
+	}
+
+	SC_SpellRanks[SC_SPELL_HOLY_SHOCK_DMG] = nil
+	SC_SpellRanks[SC_SPELL_HOLY_SHOCK_HEALS] = {
+		[1] = { base=315, castratio=0.429, levelratio=1.0 },
+		[2] = { base=365, castratio=0.429, levelratio=1.0 },
+		[3] = { base=500, castratio=0.429, levelratio=1.0 },
+		[4] = { base=650, castratio=0.429, levelratio=1.0 },
+	}
+end
 
 local function _SC_GetEstimated(bself, SpellName,SpellRank,fullstats)
 	local estimated = 0;
