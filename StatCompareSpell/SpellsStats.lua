@@ -1132,7 +1132,7 @@ SC_SpellTalents = {
 
 if IsPlayingOnTurtleWoW() then
 	-- Corresponding to the Turtle WoW change to boost Holy Shock heals, they also added it to the Healing Light talent.
-	SC_SpellTalents[SC_SPELL_HOLY_SHOCK_HEALS] = { ratios={SC_TALENT_HEALING_LIGHT}; blessing=400 };
+	SC_SpellTalents[SC_SPELL_HOLY_SHOCK_HEALS] = { ratios={SC_TALENT_HEALING_LIGHT} };
 end
 
 SC_BLESSING_OF_LIGHT_TEXTURE = "spell_holy_prayerofhealing02";
