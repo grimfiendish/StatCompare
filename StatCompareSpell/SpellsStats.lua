@@ -7,6 +7,13 @@ if StatCompare_TutorialIconExplanation then
 	StatCompare_TutorialIconExplanation["Interface\\Icons\\INV_Misc_Book_08"] = STATCOMPARE_TUTORIAL_SPELLBOOK_ICON
 end
 
+-- From https://github.com/refaim/SortBags/blob/master/SortBags.lua#L6
+local function IsPlayingOnTurtleWoW()
+	-- https://github.com/refaim/Turtle-WoW-UI-Source/blob/d6137c2ebd291f10ce284e586a5733dd5141bef2/Interface/FrameXML/TargetFrame.xml#L183
+	return TargetHPText ~= nil and TargetHPPercText ~= nil
+end
+
+
 -- Global var
 StatCompare_SpellsVals = {};
 
@@ -95,7 +102,6 @@ SC_Talents = {
   [SC_TALENT_RUIN] = {type="c", rank=1, rankratio={[0]=1.00; [1] = 2.0};};
   [SC_TALENT_EMBERSTOM] = {type="n", rank=5, rankratio={[0]=1.00; [1]=1.02; [2]=1.04; [3]=1.06; [4]=1.08; [5]=1.10}};
 };
-
 --[[
   ************* SPELLS *************
 ]]
@@ -1053,6 +1059,26 @@ SC_SpellRanks = {
   },
 };
 
+if IsPlayingOnTurtleWoW() then
+	-- As of Turtle WoW 1.17.3 they've removed the damage element of Holy Shock and have instead buffed the healing aspect as well as given a 4th rank.
+	SC_SpellCollections[SC_SPELL_HOLY_SHOCK_DMG] = nil
+	SC_SpellCollections[SC_SPELL_HOLY_SHOCK_HEALS] = {
+		name = STATCOMPARE_HOLY_SHOCK,
+		effect = { "HEAL" },
+		type = "h",
+		l_rank = 4,
+		h_rank = 4,
+	}
+
+	SC_SpellRanks[SC_SPELL_HOLY_SHOCK_DMG] = nil
+	SC_SpellRanks[SC_SPELL_HOLY_SHOCK_HEALS] = {
+		[1] = { base=315, castratio=0.429, levelratio=1.0 },
+		[2] = { base=365, castratio=0.429, levelratio=1.0 },
+		[3] = { base=500, castratio=0.429, levelratio=1.0 },
+		[4] = { base=650, castratio=0.429, levelratio=1.0 },
+	}
+end
+
 SC_SpellTalents = {
 -- Druid
   [SC_SPELL_HEALING_TOUCH] = { ratios={SC_TALENT_GIF_OF_NATURE} };
@@ -1104,6 +1130,11 @@ SC_SpellTalents = {
 
 };
 
+if IsPlayingOnTurtleWoW() then
+	-- Corresponding to the Turtle WoW change to boost Holy Shock heals, they also added it to the Healing Light talent.
+	SC_SpellTalents[SC_SPELL_HOLY_SHOCK_HEALS] = { ratios={SC_TALENT_HEALING_LIGHT}; blessing=400 };
+end
+
 SC_BLESSING_OF_LIGHT_TEXTURE = "spell_holy_prayerofhealing02";
 SC_GREATER_BLESSING_OF_LIGHT_TEXTURE = "spell_holy_greaterblessingoflight";
 SC_POWER_INFUSION_TEXTURE = "spell_holy_powerinfusion";
@@ -1111,33 +1142,6 @@ SC_DIVINE_FAVOR_TEXTURE = "spell_holy_heal";
 SC_HEALING_OF_THE_AGES_TEXTURE = "spell_nature_healingwavegreater";
 SC_UNSTABLE_POWER_TEXTURE = "spell_lightning_lightningbolt01";
 
-
--- From https://github.com/refaim/SortBags/blob/master/SortBags.lua#L6
-local function IsPlayingOnTurtleWoW()
-	-- https://github.com/refaim/Turtle-WoW-UI-Source/blob/d6137c2ebd291f10ce284e586a5733dd5141bef2/Interface/FrameXML/TargetFrame.xml#L183
-	return TargetHPText ~= nil and TargetHPPercText ~= nil
-end
-
-
-if IsPlayingOnTurtleWoW() then
-	-- As of Turtle WoW 1.17.3 they've removed the damage element of Holy Shock and have instead buffed the healing aspect as well as given a 4th rank.
-	SC_SpellCollections[SC_SPELL_HOLY_SHOCK_DMG] = nil
-	SC_SpellCollections[SC_SPELL_HOLY_SHOCK_HEALS] = {
-		name = STATCOMPARE_HOLY_SHOCK,
-		effect = { "HEAL" },
-		type = "h",
-		l_rank = 4,
-		h_rank = 4,
-	}
-
-	SC_SpellRanks[SC_SPELL_HOLY_SHOCK_DMG] = nil
-	SC_SpellRanks[SC_SPELL_HOLY_SHOCK_HEALS] = {
-		[1] = { base=315, castratio=0.429, levelratio=1.0 },
-		[2] = { base=365, castratio=0.429, levelratio=1.0 },
-		[3] = { base=500, castratio=0.429, levelratio=1.0 },
-		[4] = { base=650, castratio=0.429, levelratio=1.0 },
-	}
-end
 
 local function _SC_GetEstimated(bself, SpellName,SpellRank,fullstats)
 	local estimated = 0;
