@@ -1,12 +1,17 @@
 # StatCompare v2.0 for Vanilla World of Warcraft v 1.12.1
-StatCompare adds a stats panel next to your Character and Inspection Panes, making it easy to screenshot your stats for gear checks or compare your gear to your target.
+StatCompare adds a stats panel for gear checks or comparing your gear to another player.
 
-This version has been updated to make gear checks easier by showing the list of equipped item names and their enchants, as well as all active buffs.
+## What does it show?
 
-_This version comes bundled with "StatCompareBuff", "StatCompareChar", "StatCompareSpell", "StatCompareArmor", "StatCompareBetterCharacterStats" and "StatCompareUI"._
+* Lists **stats**, **attack** power, **spell** power, **resistances**, **hit** and **crit** info
+* Lists equipped **gear** and **enchants**
+* * Great for **screenshotting gear** of players
+* * Greatfor submitting **raid gear checks** (_especially so on servers that allow transmogrification_)
+* Lists your **talent tree** summary (for submitting gear checks - lets raid leaders know you're, say, a Fire Mage not a Frost Mage)
+* Lists **active buffs** (lets raid leaders know your stats might be inflated so you don't have to resubmit a screenshot)
+* Lists custom private-server abilities such as **Haste** and **Vampirism** and talents like Crusader Strike (Turtle WoW)
 
-
-## 1.8 Screenshots
+## Screenshots
 
 ### View  your own stats (e.g. for Gear Checks)
 
@@ -40,12 +45,10 @@ For comparison, here's the previous version (1.7)'s UI:
 
 ## Too long; Didn't Read
 
+* _This version comes bundled with "StatCompareBuff", "StatCompareChar", "StatCompareSpell", "StatCompareArmor", "StatCompareBetterCharacterStats" and "StatCompareUI"._
 * This addon was originally written in 2006 for what appears to be a primarily Chinese audience.
-* ([The Linae-Kronos version](https://github.com/Linae-Kronos/StatCompare) is a slightly updated one from 2007.) 
-* Several dependent-addons were created to augment StatCompare and were floating separately (and, frankly, I thought were totally gone from the internet)
-* I moved off of the Linae-Kronos version after finding a [slightly-newer version of the addon](https://gitee.com/shines77/TurtleWoW_AddOns) from 2020 that has been modified to bundle a couple of the dependent addons, such as StatCompareBuffs.
-* In 2025 I added the "StatCompareArmor" dependent-addon, cleaned up the code overall a bit, and fixed several internationalization issues (mainly that several references were only in Chinese). I may have broken things that weren't in the bundle. if you find any issues, please let me know via github.
-* This version ,1.8+,  adds my "Raid Gear Check" info, which displays talent tree, active buffs (to know how your stats are affected), equipped-items list (especially useful on vanilla servers that allow transmogrificatoin), and equipped-item's enchants.
+* [The Linae-Kronos version](https://github.com/Linae-Kronos/StatCompare) is a slightly updated one from 2007.
+* [The shines77 version](https://gitee.com/shines77/TurtleWoW_AddOns) from 2020 is bundled with "child" addons, such as StatCompareBuffs. This addon is based on that codebase.
 * Folder name was "StatCompare" and in-game name was "Character Status Compare", which was awkward and made it hard to find online, so I got rid of the "Character Status Compare" name in the English name of the addon.
 
 
