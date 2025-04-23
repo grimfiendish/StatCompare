@@ -35,8 +35,46 @@ function StatScanner_Scan(link)
 	end
 end
 
+-- Grab the "Best" set item for the slot
+local function StatScanner_GetSetItemLink(slotId, sets)
+	local link = nil
+	if(sets and StatCompare_BestItems and StatCompare_BestItems[slotId] and StatCompare_BestItems[slotId][sets]) then
+		local itemId = StatCompare_BestItems[slotId][sets]["id"];
+		local enchantid;
+		if(StatCompare_BestItems[slotId][sets]["enchantid"]) then
+			enchantid = StatCompare_BestItems[slotId][sets]["enchantid"];
+		else
+			enchantid = 0;
+		end
+		link = "|Hitem:"..itemId..":"..enchantid..":0:0" .. "|h[" .. SCS_DB[itemId].name .. "]|h|r";
+	end
+	return link
+end
+
+local function StatScanner_HydrateSetcount(link, statset)
+	-- if set item, mark set as already scanned
+	local sColor = nil;
+	if(statset ~= "") then
+		StatScanner_sets[statset] = 1;
+		if (StatScanner_setcount[statset]) then
+			StatScanner_setcount[statset].count = StatScanner_setcount[statset].count+1;
+		else
+			StatScanner_setcount[statset] = {};
+			StatScanner_setcount[statset].count=1;
+			if link ~= nil then
+				_, _, sColor, _, _ = string.find(link, STATCOMPARE_ITEMLINK_PATTERN);
+				StatScanner_setcount[statset].color=sColor;
+			elseif SCObjectTooltipTextLeft1 ~= nil then
+				local r,g,b,_ = SCObjectTooltipTextLeft1:GetTextColor();
+				sColor = string.format("%2x", r*255)..string.format("%2x", g*255)..string.format("%2x", b*255);
+			end
+			StatScanner_setcount[statset].color=sColor;
+			StatScanner_setcount[statset].total=StatScanner_currentsetcount;
+		end
+	end;
+end
+
 function StatScanner_ScanAllInspect(unit, sets)
-	local slotID;
 	--[[
 	0 = ammo
 	1 = head
@@ -62,8 +100,7 @@ function StatScanner_ScanAllInspect(unit, sets)
 	
 	local i, j, slotName,sunit,ifScanSet;
 	local id, hasItem;
-	local itemName, tmpText, tmpStr, tmpSet, val, lines, set;
-	local found = false;
+	local itemName, tmpText, tmpStr, tmpSet, lines, set;
 
 	StatScanner_bonuses = {};
 	StatScanner_sets = {};
@@ -84,82 +121,30 @@ function StatScanner_ScanAllInspect(unit, sets)
 		if(not sets) then
 			link = GetInventoryItemLink(sunit, i);
 		else
-			if(StatCompare_BestItems and StatCompare_BestItems[i] and StatCompare_BestItems[i][sets]) then
-				local itemId = StatCompare_BestItems[i][sets]["id"];
-				local enchantid;
-				if(StatCompare_BestItems[i][sets]["enchantid"]) then
-					enchantid = StatCompare_BestItems[i][sets]["enchantid"];
-				else
-					enchantid = 0;
-				end
-				link = "|Hitem:"..itemId..":"..enchantid..":0:0" .. "|h[" .. SCS_DB[itemId].name .. "]|h|r";
-			end
+			link = StatScanner_GetSetItemLink(i, sets)
 		end
+		
+		-- To parse an item's text we assign it to a tooltip, then loop through the lines of text.
+		SCObjectTooltip:Hide()
+		SCObjectTooltip:SetOwner(UIParent, "ANCHOR_NONE");
 		if (link~=nil) then
 			local item = gsub(link, ".*(item:%d+:%d+:%d+:%d+).*", "%1", 1);
-			SCObjectTooltip:Hide()
-			SCObjectTooltip:SetOwner(UIParent, "ANCHOR_NONE");
-
-			SCObjectTooltip:SetHyperlink(item);			
-			itemName = SCObjectTooltipTextLeft1:GetText();
-			lines = SCObjectTooltip:NumLines();
-
-			for j=2, lines, 1 do
-				tmpText = getglobal("SCObjectTooltipTextLeft"..j);
-				val = nil;
-				if (tmpText:GetText()) then
-					tmpStr = tmpText:GetText();
-					found = StatScanner_ScanLine(tmpStr,ifScanSet);
-				end
-			end
-
-			-- if set item, mark set as already scanned
-			if(StatScanner_currentset ~= "") then
-				StatScanner_sets[StatScanner_currentset] = 1;
-				if (StatScanner_setcount[StatScanner_currentset]) then
-					StatScanner_setcount[StatScanner_currentset].count = StatScanner_setcount[StatScanner_currentset].count+1;
-				else
-					StatScanner_setcount[StatScanner_currentset] = {};
-					StatScanner_setcount[StatScanner_currentset].count=1;
-					local _, _, sColor, _, _ = string.find(link, STATCOMPARE_ITEMLINK_PATTERN);
-					StatScanner_setcount[StatScanner_currentset].color=sColor;
-					StatScanner_setcount[StatScanner_currentset].total=StatScanner_currentsetcount;
-				end
-			end;
+			SCObjectTooltip:SetHyperlink(item);
 		else
-			-- Thanks code from WarBabyWOW @mop
-			SCObjectTooltip:Hide()
-			SCObjectTooltip:SetOwner(UIParent, "ANCHOR_NONE");
 			SCObjectTooltip:SetInventoryItem(sunit, i);
-
-			itemName = SCObjectTooltipTextLeft1:GetText();
-			lines = SCObjectTooltip:NumLines();
-
-			for j=2, lines, 1 do
-				tmpText = getglobal("SCObjectTooltipTextLeft"..j);
-				val = nil;
-				if (tmpText:GetText()) then
-					tmpStr = tmpText:GetText();
-					found = StatScanner_ScanLine(tmpStr,ifScanSet);
-				end
-			end
-
-			-- if set item, mark set as already scanned
-			if(StatScanner_currentset ~= "") then
-				StatScanner_sets[StatScanner_currentset] = 1;
-				if (StatScanner_setcount[StatScanner_currentset]) then
-					StatScanner_setcount[StatScanner_currentset].count = StatScanner_setcount[StatScanner_currentset].count+1;
-				else
-					StatScanner_setcount[StatScanner_currentset] = {};
-					StatScanner_setcount[StatScanner_currentset].count=1;
-					--local _, _, sColor, _, _ = string.find(link, STATCOMPARE_ITEMLINK_PATTERN);
-					local r,g,b,_ = SCObjectTooltipTextLeft1:GetTextColor();
-					local sColor = string.format("%2x", r*255)..string.format("%2x", g*255)..string.format("%2x", b*255);
-					StatScanner_setcount[StatScanner_currentset].color=sColor;
-					StatScanner_setcount[StatScanner_currentset].total=StatScanner_currentsetcount;
-				end
-			end;			
 		end
+	
+		itemName = SCObjectTooltipTextLeft1:GetText();
+		lines = SCObjectTooltip:NumLines();
+
+		for j=2, lines, 1 do
+			tmpText = getglobal("SCObjectTooltipTextLeft"..j);
+			if (tmpText:GetText()) then
+				tmpStr = tmpText:GetText();
+				StatScanner_ScanLine(tmpStr,ifScanSet); -- Hydrate globals such as StatScanner_bonuses and StatScanner_currentset
+			end
+		end
+		StatScanner_HydrateSetcount(link, StatScanner_currentset)
 	end
 
 	if(ifScanSet == 0) then
