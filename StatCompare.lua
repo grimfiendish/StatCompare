@@ -468,7 +468,7 @@ end
 
 function SCDressUpItemLink(link)
 	local item = gsub(link, ".*(item:%d+:%d+:%d+:%d+).*", "%1", 1);
-	StatScanner_Scan(item);
+	StatScanner_ScanItem(item);
 	StatCompare_bonuses_single = StatScanner_bonuses;
 	local tiptext = StatCompare_GetTooltipText(StatCompare_bonuses_single,0);
 	SCShowFrame(StatCompareItemStatFrame,SCItemTooltip,"",tiptext,0,0);
@@ -489,7 +489,7 @@ function SCInspectorFrameShow()
 	local tiptext = StatCompare_UpdateAndGetTooltipText(StatScanner_bonuses,0);
 	SCShowFrame(StatCompareTargetFrame,InspectorFrame,UnitName("target"),tiptext,-5,-12);
 
-	StatScanner_ScanAll();
+	StatScanner_ScanUnit("player");
 	if(SC_BuffScanner_ScanAllInspect) then
 		-- Scan the buffers
 		SC_BuffScanner_ScanAllInspect(StatScanner_bonuses, "player");
@@ -782,7 +782,7 @@ function StatCompare_GetGearsetTooltipText(bonuses,bSelfStat)
 end
 
 function StatCompare_UpdateAndGetTooltipText(bonuses, bSelfStat)
-	StatScanner_ScanAllInspect((bSelfStat == 1 and "player" or nil)) -- this weird function needs `nil` rather than "target". :\
+	StatScanner_ScanUnit((bSelfStat == 1 and "player" or "target"))
 
 	if(SC_BuffScanner_ScanAllInspect) then
 		-- Scan the buffers

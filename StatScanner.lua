@@ -6,52 +6,59 @@ StatScanner_setcount = {};
 StatScanner_setsproperty = {};
 STATCOMPARE_SETPROPERTY_PATTERN = "^%((%d+)%) "..STATCOMPARE_SET_PREFIX;
 
-function StatScanner_Scan(link)
-	StatScanner_bonuses = {};
-	StatScanner_sets = {};
-	StatScanner_setcount = {};
-	StatScanner_currentset = "";
-	StatScanner_currentsetcount = "";
-
-	SCItemTooltip:SetOwner(DressUpFrame, "ANCHOR_NONE");
-	SCItemTooltip:SetPoint("TOPLEFT", DressUpFrame:GetName(), "TOPRIGHT", -30, -12);
-	SCItemTooltip.default=1;
-	SCItemTooltip:ClearLines();
-
-	SCItemTooltip:SetHyperlink(link);
-	SCItemTooltip:Show();
-
-	local itemName = SCItemTooltipTextLeft1:GetText();
-
-	local tmpText, tmpStr, lines;
-	lines = SCItemTooltip:NumLines();
-	for i=2, lines, 1 do
-		tmpText = getglobal("SCItemTooltipTextLeft"..i);
-		val = nil;
-		if (tmpText:GetText()) then
-			tmpStr = tmpText:GetText();
-			StatScanner_ScanLine(tmpStr,1);
-		end
-	end
-end
-
--- Grab the "Best" set item for the slot
-local function StatScanner_GetSetItemLink(slotId, sets)
-	local link = nil
-	if(sets and StatCompare_BestItems and StatCompare_BestItems[slotId] and StatCompare_BestItems[slotId][sets]) then
-		local itemId = StatCompare_BestItems[slotId][sets]["id"];
-		local enchantid;
-		if(StatCompare_BestItems[slotId][sets]["enchantid"]) then
-			enchantid = StatCompare_BestItems[slotId][sets]["enchantid"];
+local function _SaveValueToBonuses(effect, value)
+	local i,e;
+	if(type(effect) == "string") then
+		if(StatScanner_bonuses[effect]) then
+			StatScanner_bonuses[effect] = StatScanner_bonuses[effect] + value;
 		else
-			enchantid = 0;
+			StatScanner_bonuses[effect] = value;
 		end
-		link = "|Hitem:"..itemId..":"..enchantid..":0:0" .. "|h[" .. SCS_DB[itemId].name .. "]|h|r";
+	else 
+	-- list of effects
+		if(type(value) == "table") then
+			for i,e in pairs(effect) do
+				_SaveValueToBonuses(e, value[i]);
+			end
+		else
+			for i,e in pairs(effect) do
+				_SaveValueToBonuses(e, value);
+			end
+		end
 	end
-	return link
+end;
+
+
+-- Identifies simple tokens like "Intellect" and composite tokens like "Fire damage" and 
+-- add the value to the respective bonus.
+local function _SaveTokenToBonuses(token, value)
+	local i, p, s1, s2;
+	
+	if(STATCOMPARE_TOKEN_EFFECT[token]) then
+		_SaveValueToBonuses(STATCOMPARE_TOKEN_EFFECT[token], value);
+		return true;
+	else
+		s1 = nil;
+		s2 = nil;
+		for i,p in pairs(STATCOMPARE_S1) do
+			if(string.find(token,p.pattern,1,1)) then
+				s1 = p.effect;
+			end
+		end	
+		for i,p in pairs(STATCOMPARE_S2) do
+			if(string.find(token,p.pattern,1,1)) then
+				s2 = p.effect;
+			end
+		end	
+		if(s1 and s2) then
+			_SaveValueToBonuses(s1..s2, value);
+			return true;
+		end 
+	end
+	return false;
 end
 
-local function StatScanner_HydrateSetcount(link, statset)
+local function _SaveSetcount(link, statset)
 	-- if set item, mark set as already scanned
 	local sColor = nil;
 	if(statset ~= "") then
@@ -74,180 +81,9 @@ local function StatScanner_HydrateSetcount(link, statset)
 	end;
 end
 
-function StatScanner_ScanAllInspect(unit, sets)
-	--[[
-	0 = ammo
-	1 = head
-	2 = neck
-	3 = shoulder
-	4 = shirt
-	5 = chest
-	6 = belt
-	7 = legs
-	8 = feet
-	9 = wrist
-	10 = gloves
-	11 = finger 1
-	12 = finger 2
-	13 = trinket 1
-	14 = trinket 2
-	15 = back
-	16 = main hand
-	17 = off hand
-	18 = ranged
-	19 = tabard
-	]]--
-	
-	local i, j, slotName,sunit,ifScanSet;
-	local id, hasItem;
-	local itemName, tmpText, tmpStr, tmpSet, lines, set;
-
-	StatScanner_bonuses = {};
-	StatScanner_sets = {};
-	StatScanner_setcount = {};
-	StatScanner_setsproperty = {};
-	if (unit) then
-		sunit=unit;
-		ifScanSet=1;
-	else
-		sunit="target";
-		ifScanSet=0;
-	end
-
-	for i=1, 19 ,1 do
-		StatScanner_currentset = "";
-		StatScanner_currentsetcount = "";
-		local link = nil;
-		if(not sets) then
-			link = GetInventoryItemLink(sunit, i);
-		else
-			link = StatScanner_GetSetItemLink(i, sets)
-		end
-		
-		-- To parse an item's text we assign it to a tooltip, then loop through the lines of text.
-		SCObjectTooltip:Hide()
-		SCObjectTooltip:SetOwner(UIParent, "ANCHOR_NONE");
-		if (link~=nil) then
-			local item = gsub(link, ".*(item:%d+:%d+:%d+:%d+).*", "%1", 1);
-			SCObjectTooltip:SetHyperlink(item);
-		else
-			SCObjectTooltip:SetInventoryItem(sunit, i);
-		end
-	
-		itemName = SCObjectTooltipTextLeft1:GetText();
-		lines = SCObjectTooltip:NumLines();
-
-		for j=2, lines, 1 do
-			tmpText = getglobal("SCObjectTooltipTextLeft"..j);
-			if (tmpText:GetText()) then
-				tmpStr = tmpText:GetText();
-				StatScanner_ScanLine(tmpStr,ifScanSet); -- Hydrate globals such as StatScanner_bonuses and StatScanner_currentset
-			end
-		end
-		StatScanner_HydrateSetcount(link, StatScanner_currentset)
-	end
-
-	if(ifScanSet == 0) then
-		found = StatScanner_ScanSetPropertyAll();
-	end
-
-	SCObjectTooltip:Hide()
-end
-
-function StatScanner_ScanAll()
-	StatScanner_ScanAllInspect("player");
-end
-
-function StatScanner_AddValue(effect, value)
-	local i,e;
-	if(type(effect) == "string") then
-		if(StatScanner_bonuses[effect]) then
-			StatScanner_bonuses[effect] = StatScanner_bonuses[effect] + value;
-		else
-			StatScanner_bonuses[effect] = value;
-		end
-	else 
-	-- list of effects
-		if(type(value) == "table") then
-			for i,e in pairs(effect) do
-				StatScanner_AddValue(e, value[i]);
-			end
-		else
-			for i,e in pairs(effect) do
-				StatScanner_AddValue(e, value);
-			end
-		end
-	end
-end;
-
-function StatScanner_ScanLine(line,ifScanSet)
-	local tmpStr, found;
-	found = false;
-
-	-- Check for "Equip: "
-	if(string.sub(line,0,string.len(STATCOMPARE_EQUIP_PREFIX)) == STATCOMPARE_EQUIP_PREFIX) then
-		tmpStr = string.sub(line,string.len(STATCOMPARE_EQUIP_PREFIX)+1);
-		found = StatScanner_ScanPassive(tmpStr);
-
-	-- Check for "Set: "
-	elseif(string.sub(line,0,string.len(STATCOMPARE_SET_PREFIX)) == STATCOMPARE_SET_PREFIX
-			and StatScanner_currentset ~= "" 
-			and not StatScanner_sets[StatScanner_currentset]
-			and ifScanSet==1) then
-
-		tmpStr = string.sub(line,string.len(STATCOMPARE_SET_PREFIX)+1);
-		found = StatScanner_ScanPassive(tmpStr);
-
-	-- any other line (standard stats, enchantment, set name, etc.)
-	else
-		-- Check for set name
-		_, _, tmpStr,setcount = string.find(line, STATCOMPARE_SETNAME_PATTERN);
-		if(tmpStr) then
-			StatScanner_currentset = tmpStr;
-			StatScanner_currentsetcount = setcount;
-		else
-			found = StatScanner_ScanGeneric(line);
-			if(not found) then
-				found = StatScanner_ScanOther(line);
-			end;
-		end
-		-- Check for set property
-		if(ifScanSet == 0 and not found) then
-			found = StatScanner_ScanSetProperty(line);
-		end
-	end
-	return found;
-end;
-
-
--- Scans passive bonuses like "Set: " and "Equip: "
-function StatScanner_ScanPassive(line)
-	local i, p, value, found, start;
-
-	found = false;
-	line = string.gsub( line, "^%s+", "" );
-	for i,p in pairs(STATCOMPARE_EQUIP_PATTERNS) do
-		start, _, value = string.find(line, "^" .. p.pattern);
-		if(start) then
-			if(p.value) then
-				StatScanner_AddValue(p.effect, p.value);
-			elseif(value) then
-				if(value=="s1")then value=10; end -- cwow°þÆ¤µ¶·­Òë´íÎó
-				StatScanner_AddValue(p.effect, value);
-			end
-			found = true;
-			break;
-		end
-	end
-	if(not found) then
-		found = StatScanner_ScanGeneric(line);
-	end
-	return found;
-end
-
 
 -- Scans generic bonuses like "+3 Intellect" or "Arcane Resistance +4"
-function StatScanner_ScanGeneric(line)
+local function _ScanForDiscreteGearBonuses(line)
 	local value, token, pos, tmpStr, found;
 	line = string.gsub( line, "^%s+", "" );
 	-- split line at "/" for enchants with multiple effects
@@ -278,7 +114,7 @@ function StatScanner_ScanGeneric(line)
 			token = string.gsub( token, "^%s+", "" );
     			token = string.gsub( token, "%s+$", "" );
 	
-			if(StatScanner_ScanToken(token,value)) then
+			if(_SaveTokenToBonuses(token,value)) then
 				found = true;
 			end
 		end
@@ -286,38 +122,8 @@ function StatScanner_ScanGeneric(line)
 	return found;
 end
 
-
--- Identifies simple tokens like "Intellect" and composite tokens like "Fire damage" and 
--- add the value to the respective bonus.
-function StatScanner_ScanToken(token, value)
-	local i, p, s1, s2;
-	
-	if(STATCOMPARE_TOKEN_EFFECT[token]) then
-		StatScanner_AddValue(STATCOMPARE_TOKEN_EFFECT[token], value);
-		return true;
-	else
-		s1 = nil;
-		s2 = nil;
-		for i,p in pairs(STATCOMPARE_S1) do
-			if(string.find(token,p.pattern,1,1)) then
-				s1 = p.effect;
-			end
-		end	
-		for i,p in pairs(STATCOMPARE_S2) do
-			if(string.find(token,p.pattern,1,1)) then
-				s2 = p.effect;
-			end
-		end	
-		if(s1 and s2) then
-			StatScanner_AddValue(s1..s2, value);
-			return true;
-		end 
-	end
-	return false;
-end
-
 -- Scans last fallback for not generic enchants, like "Mana Regen x per 5 sec."
-function StatScanner_ScanOther(line)
+local function _ScanForMiscGearBonuses(line)
 	local i, p, value, start, found;
 	line = string.gsub( line, "^%s+", "" );
 	found = false;
@@ -326,9 +132,9 @@ function StatScanner_ScanOther(line)
 
 		if(start) then
 			if(p.value) then
-				StatScanner_AddValue(p.effect, p.value)
+				_SaveValueToBonuses(p.effect, p.value)
 			elseif(value) then
-				StatScanner_AddValue(p.effect, value)
+				_SaveValueToBonuses(p.effect, value)
 			end
 			found = true;
 			break;
@@ -337,13 +143,80 @@ function StatScanner_ScanOther(line)
 	return found;
 end
 
-function StatScanner_ScanSetPropertyAll()
+
+-- Scans passive bonuses like "Set: " and "Equip: "
+local function _ScanForPassiveGearBonuses(line)
+	local i, p, value, found, start;
+
+	found = false;
+	line = string.gsub( line, "^%s+", "" );
+	for i,p in pairs(STATCOMPARE_EQUIP_PATTERNS) do
+		start, _, value = string.find(line, "^" .. p.pattern);
+		if(start) then
+			if(p.value) then
+				_SaveValueToBonuses(p.effect, p.value);
+			elseif(value) then
+				if(value=="s1")then value=10; end -- cwow°þÆ¤µ¶·­Òë´íÎó
+				_SaveValueToBonuses(p.effect, value);
+			end
+			found = true;
+			break;
+		end
+	end
+	if(not found) then
+		found = _ScanForDiscreteGearBonuses(line);
+	end
+	return found;
+end
+
+
+local function _ScanLineForBonuses(line,ifScanSet)
+	local tmpStr, found;
+	found = false;
+
+	-- Check for "Equip: "
+	if(string.sub(line,0,string.len(STATCOMPARE_EQUIP_PREFIX)) == STATCOMPARE_EQUIP_PREFIX) then
+		tmpStr = string.sub(line,string.len(STATCOMPARE_EQUIP_PREFIX)+1);
+		found = _ScanForPassiveGearBonuses(tmpStr);
+
+	-- Check for "Set: "
+	elseif(string.sub(line,0,string.len(STATCOMPARE_SET_PREFIX)) == STATCOMPARE_SET_PREFIX
+			and StatScanner_currentset ~= "" 
+			and not StatScanner_sets[StatScanner_currentset]
+			and ifScanSet==1) then
+
+		tmpStr = string.sub(line,string.len(STATCOMPARE_SET_PREFIX)+1);
+		found = _ScanForPassiveGearBonuses(tmpStr);
+
+	-- any other line (standard stats, enchantment, set name, etc.)
+	else
+		-- Check for set name
+		_, _, tmpStr,setcount = string.find(line, STATCOMPARE_SETNAME_PATTERN);
+		if(tmpStr) then
+			StatScanner_currentset = tmpStr;
+			StatScanner_currentsetcount = setcount;
+		else
+			found = _ScanForDiscreteGearBonuses(line);
+			if(not found) then
+				found = _ScanForMiscGearBonuses(line);
+			end;
+		end
+		-- Check for set property
+		if(ifScanSet == 0 and not found) then
+			found = StatScanner_ScanSetProperty(line);
+		end
+	end
+	return found;
+end;
+
+
+local function _ScanSetPropertyAll()
 	local found = false;
 	for i,v in pairs(StatScanner_setcount) do
 		for j=1, getn(StatScanner_setsproperty) do
 			if(i == StatScanner_setsproperty[j].setsname) then
 				if(v.count >= StatScanner_setsproperty[j].count) then
-					found = StatScanner_ScanPassive(StatScanner_setsproperty[j].line);
+					found = _ScanForPassiveGearBonuses(StatScanner_setsproperty[j].line);
 				end
 			end
 		end
@@ -422,4 +295,101 @@ function StatCompare_CharStats_GetCritChance()
 		critChance = nil;
 	end
 	return critChance;
+end
+
+function StatScanner_ScanItem(link)
+	StatScanner_bonuses = {};
+	StatScanner_sets = {};
+	StatScanner_setcount = {};
+	StatScanner_currentset = "";
+	StatScanner_currentsetcount = "";
+
+	SCItemTooltip:SetOwner(DressUpFrame, "ANCHOR_NONE");
+	SCItemTooltip:SetPoint("TOPLEFT", DressUpFrame:GetName(), "TOPRIGHT", -30, -12);
+	SCItemTooltip.default=1;
+	SCItemTooltip:ClearLines();
+
+	SCItemTooltip:SetHyperlink(link);
+	SCItemTooltip:Show();
+
+	local itemName = SCItemTooltipTextLeft1:GetText();
+
+	local tmpText, tmpStr, lines;
+	lines = SCItemTooltip:NumLines();
+	for i=2, lines, 1 do
+		tmpText = getglobal("SCItemTooltipTextLeft"..i);
+		val = nil;
+		if (tmpText:GetText()) then
+			tmpStr = tmpText:GetText();
+			_ScanLineForBonuses(tmpStr,1);
+		end
+	end
+end
+
+function StatScanner_ScanUnit(unit)
+	--[[
+	0 = ammo
+	1 = head
+	2 = neck
+	3 = shoulder
+	4 = shirt
+	5 = chest
+	6 = belt
+	7 = legs
+	8 = feet
+	9 = wrist
+	10 = gloves
+	11 = finger 1
+	12 = finger 2
+	13 = trinket 1
+	14 = trinket 2
+	15 = back
+	16 = main hand
+	17 = off hand
+	18 = ranged
+	19 = tabard
+	]]--
+	
+	local i, j;
+	local sunit = unit and unit or "target";
+	local ifScanSet = sunit == "player" and 1 or 0;
+	local id, hasItem;
+	local itemName, tmpText, tmpStr, tmpSet, lines, set;
+
+	StatScanner_bonuses = {};
+	StatScanner_sets = {};
+	StatScanner_setcount = {};
+	StatScanner_setsproperty = {};
+
+	for i=1, 19 ,1 do
+		StatScanner_currentset = "";
+		StatScanner_currentsetcount = "";
+		local link = GetInventoryItemLink(sunit, i);
+		-- To parse an item's text we assign it to a tooltip, then loop through the lines of text.
+		SCObjectTooltip:Hide()
+		SCObjectTooltip:SetOwner(UIParent, "ANCHOR_NONE");
+		if (link~=nil) then
+			local item = gsub(link, ".*(item:%d+:%d+:%d+:%d+).*", "%1", 1);
+			SCObjectTooltip:SetHyperlink(item);
+		else
+			SCObjectTooltip:SetInventoryItem(sunit, i);
+		end
+		itemName = SCObjectTooltipTextLeft1:GetText();
+		lines = SCObjectTooltip:NumLines();
+
+		for j=2, lines, 1 do
+			tmpText = getglobal("SCObjectTooltipTextLeft"..j);
+			if (tmpText:GetText()) then
+				tmpStr = tmpText:GetText();
+				_ScanLineForBonuses(tmpStr,ifScanSet); -- Hydrate globals such as StatScanner_bonuses and StatScanner_currentset
+			end
+		end
+		_SaveSetcount(link, StatScanner_currentset)
+	end
+
+	if(ifScanSet == 0) then
+		found = _ScanSetPropertyAll();
+	end
+
+	SCObjectTooltip:Hide()
 end
